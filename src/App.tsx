@@ -127,7 +127,7 @@ export default function App() {
         },
     ];
 
-    const repoLink = "https://github.com/pustot/react-ts-template";
+    const repoLink = "https://github.com/pustot/studling-frontend";
 
     return (
         <ThemeProvider theme={theme}>

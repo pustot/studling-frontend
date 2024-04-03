@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "lib": ["es6", "dom", "ES2021.String"],
-        "types": ["@mui/material/styles"],
+        "types": ["@mui/material/styles", "node"],
         "noImplicitAny": true,
         "noImplicitThis": true,
         "outDir": "./build/",        // path to output directory
