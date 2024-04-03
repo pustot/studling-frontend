@@ -43,7 +43,7 @@ export default function Home(props: { lang: keyof I18nText }) {
     const sendMessage = async () => {
         try {
             // 发送示例消息给后端的逻辑
-            await API.post('/api/training/results', { message: example_training_results }); // 使用导入的 axios 实例发送请求
+            await API.post('/api/training/results', example_training_results); // 使用导入的 axios 实例发送请求
             setMessageSent(true); // 暂时设为 true，表示消息发送成功
         } catch (error) {
             console.error("发送消息失败:", error);
@@ -72,7 +72,7 @@ export default function Home(props: { lang: keyof I18nText }) {
                 onClick={sendMessage}
                 disabled={messageSent} // 如果消息已发送，按钮将被禁用
             >
-                发送示例消息给后端
+                发送示例训练结果给后端
             </Button>
         </Container>
     );
