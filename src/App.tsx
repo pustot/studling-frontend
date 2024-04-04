@@ -48,20 +48,13 @@ export default function App() {
 
     // Prepare items and subpages used in NavBar, SideDrawer and Footer
     const title: I18nText = {
-        "zh-Hans": "浦司图的个人主页",
-        "zh-Hant": "浦司圖的個人主頁",
-        "en": "Pusto's Homepage",
-        "ja": "浦司図のホームページ",
-        "de": "Homepage von Pusto",
-        "ko": "포사도 홈페이지",
-        "ko-Han": "浦司圖 홈페이지",
-        "eo": "Hejmpaĝo de Pusto",
-        "fr": "Page d'Accueil de Pusto",
-        "vi": "Trang cá nhân của Phổ Ti Đồ",
-        "vi-Han": "張個人𧶮浦司圖",
-        "es": "Página personal de Pusto",
-        "tto-bro": "Dnr2Zu DaA Ym3HMeH Tvo2X8aL",
-        "tto": "XoVhaeG D hnCLo LrnKrHL",
+        "en": "甪端 Studling",
+        "zh-Hant": "甪端 Studling",
+        "zh-Hans": "甪端 Studling",
+        "tto-bro": "EeRZ T8eHXQea",
+        "tto": "hFCmo mAFKRHm",
+        "ja": "甪端 Studling",
+        "de": "甪端 Studling",
     };
 
     const navItems: NavItem[] = [
