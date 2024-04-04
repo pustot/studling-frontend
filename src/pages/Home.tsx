@@ -3,7 +3,15 @@ import * as React from "react";
 import { useState } from "react";
 import "../styles.scss";
 
-import { Button, Container, Grid, IconButton, Link as MuiLink, Stack, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    Container,
+    Link as MuiLink,
+    Stack,
+    TextField,
+    Typography
+} from "@mui/material";
 import API from "../utils/API";
 
 import { getLocaleText, I18nText } from "../utils/I18n";
@@ -35,10 +43,18 @@ const example_training_results = {
     ]
 };
 
+interface Document {
+    id: string;
+    title: string;
+    content: string;
+}
+
 export default function Home(props: { lang: keyof I18nText }) {
     const { lang } = props;
 
     const [messageSent, setMessageSent] = useState<boolean>(false);
+    const [searchValue, setSearchValue] = useState<string>(''); // 添加搜索框的状态
+    const [searchResults, setSearchResults] = useState<Document[]>([]);
 
     const sendMessage = async () => {
         try {
@@ -50,9 +66,22 @@ export default function Home(props: { lang: keyof I18nText }) {
         }
     };
 
+    const handleSearch = async () => {
+        // 在这里执行搜索操作，可以将搜索框的值发送到后端
+        console.log('搜索值:', searchValue);
+        try {
+            // 发送示例消息给后端的逻辑
+            const response = await API.get('/api/search', { params: { query: searchValue } }); // 使用导入的 axios 实例发送请求
+            console.log('后端返回值:', response.data); // 打印后端返回的数据
+            setSearchResults(response.data);
+        } catch (error) {
+            console.error("发送消息失败:", error);
+        }
+    };
+
     return (
         <Container maxWidth="md">
-            <Typography variant="h5">
+            <Typography variant="h5" sx={{ marginBottom: 2 }}>
                 {getLocaleText(
                     {
                         "en": "甪端 Studling",
@@ -66,14 +95,42 @@ export default function Home(props: { lang: keyof I18nText }) {
                     lang
                 )}
             </Typography>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={sendMessage}
-                disabled={messageSent} // 如果消息已发送，按钮将被禁用
-            >
-                发送示例训练结果给后端
-            </Button>
+
+            <Box marginBottom={2}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={sendMessage}
+                    disabled={messageSent} // 如果消息已发送，按钮将被禁用
+                >
+                    发送示例训练结果给后端
+                </Button>
+            </Box>
+
+            <Stack direction="row" spacing={2} alignItems="center" sx={{ marginBottom: 2 }}> {/* 使用 Stack 组件对搜索框和按钮进行布局 */}
+                <TextField
+                    label="搜索"
+                    variant="outlined"
+                    value={searchValue} // 将搜索框的值绑定到状态
+                    onChange={(e) => setSearchValue(e.target.value)} // 监听搜索框内容的变化，并更新状态
+                />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSearch} // 将搜索按钮的点击事件绑定到 handleSearch 函数
+                >
+                    搜索
+                </Button>
+            </Stack>
+
+            <Box sx={{ marginTop: 2 }}>
+                {searchResults.map((doc, index) => (
+                    <Box key={doc.id} sx={{ marginBottom: 2, border: '1px solid #ccc', padding: 2 }}>
+                        <Typography variant="h6">{doc.title}</Typography>
+                        <Typography variant="body1">{doc.content}</Typography>
+                    </Box>
+                ))}
+            </Box>
         </Container>
     );
 }
