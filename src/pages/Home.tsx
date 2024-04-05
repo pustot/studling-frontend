@@ -159,9 +159,9 @@ export default function Home(props: { lang: keyof I18nText }) {
         if (currentCharacter && jyutpingMapping) {
             const correctAnswers = jyutpingMapping[currentCharacter];
             if (correctAnswers && correctAnswers.includes(userInput.trim())) {
-                setFeedback('✅️ 答对了！（正确答案：' + correctAnswers + '）');
+                setFeedback('✅️ 正确！（正确答案：' + correctAnswers + '）');
             } else {
-                setFeedback('❌️ 答错了！（正确答案：' + correctAnswers + '）');
+                setFeedback('❌️ 错误！（正确答案：' + correctAnswers + '）');
             }
         }
     };
