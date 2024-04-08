@@ -140,7 +140,8 @@ amplify/backend/.temp
 build/
 dist/
 node_modules/
-aws-exports.js
+# 纠结咗下，呢度只有ID配置，冇嘅话从他处终要注入，于是直接放repo里啰
+# aws-exports.js
 awsconfiguration.json
 amplifyconfiguration.json
 amplifyconfiguration.dart
