@@ -1,4 +1,4 @@
-import { CssBaseline, PaletteMode } from "@mui/material";
+import { Box, Button, CssBaseline, PaletteMode } from "@mui/material";
 import { createTheme, Theme, ThemeProvider } from "@mui/material/styles";
 import "purecss/build/pure.css";
 import * as React from "react";
@@ -15,6 +15,15 @@ import FeedIcon from "@mui/icons-material/Feed";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
 import Footer from "./components/Footer";
+
+import { Authenticator } from '@aws-amplify/ui-react';
+import { Amplify } from 'aws-amplify';
+import { getCurrentUser } from 'aws-amplify/auth';
+import awsconfig from './aws-exports'; // 如果你通过 Amplify CLI 初始化，配置信息会自动生成在这个文件
+import '@aws-amplify/ui-react/styles.css';
+import UserInfo from "./components/UserInfo";
+
+Amplify.configure(awsconfig);
 
 export default function App() {
     // Prepare global states: 
@@ -139,10 +148,28 @@ export default function App() {
                 <br />
                 <br />
 
-                <Routes>
-                    <Route path="/" element={<Home lang={lang} />} />
-                    <Route path="/home" element={<Home lang={lang} />} />
-                </Routes>
+                <Authenticator>
+
+                    {({ signOut, user }) => (
+                        <div>
+                            <Box display="flex" alignItems="center" justifyContent="flex-end" gap={2}>
+                                <p>Hello,{/*user?.username*/}</p>
+                                <UserInfo />
+                                <Button variant="contained" color="primary" onClick={signOut}>
+                                    Sign Out
+                                </Button>
+                            </Box>
+
+                            <Routes>
+                                <Route path="/" element={<Home lang={lang} />} />
+                                <Route path="/home" element={<Home lang={lang} />} />
+                            </Routes>
+                        </div>
+                    )}
+
+
+
+                </Authenticator>
 
                 <br />
                 <br />

@@ -1,0 +1,32 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-studlingfrontend-dev-c102c-authRole",
+      "UnauthRoleArn": "arn:aws:iam::211125455704:role/amplify-studlingfrontend-dev-c102c-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::211125455704:role/amplify-studlingfrontend-dev-c102c-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-studlingfrontend-dev-c102c-deployment",
+      "UnauthRoleName": "amplify-studlingfrontend-dev-c102c-unauthRole",
+      "StackName": "amplify-studlingfrontend-dev-c102c",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:211125455704:stack/amplify-studlingfrontend-dev-c102c/428e8e90-f5a2-11ee-a432-0a8c2ed69321",
+      "AmplifyAppId": "d2r105ht4w6bws"
+    },
+    "categories": {
+      "auth": {
+        "studlingfrontend33c45101": {}
+      },
+      "function": {
+        "studlingfrontend33c45101DefineAuthChallenge": {},
+        "studlingfrontend33c45101CreateAuthChallenge": {},
+        "studlingfrontend33c45101VerifyAuthChallengeResponse": {
+          "RECAPTCHASECRET": ""
+        },
+        "studlingfrontend33c45101CustomMessage": {
+          "REDIRECTURL": "",
+          "EMAILSUBJECT": "Account Confirmation of PustoT.com",
+          "EMAILMESSAGE": "Here is the account confirmation link"
+        }
+      }
+    }
+  }
+}
