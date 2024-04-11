@@ -1,29 +1,27 @@
-import { Box, Button, CssBaseline, PaletteMode } from "@mui/material";
-import { createTheme, Theme, ThemeProvider } from "@mui/material/styles";
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import { Box, Button, CssBaseline, PaletteMode, Typography } from "@mui/material";
+import { Theme, ThemeProvider, createTheme } from "@mui/material/styles";
+import { Amplify } from 'aws-amplify';
+import { fetchUserAttributes } from 'aws-amplify/auth';
 import "purecss/build/pure.css";
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import "./styles.scss";
 
+import awsconfig from './aws-exports'; // 如果你通过 Amplify CLI 初始化，配置信息会自动生成在这个文件
 import NavBarAndMenu, { NavItem } from "./components/NavBarAndMenu";
-import { I18nText } from "./utils/I18n";
-import About from "./pages/About";
 import Home from "./pages/Home";
+import LanguageSelection from "./pages/LanguageSelection";
+import ZhYueTrainings from "./pages/ZhYueTrainings";
+import { I18nText } from "./utils/I18n";
 
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import FeedIcon from "@mui/icons-material/Feed";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
 import Footer from "./components/Footer";
 
-import { Authenticator } from '@aws-amplify/ui-react';
-import { Amplify } from 'aws-amplify';
-import { getCurrentUser } from 'aws-amplify/auth';
-import awsconfig from './aws-exports'; // 如果你通过 Amplify CLI 初始化，配置信息会自动生成在这个文件
-import '@aws-amplify/ui-react/styles.css';
-import UserInfo from "./components/UserInfo";
-import LanguageSelection from "./pages/LanguageSelection";
-import ZhYueTrainings from "./pages/ZhYueTrainings";
 
 Amplify.configure(awsconfig);
 
@@ -37,9 +35,30 @@ export default function App() {
 
     const systemColor: string =
         window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    const [mode, setMode] = React.useState<string>(localStorage.getItem("pustot/0.1/mode") || systemColor);
+
+    // 获取 localStorage 中的 mode 和时间戳
+    let storedMode = localStorage.getItem("pustot/0.1/mode");
+    let storedTimestamp = localStorage.getItem("pustot/0.1/timestamp");
+
+    // 检查时间戳是否在一小时内
+    const isWithinHour = (timestamp: number | null) => {
+        if (!timestamp) return false;
+        const hourInMillis = 60 * 60 * 1000; // 一小时的毫秒数
+        return Date.now() - Number(timestamp) <= hourInMillis;
+    };
+
+    // 如果时间戳超过一小时，则恢复到系统颜色
+    if (storedTimestamp && !isWithinHour(Number(storedTimestamp))) {
+        storedMode = systemColor;
+    }
+
+    const [mode, setMode] = React.useState<string>(storedMode || systemColor);
+
     const toggleColorMode = () => {
+        // 保存设置的时间戳
+        const timestamp = Date.now().toString();
         localStorage.setItem("pustot/0.1/mode", mode === "light" ? "dark" : "light");
+        localStorage.setItem("pustot/0.1/timestamp", timestamp);
         setMode(prevMode => (prevMode === "light" ? "dark" : "light"));
     };
 
@@ -133,6 +152,24 @@ export default function App() {
 
     const repoLink = "https://github.com/pustot/studling-frontend";
 
+    const [email, setEmail] = useState('loading...');
+
+    useEffect(() => {
+        // 定义异步函数来获取当前认证用户的信息
+        const fetchUserEmail = async () => {
+            try {
+                const userAttributes = await fetchUserAttributes();
+                // 假设用户信息中包含电子邮件地址，并设置到状态中
+                setEmail(userAttributes?.email as string);
+            } catch (error) {
+                console.error('Error fetching user email', error);
+            }
+        };
+
+        // 调用异步函数
+        fetchUserEmail();
+    }, []); // 空依赖数组表示这个 effect 仅在组件挂载时执行一次
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -155,9 +192,8 @@ export default function App() {
                     {({ signOut, user }) => (
                         <div>
                             <Box p={1} display="flex" alignItems="center" justifyContent="flex-end" gap={2}>
-                                <p>Hello,{/*user?.username*/}</p>
-                                <UserInfo />
-                                <Button variant="outlined" color="primary" onClick={signOut}>
+                                <Typography variant="body2">Hello, {email}</Typography>
+                                <Button variant="outlined" color="primary" onClick={signOut} style={{ fontSize: '0.75rem' }}>
                                     Sign Out
                                 </Button>
                             </Box>

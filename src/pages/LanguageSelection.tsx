@@ -1,7 +1,3 @@
-import "purecss/build/pure.css";
-import * as React from "react";
-import "../styles.scss";
-
 import {
     Box,
     Card,
@@ -14,6 +10,9 @@ import {
     useMediaQuery,
     useTheme
 } from "@mui/material";
+import "purecss/build/pure.css";
+import * as React from "react";
+import "../styles.scss";
 
 import { getLocaleText, I18nText } from "../utils/I18n";
 
@@ -47,8 +46,8 @@ const languageCardItems: LanguageCardItem[] = [
         name: '中原官话（菏泽话）', stage: 'ComingSoon',
         icon: <IconFromPublicRepo fileName={"studling-icon-zh-cmn-hza.webp"} />
     },
-    { 
-        name: '西南官话（石屏话）', stage: 'ComingSoon', 
+    {
+        name: '西南官话（石屏话）', stage: 'ComingSoon',
         icon: <IconFromPublicRepo fileName={"studling-icon-zh-cmn-sph.jpeg"} />
     },
     {
@@ -56,44 +55,44 @@ const languageCardItems: LanguageCardItem[] = [
         icon: <IconFromPublicRepo fileName={"studling-icon-zh-yue.webp"} />,
         link: "#/zh-yue"
     },
-    { 
-        name: '吴语（上海话）', stage: 'ComingSoon', 
+    {
+        name: '吴语（上海话）', stage: 'ComingSoon',
         icon: <IconFromPublicRepo fileName={"studling-icon-zh-wuu.webp"} />
     },
     {
         name: '英语', stage: 'Alpha',
         icon: <IconFromPublicRepo fileName={"studling-icon-en.webp"} />
     },
-    { 
-        name: '日语', stage: 'ComingSoon', 
+    {
+        name: '日语', stage: 'ComingSoon',
         icon: <IconFromPublicRepo fileName={"studling-icon-ja.webp"} />
     },
-    { 
-        name: '德语', stage: 'ComingSoon', 
+    {
+        name: '德语', stage: 'ComingSoon',
         icon: <IconFromPublicRepo fileName={"studling-icon-de.webp"} />
     },
-    { 
-        name: '韩语', stage: 'ComingSoon', 
+    {
+        name: '韩语', stage: 'ComingSoon',
         icon: <IconFromPublicRepo fileName={"studling-icon-ko.webp"} />
     },
-    { 
-        name: '世界语', stage: 'ComingSoon', 
+    {
+        name: '世界语', stage: 'ComingSoon',
         icon: <IconFromPublicRepo fileName={"studling-icon-eo.svg"} />
     },
-    { 
-        name: '法语', stage: 'ComingSoon', 
+    {
+        name: '法语', stage: 'ComingSoon',
         icon: <IconFromPublicRepo fileName={"studling-icon-fr.webp"} />
     },
-    { 
-        name: '越南语', stage: 'ComingSoon', 
-        icon: <IconFromPublicRepo fileName={"studling-icon-vi.png"} /> 
+    {
+        name: '越南语', stage: 'ComingSoon',
+        icon: <IconFromPublicRepo fileName={"studling-icon-vi.png"} />
     },
-    { 
-        name: '西班牙语', stage: 'ComingSoon', 
+    {
+        name: '西班牙语', stage: 'ComingSoon',
         icon: <IconFromPublicRepo fileName={"studling-icon-es.webp"} />
     },
     { name: '闽南语泉漳片（第一优势腔）', stage: 'ComingSoon', icon: <div>ZH-NAN</div> },
-    { name: '西南官话（昆明话）', stage: 'ComingSoon', icon: <div>ZH-CMN</div> },
+    { name: '西南官话（昆明话）', stage: 'ComingSoon', icon: <div>ZH-CMN-KMG</div> },
     { name: '闽南语潮汕片', stage: 'ComingSoon', icon: <div>ZH-NAN</div> },
     { name: '客家话', stage: 'ComingSoon', icon: <div>ZH-HAK</div> },
     { name: '荷兰语', stage: 'ComingSoon', icon: <div>NL</div> },
