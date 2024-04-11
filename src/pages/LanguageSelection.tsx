@@ -10,7 +10,9 @@ import {
     Container,
     Grid,
     Link as MuiLink,
-    Typography
+    Typography,
+    useMediaQuery,
+    useTheme
 } from "@mui/material";
 
 import { getLocaleText, I18nText } from "../utils/I18n";
@@ -70,11 +72,26 @@ const languageCardItems: LanguageCardItem[] = [
         name: '德语', stage: 'ComingSoon', 
         icon: <IconFromPublicRepo fileName={"studling-icon-de.webp"} />
     },
-    { name: '韩语', stage: 'ComingSoon', icon: <div>KO</div> },
-    { name: '世界语', stage: 'ComingSoon', icon: <div>EO</div> },
-    { name: '法语', stage: 'ComingSoon', icon: <div>FR</div> },
-    { name: '越语', stage: 'ComingSoon', icon: <div>VI</div> },
-    { name: '西班牙语', stage: 'ComingSoon', icon: <div>ES</div> },
+    { 
+        name: '韩语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-ko.webp"} />
+    },
+    { 
+        name: '世界语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-eo.svg"} />
+    },
+    { 
+        name: '法语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-fr.webp"} />
+    },
+    { 
+        name: '越南语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-vi.png"} /> 
+    },
+    { 
+        name: '西班牙语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-es.webp"} />
+    },
     { name: '闽南语泉漳片（第一优势腔）', stage: 'ComingSoon', icon: <div>ZH-NAN</div> },
     { name: '西南官话（昆明话）', stage: 'ComingSoon', icon: <div>ZH-CMN</div> },
     { name: '闽南语潮汕片', stage: 'ComingSoon', icon: <div>ZH-NAN</div> },
@@ -115,6 +132,9 @@ export default function LanguageSelection(props: { lang: keyof I18nText }) {
         return acc;
     }, {} as Record<string, LanguageCardItem[]>);
 
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
     return (
         <Container maxWidth="md">
             <Typography variant="h4" sx={{ marginBottom: 2 }}>
@@ -150,7 +170,7 @@ export default function LanguageSelection(props: { lang: keyof I18nText }) {
             <Box padding={2}>
                 {Object.entries(groupedLanguages).map(([stage, langs], stageIndex) => (
                     <Box key={stageIndex} marginBottom={4}>
-                        <Typography variant="h5" gutterBottom>
+                        <Typography variant="h5" align={isSmallScreen ? "center" : "left"} gutterBottom>
                             {stage === 'Beta' ? 'Beta（公开测试）阶段：' : stage === 'Alpha' ? 'Alpha（内部测试）阶段：' : '即将到来：'}
                         </Typography>
                         <Grid container spacing={2}>
