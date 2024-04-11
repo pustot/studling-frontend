@@ -45,7 +45,7 @@ const UserEmail: React.FC = () => {
 
     }, []); // 空依赖数组表示这个 effect 仅在组件挂载时执行一次
 
-    return <Typography variant="body2">Hello, {email}</Typography>;
+    return <Typography variant="body2" sx={{ color: 'text.secondary' }}>Hello, {email}</Typography>;
 }
 
 export default function App() {
