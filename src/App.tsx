@@ -22,6 +22,8 @@ import { getCurrentUser } from 'aws-amplify/auth';
 import awsconfig from './aws-exports'; // 如果你通过 Amplify CLI 初始化，配置信息会自动生成在这个文件
 import '@aws-amplify/ui-react/styles.css';
 import UserInfo from "./components/UserInfo";
+import LanguageSelection from "./pages/LanguageSelection";
+import ZhYueTrainings from "./pages/ZhYueTrainings";
 
 Amplify.configure(awsconfig);
 
@@ -161,7 +163,9 @@ export default function App() {
                             </Box>
 
                             <Routes>
-                                <Route path="/" element={<Home lang={lang} />} />
+                                <Route path="/" element={<LanguageSelection lang={lang} />} />
+                                <Route path="/language-selection" element={<LanguageSelection lang={lang} />} />
+                                <Route path="/zh-yue" element={<ZhYueTrainings lang={lang} />} />
                                 <Route path="/home" element={<Home lang={lang} />} />
                             </Routes>
                         </div>
