@@ -25,7 +25,7 @@ interface LanguageCardItem {
 const IconFromPublicRepo: React.FC<{ fileName: string }> = ({ fileName }) => {
     return (
         <img
-            src={`https://raw.githubusercontent.com/pustot/pustot.github.io/master/public/studling/${fileName}.webp`}
+            src={`https://raw.githubusercontent.com/pustot/pustot.github.io/master/public/studling/${fileName}`}
             alt="icon"
             style={{ width: '100%', height: 'auto' }}
         />
@@ -33,22 +33,26 @@ const IconFromPublicRepo: React.FC<{ fileName: string }> = ({ fileName }) => {
 }
 
 const languageCardItems: LanguageCardItem[] = [
-    { name: '中古汉语', stage: 'ComingSoon', icon: <div>ZH-LTC</div> },
-    { name: '普通话', stage: 'ComingSoon', icon: <div>ZH-CMN</div> },
+    { name: '中古汉语', stage: 'ComingSoon', 
+    icon: <IconFromPublicRepo fileName={"studling-icon-zh-ltc.jpg"} /> 
+},
+    { name: '普通话', stage: 'ComingSoon', 
+    icon: <IconFromPublicRepo fileName={"studling-icon-zh-cmn.webp"} />
+},
     {
         name: '中原官话（菏泽话）', stage: 'ComingSoon',
-        icon: <IconFromPublicRepo fileName={"studling-icon-zh-cmn-hza"} />
+        icon: <IconFromPublicRepo fileName={"studling-icon-zh-cmn-hza.webp"} />
     },
     { name: '西南官话（石屏话）', stage: 'ComingSoon', icon: <div>ZH-CMN</div> },
     {
         name: '粤语（广州话）', stage: 'Beta',
-        icon: <IconFromPublicRepo fileName={"studling-icon-zh-yue"} />,
+        icon: <IconFromPublicRepo fileName={"studling-icon-zh-yue.webp"} />,
         link: "#/zh-yue"
     },
     { name: '吴语（上海话）', stage: 'ComingSoon', icon: <div>ZH-WUU</div> },
     {
         name: '英语', stage: 'Alpha',
-        icon: <IconFromPublicRepo fileName={"studling-icon-en"} />
+        icon: <IconFromPublicRepo fileName={"studling-icon-en.webp"} />
     },
     { name: '日语', stage: 'ComingSoon', icon: <div>JA</div> },
     { name: '德语', stage: 'ComingSoon', icon: <div>DE</div> },
