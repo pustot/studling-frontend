@@ -15,12 +15,13 @@ import Footer from "./components/Footer";
 import NavBarAndMenu, { NavItem } from "./components/NavBarAndMenu";
 import Home from "./pages/Home";
 import LanguageSelection from "./pages/LanguageSelection";
-import ZhYueTrainings from "./pages/ZhYueTrainings";
+import ZhYueTrainings from "./pages/zh-yue/ZhYueTrainings";
 import { I18nText } from "./utils/I18n";
 
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
+import ZhYueHanziTraining from './pages/zh-yue/ZhYueHanziTraining';
 
 
 Amplify.configure(awsconfig);
@@ -206,8 +207,12 @@ export default function App() {
                             <Routes>
                                 <Route path="/" element={<LanguageSelection lang={lang} />} />
                                 <Route path="/language-selection" element={<LanguageSelection lang={lang} />} />
+                                {/* Home 页取消 */}
+                                <Route path="/home" element={<Home lang={lang} />} /> 
+
+                                {/* 分语言诸页面 */}
                                 <Route path="/zh-yue" element={<ZhYueTrainings lang={lang} />} />
-                                <Route path="/home" element={<Home lang={lang} />} />
+                                <Route path="/zh-yue/hanzi-training" element={<ZhYueHanziTraining lang={lang} />} />
                             </Routes>
                         </div>
                     )}

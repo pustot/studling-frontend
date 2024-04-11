@@ -1,20 +1,20 @@
 import "purecss/build/pure.css";
 import * as React from "react";
-import { useEffect, useState } from "react";
-import "../styles.scss";
+import { useState } from "react";
+import "../../styles.scss";
 
 import {
     Box,
     Button,
     Container,
-    Link as MuiLink,
     Stack,
     TextField,
     Typography
 } from "@mui/material";
-import API from "../utils/API";
+import API from "../../utils/API";
 
-import { getLocaleText, I18nText } from "../utils/I18n";
+import { useNavigate } from "react-router-dom";
+import { getLocaleText, I18nText } from "../../utils/I18n";
 
 const example_training_results = {
     "userId": 1,
@@ -49,46 +49,15 @@ interface Document {
     content: string;
 }
 
-type JyutpingMapping = { [character: string]: string[] };
 
-const parseRimeDictionary = (content: string): JyutpingMapping => {
-    const lines = content.split('\n');
-    const mapping: JyutpingMapping = {};
-
-    const lineRegex = /^(.)\s+([a-z0-9]+)(\s+\d+%?)?$/;
-
-    for (const line of lines) {
-        const match = line.match(lineRegex);
-        if (match) {
-            const [, character, jyutping] = match;
-            if (!mapping[character]) {
-                mapping[character] = [jyutping];
-            } else {
-                // 避免重复添加相同的粤拼
-                if (!mapping[character].includes(jyutping)) {
-                    mapping[character].push(jyutping);
-                }
-            }
-        }
-    }
-
-    return mapping;
-};
 
 export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
     const { lang } = props;
 
+    const navigate = useNavigate();
     const [messageSent, setMessageSent] = useState<boolean>(false);
     const [searchValue, setSearchValue] = useState<string>(''); // 添加搜索框的状态
     const [searchResults, setSearchResults] = useState<Document[]>([]);
-    const [characters, setCharacters] = useState<string[]>([]);
-    const [jyutpingMapping, setJyutpingMapping] = useState<JyutpingMapping | null>(null);
-
-    // roma 练习
-    const [isExerciseVisible, setIsExerciseVisible] = useState<boolean>(false);
-    const [currentCharacter, setCurrentCharacter] = useState<string>('');
-    const [userInput, setUserInput] = useState<string>('');
-    const [feedback, setFeedback] = useState<string>('');
 
     const sendMessage = async () => {
         try {
@@ -110,59 +79,6 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
             setSearchResults(response.data);
         } catch (error) {
             console.error("发送消息失败:", error);
-        }
-    };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('https://raw.githubusercontent.com/nk2028/commonly-used-chinese-characters-and-words/main/char.txt');
-                const text = await response.text();
-                const charArray = text.split('\n').filter(char => char.trim() !== ''); // 去除空行
-                setCharacters(charArray);
-                console.log("已加载常用汉字个数 " + charArray.length)
-            } catch (error) {
-                console.error('Failed to fetch data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('https://raw.githubusercontent.com/rime/rime-cantonese/main/jyut6ping3.chars.dict.yaml');
-                const text = await response.text();
-                const parsedMapping = parseRimeDictionary(text);
-                setJyutpingMapping(parsedMapping);
-            } catch (error) {
-                console.error('Failed to fetch data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    const startExercise = () => {
-        if (characters.length > 0) {
-            const randomIndex = Math.floor(Math.random() * characters.length);
-            const randomCharacter = characters[randomIndex];
-            setCurrentCharacter(randomCharacter);
-            setUserInput('');
-            setFeedback('');
-            setIsExerciseVisible(true);
-        }
-    };
-
-    const checkAnswer = () => {
-        if (currentCharacter && jyutpingMapping) {
-            const correctAnswers = jyutpingMapping[currentCharacter];
-            if (correctAnswers && correctAnswers.includes(userInput.trim())) {
-                setFeedback('✅️ 正确！（正确答案：' + correctAnswers + '）');
-            } else {
-                setFeedback('❌️ 错误！（正确答案：' + correctAnswers + '）');
-            }
         }
     };
 
@@ -202,44 +118,15 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
                 <Button
                     variant="contained"
                     color="secondary"
-                    onClick={startExercise}
+                    onClick={() => navigate('hanzi-training')}
                 >
                     粤拼练习
                 </Button>
             </Box>
 
-            {isExerciseVisible && (
-                <Box marginBottom={4}>
-                    <Typography variant="h6">请为以下汉字输入粤拼：</Typography>
-                    <Typography variant="h4" sx={{ marginBottom: 2 }}>{currentCharacter}</Typography>
-                    <TextField
-                        label="输入粤拼"
-                        variant="outlined"
-                        value={userInput}
-                        onChange={(e) => setUserInput(e.target.value)}
-                        sx={{ marginBottom: 2 }}
-                        autoComplete="off"
-                    />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={checkAnswer}
-                        sx={{ margin: 2 }}
-                    >
-                        提交
-                    </Button>
-                    {feedback && <Typography sx={{ marginTop: 2 }}>{feedback}</Typography>}
-                    {feedback && <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={startExercise}
-                    >
-                        下一题
-                    </Button>}
-                </Box>
-            )}
-
-
+            <Typography variant="body2" sx={{ color: 'text.secondary',  marginBottom: 2 }}>
+                Below are test features:
+            </Typography>
             <Box marginBottom={4}>
                 <Button
                     variant="contained"
@@ -250,15 +137,13 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
                     发送示例训练结果给后端
                 </Button>
             </Box>
-
             <Stack direction="row" spacing={2} alignItems="center" sx={{ marginBottom: 2 }}> {/* 使用 Stack 组件对搜索框和按钮进行布局 */}
                 <TextField
                     label="搜索"
                     variant="outlined"
                     value={searchValue} // 将搜索框的值绑定到状态
                     onChange={(e) => setSearchValue(e.target.value)} // 监听搜索框内容的变化，并更新状态
-                    autoComplete="off"
-                />
+                    autoComplete="off" />
                 <Button
                     variant="contained"
                     color="primary"
@@ -267,7 +152,6 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
                     搜索
                 </Button>
             </Stack>
-
             {/* 以后添加功能以分页、隐藏全文、高亮搜索词 */}
             <Box sx={{ marginTop: 2 }}>
                 {searchResults.map((doc, index) => (
