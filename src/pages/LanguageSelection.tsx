@@ -33,29 +33,43 @@ const IconFromPublicRepo: React.FC<{ fileName: string }> = ({ fileName }) => {
 }
 
 const languageCardItems: LanguageCardItem[] = [
-    { name: '中古汉语', stage: 'ComingSoon', 
-    icon: <IconFromPublicRepo fileName={"studling-icon-zh-ltc.png"} /> 
-},
-    { name: '普通话', stage: 'ComingSoon', 
-    icon: <IconFromPublicRepo fileName={"studling-icon-zh-cmn.webp"} />
-},
+    {
+        name: '中古汉语', stage: 'ComingSoon',
+        icon: <IconFromPublicRepo fileName={"studling-icon-zh-ltc.png"} />
+    },
+    {
+        name: '普通话', stage: 'ComingSoon',
+        icon: <IconFromPublicRepo fileName={"studling-icon-zh-cmn.webp"} />
+    },
     {
         name: '中原官话（菏泽话）', stage: 'ComingSoon',
         icon: <IconFromPublicRepo fileName={"studling-icon-zh-cmn-hza.webp"} />
     },
-    { name: '西南官话（石屏话）', stage: 'ComingSoon', icon: <div>ZH-CMN</div> },
+    { 
+        name: '西南官话（石屏话）', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-zh-cmn-sph.jpeg"} />
+    },
     {
         name: '粤语（广州话）', stage: 'Beta',
         icon: <IconFromPublicRepo fileName={"studling-icon-zh-yue.webp"} />,
         link: "#/zh-yue"
     },
-    { name: '吴语（上海话）', stage: 'ComingSoon', icon: <div>ZH-WUU</div> },
+    { 
+        name: '吴语（上海话）', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-zh-wuu.webp"} />
+    },
     {
         name: '英语', stage: 'Alpha',
         icon: <IconFromPublicRepo fileName={"studling-icon-en.webp"} />
     },
-    { name: '日语', stage: 'ComingSoon', icon: <div>JA</div> },
-    { name: '德语', stage: 'ComingSoon', icon: <div>DE</div> },
+    { 
+        name: '日语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-ja.webp"} />
+    },
+    { 
+        name: '德语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-de.webp"} />
+    },
     { name: '韩语', stage: 'ComingSoon', icon: <div>KO</div> },
     { name: '世界语', stage: 'ComingSoon', icon: <div>EO</div> },
     { name: '法语', stage: 'ComingSoon', icon: <div>FR</div> },

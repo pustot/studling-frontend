@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from 'react';
 import { fetchUserAttributes } from 'aws-amplify/auth';
+import { Box } from "@mui/material";
 
 function UserInfo() {
   // 设置状态来存储电子邮件地址
@@ -23,9 +24,9 @@ function UserInfo() {
   }, []); // 空依赖数组表示这个 effect 仅在组件挂载时执行一次
 
   return (
-    <div>
+    <Box>
       <p>{email}</p>
-    </div>
+    </Box>
   );
 }
 

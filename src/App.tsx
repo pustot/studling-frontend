@@ -154,10 +154,10 @@ export default function App() {
 
                     {({ signOut, user }) => (
                         <div>
-                            <Box display="flex" alignItems="center" justifyContent="flex-end" gap={2}>
+                            <Box p={1} display="flex" alignItems="center" justifyContent="flex-end" gap={2}>
                                 <p>Hello,{/*user?.username*/}</p>
                                 <UserInfo />
-                                <Button variant="contained" color="primary" onClick={signOut}>
+                                <Button variant="outlined" color="primary" onClick={signOut}>
                                     Sign Out
                                 </Button>
                             </Box>
