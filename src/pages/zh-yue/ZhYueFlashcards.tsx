@@ -5,7 +5,7 @@ import {
 import "purecss/build/pure.css";
 import * as React from "react";
 import { useEffect } from "react";
-import { promiseDataLarge } from "../../api/data";
+import { promiseDataLarge } from "./data";
 import BackButton from "../../components/BackButton";
 import FlashCard from "../../components/FlashCard";
 import "../../styles.scss";

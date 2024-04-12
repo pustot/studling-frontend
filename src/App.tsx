@@ -1,9 +1,8 @@
 import '@aws-amplify/ui-react/styles.css';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
-import { Box, Button, CssBaseline, Link as MuiLink, PaletteMode, Typography } from "@mui/material";
+import { CssBaseline, PaletteMode, Typography } from "@mui/material";
 import { Theme, ThemeProvider, createTheme } from "@mui/material/styles";
 import { Amplify } from 'aws-amplify';
 import { fetchUserAttributes } from 'aws-amplify/auth';
@@ -193,14 +192,6 @@ export default function App() {
                 <br />
                 <br />
                 <br />
-
-                <Box p={1} display="flex" alignItems="center" justifyContent="flex-end" gap={2}>
-                    <Button variant="outlined" color="primary">
-                        <MuiLink href="#/login" underline="none" color="inherit" rel="noopener noreferrer" style={{ color: 'inherit', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <AccountCircleIcon />用户信息
-                        </MuiLink>
-                    </Button>
-                </Box>
 
                 <Routes>
                     <Route path="/" element={<LanguageSelection lang={lang} />} >

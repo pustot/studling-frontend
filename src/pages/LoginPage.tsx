@@ -5,7 +5,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
-import { I18nText } from "../utils/I18n";
+import { I18nText, getLocaleText } from "../utils/I18n";
 
 const UserEmail: React.FC = () => {
     const navigate = useNavigate();
@@ -33,31 +33,55 @@ const UserEmail: React.FC = () => {
 }
 
 export default function LoginPage(props: { lang: keyof I18nText }) {
+    const { lang } = props;
+
     return (
         <>
-            <BackButton />
-            <Authenticator>
-                {({ signOut, user }) => (
-                    <div>
-                        <Box p={1} display="flex" alignItems="center" justifyContent="flex-end" gap={2}>
+            <Container maxWidth="md">
+                <BackButton />
+                <Authenticator>
+                    {({ signOut, user }) => (
+                        <div>
+                            {/* <Box p={1} display="flex" alignItems="center" justifyContent="flex-end" gap={2}>
+                                <UserEmail />
+                                <Button variant="outlined" color="primary" onClick={signOut} style={{ fontSize: '0.75rem' }}>
+                                    Sign Out
+                                </Button>
+                            </Box> */}
+
+
+                            <Typography variant="h4" sx={{ marginBottom: 2 }}>
+                                {getLocaleText(
+                                    {
+                                        "zh-Hans": "用户信息",
+                                        "zh-Hant": "用戶信息",
+                                        "en": "User Information",
+                                        "ja": "ユーザー情報",
+                                        "de": "Benutzerinformation",
+                                        "ko": "사용자 정보",
+                                        "ko-Han": "使用者 情報",
+                                        "eo": "Uzantinformo",
+                                        "fr": "Informations de l'utilisateur",
+                                        "vi": "Thông tin người dùng",
+                                        "vi-Han": "通信𠊛用",
+                                        "es": "Información del usuario",
+                                        "tto-bro": "UsrIfoDta",
+                                        "tto": "UsrInf",
+                                    },
+                                    lang
+                                )}
+                            </Typography>
+
                             <UserEmail />
-                            <Button variant="outlined" color="primary" onClick={signOut} style={{ fontSize: '0.75rem' }}>
+
+                            <Button variant="outlined" color="primary" onClick={signOut} style={{ fontSize: '0.75rem', margin: 4 }}>
                                 Sign Out
                             </Button>
-                        </Box>
 
-                        <Container maxWidth="md">
-
-                        <UserEmail />
-
-                        <Button variant="outlined" color="primary" onClick={signOut} style={{ fontSize: '0.75rem' }}>
-                            Sign Out
-                        </Button>
-
-                        </Container>
-                    </div>
-                )}
-            </Authenticator>
+                        </div>
+                    )}
+                </Authenticator>
+            </Container>
         </>
     );
 }

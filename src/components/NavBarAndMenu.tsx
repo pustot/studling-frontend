@@ -1,3 +1,8 @@
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import LanguageIcon from "@mui/icons-material/Language";
+import MenuIcon from "@mui/icons-material/Menu";
 import {
     AppBar,
     Box,
@@ -5,7 +10,6 @@ import {
     Divider,
     Drawer,
     IconButton,
-    Link as MuiLink,
     List,
     ListItem,
     ListItemButton,
@@ -13,6 +17,7 @@ import {
     ListItemText,
     Menu,
     MenuItem,
+    Link as MuiLink,
     Select,
     SelectChangeEvent,
     Toolbar,
@@ -21,13 +26,8 @@ import { Theme } from "@mui/material/styles";
 import "purecss/build/pure.css";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { getLocaleText, I18nText, LangCode, languageCodeToIcon, languageCodeToLocale } from "../utils/I18n";
 import "../styles.scss";
-
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
-import LanguageIcon from "@mui/icons-material/Language";
-import MenuIcon from "@mui/icons-material/Menu";
+import { I18nText, LangCode, getLocaleText, languageCodeToIcon, languageCodeToLocale } from "../utils/I18n";
 
 export interface NavItem {
     name: I18nText;
@@ -149,6 +149,34 @@ export default function NavBarAndMenu(props: {
                     </Select>
                 </ListItem>
 
+                <ListItem key="auth" disablePadding>
+                    <ListItemButton>
+                        <MuiLink href="#/login" underline="none" color="inherit" rel="noopener noreferrer"
+                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                            <ListItemIcon><AccountCircleIcon /></ListItemIcon>
+                            {getLocaleText(
+                                {
+                                    "zh-Hans": "用户信息",
+                                    "zh-Hant": "用戶信息",
+                                    "en": "User Information",
+                                    "ja": "ユーザー情報",
+                                    "de": "Benutzerinformation",
+                                    "ko": "사용자 정보",
+                                    "ko-Han": "使用者 情報",
+                                    "eo": "Uzantinformo",
+                                    "fr": "Informations de l'utilisateur",
+                                    "vi": "Thông tin người dùng",
+                                    "vi-Han": "通信𠊛用",
+                                    "es": "Información del usuario",
+                                    "tto-bro": "UsrIfoDta",
+                                    "tto": "UsrInf",
+                                },
+                                lang
+                            )}
+                        </MuiLink>
+                    </ListItemButton>
+                </ListItem>
+
                 <ListItem key="nameLogo" disablePadding>
                     <ListItemButton component={MuiLink} href="https://pustot.com/">
                         <ListItemText
@@ -247,6 +275,12 @@ export default function NavBarAndMenu(props: {
                                 </MenuItem>
                             ))}
                         </Menu>
+                        <IconButton color="inherit">
+                            <MuiLink href="#/login" underline="none" color="inherit" rel="noopener noreferrer"
+                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                                <AccountCircleIcon />
+                            </MuiLink>
+                        </IconButton>
                     </Box>
                 </Toolbar>
             </AppBar>
