@@ -49,7 +49,7 @@ interface Document {
 const items = [
     { name: "汉字读音自测（纯前端）", link: "hanzi-training", stage: "Beta" },
     { name: "汉字读音抽认卡", link: "flashcards", stage: "Beta" },
-    { name: "普转粤难点标注", link: "", stage: "Alpha" },
+    { name: "普转粤难点标注", link: "difficulties-cmn-to-yue", stage: "Beta" },
     { name: "汉字读音自测（后端交互）", link: "", stage: "Alpha" },
     { name: "特有词汇自测", link: "", stage: "Alpha" },
     { name: "普转粤1对1规则练习", link: "", stage: "Alpha" },
@@ -139,14 +139,22 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
                                 <Typography gutterBottom variant="h5" component="div" sx={{ m: 1, textAlign: 'center' }}>
                                     {item.name}
                                 </Typography>
-                                <Chip label={item.stage} sx={{ mb: 1 }} />
+                                <Chip
+                        label={item.stage}
+                        sx={{
+                            mb: 1,
+                            backgroundColor: item.stage === "Beta" ? '#6002EE' : '#e0e0e0',  // ？色背景显眼，其他为灰色
+                            color: item.stage === "Beta" ? '#fff' : 'rgba(0, 0, 0, 0.87)',  // 白色字体与？色背景配合，黑色字体与灰色背景配合
+                            fontWeight: item.stage === "Beta" ? 'bold' : 'normal'
+                        }}
+                    />
                             </CardActionArea>
                         </Card>
                     </Grid>
                 ))}
             </Grid>
 
-            <Typography variant="body2" sx={{ color: 'text.secondary', marginBottom: 2 }}>
+            <Typography variant="body2" sx={{ color: 'text.secondary', marginBottom: 2, mt: 8 }}>
                 Below are test features:
             </Typography>
             <Box marginBottom={4}>
