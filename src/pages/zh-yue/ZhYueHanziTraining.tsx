@@ -1,6 +1,6 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, LinearProgress, TextField, Typography } from "@mui/material";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import BackButton from "../../components/BackButton";
@@ -40,6 +40,8 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
     const [currentCharacter, setCurrentCharacter] = useState<string>('');
     const [userInput, setUserInput] = useState<string>('');
     const [feedback, setFeedback] = useState<string>('');
+    const [totalAttempts, setTotalAttempts] = useState(0);
+    const [correctAnswers, setCorrectAnswers] = useState(0);
     const [answerChecked, setAnswerChecked] = useState(false);
 
     useEffect(() => {
@@ -89,9 +91,11 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
     }, [characters, jyutpingMapping]);
 
     const checkAnswer = () => {
+        setTotalAttempts(prev => prev + 1);
         if (currentCharacter && jyutpingMapping) {
             const correctAnswers = jyutpingMapping[currentCharacter];
             if (correctAnswers && correctAnswers.map(ans => ans.toLowerCase()).includes(userInput.trim().toLowerCase())) {
+                setCorrectAnswers(prev => prev + 1);
                 setFeedback('✅️ 正确！（正确答案：' + correctAnswers + '）');
             } else {
                 setFeedback('❌️ 错误！（正确答案：' + correctAnswers + '）');
@@ -99,6 +103,8 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
         }
         setAnswerChecked(true);  // 设置答案已检查
     };
+
+    const correctRate = totalAttempts > 0 ? (correctAnswers / totalAttempts) * 100 : 0;
 
     return (
         <Container maxWidth="md">
@@ -125,12 +131,18 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
                 />
                 <Button
                     variant="contained"
-                    color="primary"
+                    color={answerChecked ? "secondary" : "primary"}
                     onClick={answerChecked ? startExercise : checkAnswer}
                     sx={{ margin: 2 }}
                 >
                     {answerChecked ? "继续" : "确定"}
                 </Button>
+                {totalAttempts > 0 && (
+                    <>
+                        <Typography variant="body1" sx={{ my: 2 }}>正确率: {correctRate.toFixed(2)}%（{correctAnswers}／{totalAttempts}）</Typography>
+                        <LinearProgress variant="determinate" value={correctRate} sx={{ width: '100%', my: 2 }} />
+                    </>
+                )}
                 {feedback && <Typography
                     my={2}
                     sx={{
@@ -150,15 +162,7 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
                     {feedback.startsWith('✅️') ? <CheckCircleIcon sx={{ mr: 1, color: feedback.startsWith('✅️') ? '#2e7d32' : '#c62828' }} /> : <ErrorIcon sx={{ mr: 1, color: feedback.startsWith('✅️') ? '#2e7d32' : '#c62828' }} />}
                     {feedback}
                 </Typography>
-
                 }
-                {feedback && <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={startExercise}
-                >
-                    下一题
-                </Button>}
             </Box>
         </Container>
     )
