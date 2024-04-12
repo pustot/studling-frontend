@@ -181,7 +181,7 @@ export default function LanguageSelection(props: { lang: keyof I18nText }) {
                                                 height: '100%',
                                                 display: 'flex',
                                                 flexDirection: 'column',
-                                                justifyContent: 'start', // 从顶部开始排列内容
+                                                justifyContent: 'end', // 从底部开始排列内容
                                                 alignItems: 'center',
                                                 //':hover': { filter: 'blur(4px)' }, // 应用模糊效果
                                             }}>

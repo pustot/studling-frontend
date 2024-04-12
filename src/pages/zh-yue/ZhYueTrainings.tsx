@@ -1,20 +1,24 @@
-import "purecss/build/pure.css";
-import * as React from "react";
-import { useState } from "react";
-import "../../styles.scss";
-
 import {
     Box,
     Button,
+    Card,
+    CardActionArea,
+    Chip,
     Container,
+    Grid,
     Stack,
     TextField,
     Typography
 } from "@mui/material";
-import API from "../../utils/API";
-
+import "purecss/build/pure.css";
+import * as React from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import "../../styles.scss";
+import API from "../../utils/API";
 import { getLocaleText, I18nText } from "../../utils/I18n";
+import BackButton from "../../components/BackButton";
 
 const example_training_results = {
     "userId": 1,
@@ -49,7 +53,17 @@ interface Document {
     content: string;
 }
 
-
+const items = [
+    { name: "汉字读音练习（纯前端）", link: "hanzi-training", stage: "Beta" },
+    { name: "普转粤难点标注", link: "", stage: "Alpha" },
+    { name: "汉字读音练习（后端交互）", link: "", stage: "Alpha" },
+    { name: "特有词汇练习", link: "", stage: "Alpha" },
+    { name: "普转粤1对1规则练习", link: "", stage: "Alpha" },
+    { name: "普转粤1对多规则练习", link: "", stage: "Alpha" },
+    { name: "中古汉语音韵地位练习", link: "", stage: "Alpha" },
+    { name: "歌词特训", link: "", stage: "Alpha" },
+    { name: "掌握情况分析", link: "", stage: "Alpha" },
+];
 
 export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
     const { lang } = props;
@@ -84,6 +98,7 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
 
     return (
         <Container maxWidth="md">
+            <BackButton />
             <Typography variant="h5" sx={{ marginBottom: 2 }}>
                 {getLocaleText(
                     {
@@ -113,18 +128,31 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
                 )}
             </Typography>
 
+            <Grid container spacing={2}>
+                {items.map((item, index) => (
+                    <Grid item p={1} xs={12} sm={6} md={4} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Card
+                            sx={{ width: 240, transition: '0.3s ease-in-out', position: 'relative' }}
+                            onClick={() => navigate(item.link)}
+                        >
+                            <CardActionArea sx={{
+                                height: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'end', // 从底部开始排列内容
+                                alignItems: 'center',
+                            }}>
+                                <Typography gutterBottom variant="h5" component="div" sx={{ mt: 1, textAlign: 'center' }}>
+                                    {item.name}
+                                </Typography>
+                                <Chip label={item.stage} sx={{ mb: 1 }} />
+                            </CardActionArea>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
 
-            <Box marginBottom={2}>
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => navigate('hanzi-training')}
-                >
-                    粤拼练习
-                </Button>
-            </Box>
-
-            <Typography variant="body2" sx={{ color: 'text.secondary',  marginBottom: 2 }}>
+            <Typography variant="body2" sx={{ color: 'text.secondary', marginBottom: 2 }}>
                 Below are test features:
             </Typography>
             <Box marginBottom={4}>
