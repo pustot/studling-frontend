@@ -1,0 +1,1 @@
+export type PronunciationData = [[string, string]];

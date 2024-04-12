@@ -14,7 +14,6 @@ import "purecss/build/pure.css";
 import * as React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import "../../styles.scss";
 import API from "../../utils/API";
 import { getLocaleText, I18nText } from "../../utils/I18n";
@@ -23,14 +22,8 @@ import BackButton from "../../components/BackButton";
 const example_training_results = {
     "userId": 1,
     "results": [
-        {
-            "wordId": 1,
-            "correct": true
-        },
-        {
-            "wordId": 2,
-            "correct": true
-        },
+        { "wordId": 1, "correct": true },
+        { "wordId": 2, "correct": true },
         {
             "wordId": 3,
             "correct": true
@@ -54,10 +47,11 @@ interface Document {
 }
 
 const items = [
-    { name: "汉字读音练习（纯前端）", link: "hanzi-training", stage: "Beta" },
+    { name: "汉字读音自测（纯前端）", link: "hanzi-training", stage: "Beta" },
+    { name: "汉字读音抽认卡", link: "flashcards", stage: "Beta" },
     { name: "普转粤难点标注", link: "", stage: "Alpha" },
-    { name: "汉字读音练习（后端交互）", link: "", stage: "Alpha" },
-    { name: "特有词汇练习", link: "", stage: "Alpha" },
+    { name: "汉字读音自测（后端交互）", link: "", stage: "Alpha" },
+    { name: "特有词汇自测", link: "", stage: "Alpha" },
     { name: "普转粤1对1规则练习", link: "", stage: "Alpha" },
     { name: "普转粤1对多规则练习", link: "", stage: "Alpha" },
     { name: "中古汉语音韵地位练习", link: "", stage: "Alpha" },

@@ -22,6 +22,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
 import ZhYueHanziTraining from './pages/zh-yue/ZhYueHanziTraining';
+import ZhYueFlashcards from './pages/zh-yue/ZhYueFlashcards';
 
 
 Amplify.configure(awsconfig);
@@ -213,6 +214,7 @@ export default function App() {
                                 {/* 分语言诸页面 */}
                                 <Route path="/zh-yue" element={<ZhYueTrainings lang={lang} />} />
                                 <Route path="/zh-yue/hanzi-training" element={<ZhYueHanziTraining lang={lang} />} />
+                                <Route path="/zh-yue/flashcards" element={<ZhYueFlashcards lang={lang} />} />
                             </Routes>
                         </div>
                     )}
