@@ -14,10 +14,10 @@ import "purecss/build/pure.css";
 import * as React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BackButton from "../../components/BackButton";
 import "../../styles.scss";
 import API from "../../utils/API";
-import { getLocaleText, I18nText } from "../../utils/I18n";
-import BackButton from "../../components/BackButton";
+import { I18nText, getLocaleText } from "../../utils/I18n";
 
 const example_training_results = {
     "userId": 1,
@@ -140,14 +140,14 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
                                     {item.name}
                                 </Typography>
                                 <Chip
-                        label={item.stage}
-                        sx={{
-                            mb: 1,
-                            backgroundColor: item.stage === "Beta" ? '#6002EE' : '#e0e0e0',  // ？色背景显眼，其他为灰色
-                            color: item.stage === "Beta" ? '#fff' : 'rgba(0, 0, 0, 0.87)',  // 白色字体与？色背景配合，黑色字体与灰色背景配合
-                            fontWeight: item.stage === "Beta" ? 'bold' : 'normal'
-                        }}
-                    />
+                                    label={item.stage}
+                                    sx={{
+                                        mb: 1,
+                                        backgroundColor: item.stage === "Beta" ? '#6002EE' : '#e0e0e0',  // ？色背景显眼，其他为灰色
+                                        color: item.stage === "Beta" ? '#fff' : 'rgba(0, 0, 0, 0.87)',  // 白色字体与？色背景配合，黑色字体与灰色背景配合
+                                        fontWeight: item.stage === "Beta" ? 'bold' : 'normal'
+                                    }}
+                                />
                             </CardActionArea>
                         </Card>
                     </Grid>

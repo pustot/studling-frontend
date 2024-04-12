@@ -1,5 +1,8 @@
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import HomeIcon from "@mui/icons-material/Home";
+import InfoIcon from "@mui/icons-material/Info";
 import { Box, Button, CssBaseline, PaletteMode, Typography } from "@mui/material";
 import { Theme, ThemeProvider, createTheme } from "@mui/material/styles";
 import { Amplify } from 'aws-amplify';
@@ -8,23 +11,18 @@ import "purecss/build/pure.css";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
-import "./styles.scss";
 
 import awsconfig from './aws-exports'; // 如果你通过 Amplify CLI 初始化，配置信息会自动生成在这个文件
 import Footer from "./components/Footer";
 import NavBarAndMenu, { NavItem } from "./components/NavBarAndMenu";
 import Home from "./pages/Home";
 import LanguageSelection from "./pages/LanguageSelection";
-import ZhYueTrainings from "./pages/zh-yue/ZhYueTrainings";
-import { I18nText } from "./utils/I18n";
-
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import HomeIcon from "@mui/icons-material/Home";
-import InfoIcon from "@mui/icons-material/Info";
-import ZhYueHanziTraining from './pages/zh-yue/ZhYueHanziTraining';
-import ZhYueFlashcards from './pages/zh-yue/ZhYueFlashcards';
 import ZhYueDifficultiesCmnToYue from './pages/zh-yue/ZhYueDifficultiesCmnToYue';
-
+import ZhYueFlashcards from './pages/zh-yue/ZhYueFlashcards';
+import ZhYueHanziTraining from './pages/zh-yue/ZhYueHanziTraining';
+import ZhYueTrainings from "./pages/zh-yue/ZhYueTrainings";
+import "./styles.scss";
+import { I18nText } from "./utils/I18n";
 
 Amplify.configure(awsconfig);
 
@@ -210,7 +208,7 @@ export default function App() {
                                 <Route path="/" element={<LanguageSelection lang={lang} />} />
                                 <Route path="/language-selection" element={<LanguageSelection lang={lang} />} />
                                 {/* Home 页取消 */}
-                                <Route path="/home" element={<Home lang={lang} />} /> 
+                                <Route path="/home" element={<Home lang={lang} />} />
 
                                 {/* 分语言诸页面 */}
                                 <Route path="/zh-yue" element={<ZhYueTrainings lang={lang} />} />
