@@ -1,3 +1,5 @@
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -38,6 +40,7 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
     const [currentCharacter, setCurrentCharacter] = useState<string>('');
     const [userInput, setUserInput] = useState<string>('');
     const [feedback, setFeedback] = useState<string>('');
+    const [answerChecked, setAnswerChecked] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -71,6 +74,7 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
     }, []);
 
     const startExercise = () => {
+        setAnswerChecked(false);  // 重置答案检查状态
         if (characters.length > 0) {
             const randomIndex = Math.floor(Math.random() * characters.length);
             const randomCharacter = characters[randomIndex];
@@ -87,37 +91,67 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
     const checkAnswer = () => {
         if (currentCharacter && jyutpingMapping) {
             const correctAnswers = jyutpingMapping[currentCharacter];
-            if (correctAnswers && correctAnswers.includes(userInput.trim())) {
+            if (correctAnswers && correctAnswers.map(ans => ans.toLowerCase()).includes(userInput.trim().toLowerCase())) {
                 setFeedback('✅️ 正确！（正确答案：' + correctAnswers + '）');
             } else {
                 setFeedback('❌️ 错误！（正确答案：' + correctAnswers + '）');
             }
         }
+        setAnswerChecked(true);  // 设置答案已检查
     };
 
     return (
         <Container maxWidth="md">
             <BackButton />
             <Box marginBottom={4}>
-                <Typography variant="h6">请为以下汉字输入粤拼：</Typography>
-                <Typography variant="h4" sx={{ marginBottom: 2 }}>{currentCharacter}</Typography>
+                <Typography variant="h6" py={2}>请为以下汉字输入粤拼：</Typography>
+                <Typography variant="h4" p={4} sx={{ marginBottom: 2 }}>{currentCharacter}</Typography>
                 <TextField
                     label="输入粤拼"
                     variant="outlined"
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            if (!answerChecked) {
+                                checkAnswer();
+                            } else {
+                                startExercise();
+                            }
+                        }
+                    }}
                     sx={{ marginBottom: 2 }}
                     autoComplete="off"
                 />
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={checkAnswer}
+                    onClick={answerChecked ? startExercise : checkAnswer}
                     sx={{ margin: 2 }}
                 >
-                    提交
+                    {answerChecked ? "继续" : "确定"}
                 </Button>
-                {feedback && <Typography sx={{ marginTop: 2 }}>{feedback}</Typography>}
+                {feedback && <Typography
+                    my={2}
+                    sx={{
+                        marginTop: 2,
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: feedback.startsWith('✅️') ? 'green' : 'red',
+                        border: `2px solid ${feedback.startsWith('✅️') ? '#2e7d32' : '#c62828'}`,  // 边框颜色使用深绿或深红
+                        borderRadius: '4px',
+                        padding: 2,
+                        fontWeight: 'bold',
+                        backgroundColor: 'transparent',  // 去掉背景色，使用透明
+                        width: 'fit-content'  // 使得Typography仅占用所需宽度
+                    }}
+                    gutterBottom
+                >
+                    {feedback.startsWith('✅️') ? <CheckCircleIcon sx={{ mr: 1, color: feedback.startsWith('✅️') ? '#2e7d32' : '#c62828' }} /> : <ErrorIcon sx={{ mr: 1, color: feedback.startsWith('✅️') ? '#2e7d32' : '#c62828' }} />}
+                    {feedback}
+                </Typography>
+
+                }
                 {feedback && <Button
                     variant="contained"
                     color="secondary"
