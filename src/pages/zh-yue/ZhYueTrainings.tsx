@@ -136,7 +136,7 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
                                 justifyContent: 'end', // 从底部开始排列内容
                                 alignItems: 'center',
                             }}>
-                                <Typography gutterBottom variant="h5" component="div" sx={{ mt: 1, textAlign: 'center' }}>
+                                <Typography gutterBottom variant="h5" component="div" sx={{ m: 1, textAlign: 'center' }}>
                                     {item.name}
                                 </Typography>
                                 <Chip label={item.stage} sx={{ mb: 1 }} />
