@@ -12,9 +12,9 @@ import {
 } from "@mui/material";
 import "purecss/build/pure.css";
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles.scss";
-
-import { getLocaleText, I18nText } from "../utils/I18n";
+import { I18nText, getLocaleText } from "../utils/I18n";
 
 interface LanguageCardItem {
     name: string;
@@ -133,6 +133,8 @@ export default function LanguageSelection(props: { lang: keyof I18nText }) {
 
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const navigate = useNavigate();
 
     return (
         <Container maxWidth="md">

@@ -1,9 +1,9 @@
-import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
-import { Box, Button, CssBaseline, PaletteMode, Typography } from "@mui/material";
+import { Box, Button, CssBaseline, Link as MuiLink, PaletteMode, Typography } from "@mui/material";
 import { Theme, ThemeProvider, createTheme } from "@mui/material/styles";
 import { Amplify } from 'aws-amplify';
 import { fetchUserAttributes } from 'aws-amplify/auth';
@@ -11,14 +11,15 @@ import "purecss/build/pure.css";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
-
 import awsconfig from './aws-exports'; // 如果你通过 Amplify CLI 初始化，配置信息会自动生成在这个文件
 import Footer from "./components/Footer";
 import NavBarAndMenu, { NavItem } from "./components/NavBarAndMenu";
 import Home from "./pages/Home";
 import LanguageSelection from "./pages/LanguageSelection";
+import LoginPage from './pages/LoginPage';
 import ZhYueDifficultiesCmnToYue from './pages/zh-yue/ZhYueDifficultiesCmnToYue';
 import ZhYueFlashcards from './pages/zh-yue/ZhYueFlashcards';
+import ZhYueHanziBackendTraining from './pages/zh-yue/ZhYueHanziBackendTraining';
 import ZhYueHanziTraining from './pages/zh-yue/ZhYueHanziTraining';
 import ZhYueTrainings from "./pages/zh-yue/ZhYueTrainings";
 import "./styles.scss";
@@ -193,35 +194,29 @@ export default function App() {
                 <br />
                 <br />
 
-                <Authenticator>
+                <Box p={1} display="flex" alignItems="center" justifyContent="flex-end" gap={2}>
+                    <Button variant="outlined" color="primary">
+                        <MuiLink href="#/login" underline="none" color="inherit" rel="noopener noreferrer" style={{ color: 'inherit', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <AccountCircleIcon />用户信息
+                        </MuiLink>
+                    </Button>
+                </Box>
 
-                    {({ signOut, user }) => (
-                        <div>
-                            <Box p={1} display="flex" alignItems="center" justifyContent="flex-end" gap={2}>
-                                <UserEmail />
-                                <Button variant="outlined" color="primary" onClick={signOut} style={{ fontSize: '0.75rem' }}>
-                                    Sign Out
-                                </Button>
-                            </Box>
+                <Routes>
+                    <Route path="/" element={<LanguageSelection lang={lang} />} >
+                    </Route>
+                    <Route path="/login" element={<LoginPage lang={lang} />} />
+                    <Route path="/language-selection" element={<LanguageSelection lang={lang} />} />
+                    {/* Home 页取消 */}
+                    <Route path="/home" element={<Home lang={lang} />} />
 
-                            <Routes>
-                                <Route path="/" element={<LanguageSelection lang={lang} />} />
-                                <Route path="/language-selection" element={<LanguageSelection lang={lang} />} />
-                                {/* Home 页取消 */}
-                                <Route path="/home" element={<Home lang={lang} />} />
-
-                                {/* 分语言诸页面 */}
-                                <Route path="/zh-yue" element={<ZhYueTrainings lang={lang} />} />
-                                <Route path="/zh-yue/hanzi-training" element={<ZhYueHanziTraining lang={lang} />} />
-                                <Route path="/zh-yue/flashcards" element={<ZhYueFlashcards lang={lang} />} />
-                                <Route path="/zh-yue/difficulties-cmn-to-yue" element={<ZhYueDifficultiesCmnToYue lang={lang} />} />
-                            </Routes>
-                        </div>
-                    )}
-
-
-
-                </Authenticator>
+                    {/* 分语言诸页面 */}
+                    <Route path="/zh-yue" element={<ZhYueTrainings lang={lang} />} />
+                    <Route path="/zh-yue/hanzi-training" element={<ZhYueHanziTraining lang={lang} />} />
+                    <Route path="/zh-yue/hanzi-backend-training" element={<ZhYueHanziBackendTraining lang={lang} />} />
+                    <Route path="/zh-yue/flashcards" element={<ZhYueFlashcards lang={lang} />} />
+                    <Route path="/zh-yue/difficulties-cmn-to-yue" element={<ZhYueDifficultiesCmnToYue lang={lang} />} />
+                </Routes>
 
                 <br />
                 <br />

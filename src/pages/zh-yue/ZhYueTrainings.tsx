@@ -19,27 +19,6 @@ import "../../styles.scss";
 import API from "../../utils/API";
 import { I18nText, getLocaleText } from "../../utils/I18n";
 
-const example_training_results = {
-    "userId": 1,
-    "results": [
-        { "wordId": 1, "correct": true },
-        { "wordId": 2, "correct": true },
-        {
-            "wordId": 3,
-            "correct": true
-        },
-        {
-            "wordId": 4,
-            "correct": false
-        },
-        {
-            "wordId": 5,
-            "correct": false
-        }
-        // 更多单词训练结果...
-    ]
-};
-
 interface Document {
     id: string;
     title: string;
@@ -50,7 +29,7 @@ const items = [
     { name: "汉字读音自测（纯前端）", link: "hanzi-training", stage: "Beta" },
     { name: "汉字读音抽认卡", link: "flashcards", stage: "Beta" },
     { name: "普转粤难点标注", link: "difficulties-cmn-to-yue", stage: "Beta" },
-    { name: "汉字读音自测（后端交互）", link: "", stage: "Alpha" },
+    { name: "汉字读音自测（后端交互）", link: "hanzi-backend-training", stage: "Alpha" },
     { name: "特有词汇自测", link: "", stage: "Alpha" },
     { name: "普转粤1对1规则练习", link: "", stage: "Alpha" },
     { name: "普转粤1对多规则练习", link: "", stage: "Alpha" },
@@ -63,19 +42,9 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
     const { lang } = props;
 
     const navigate = useNavigate();
-    const [messageSent, setMessageSent] = useState<boolean>(false);
+
     const [searchValue, setSearchValue] = useState<string>(''); // 添加搜索框的状态
     const [searchResults, setSearchResults] = useState<Document[]>([]);
-
-    const sendMessage = async () => {
-        try {
-            // 发送示例消息给后端的逻辑
-            await API.post('/api/training/results', example_training_results); // 使用导入的 axios 实例发送请求
-            setMessageSent(true); // 暂时设为 true，表示消息发送成功
-        } catch (error) {
-            console.error("发送消息失败:", error);
-        }
-    };
 
     const handleSearch = async () => {
         // 在这里执行搜索操作，可以将搜索框的值发送到后端
@@ -157,16 +126,7 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
             <Typography variant="body2" sx={{ color: 'text.secondary', marginBottom: 2, mt: 8 }}>
                 Below are test features:
             </Typography>
-            <Box marginBottom={4}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={sendMessage}
-                    disabled={messageSent} // 如果消息已发送，按钮将被禁用
-                >
-                    发送示例训练结果给后端
-                </Button>
-            </Box>
+
             <Stack direction="row" spacing={2} alignItems="center" sx={{ marginBottom: 2 }}> {/* 使用 Stack 组件对搜索框和按钮进行布局 */}
                 <TextField
                     label="搜索"
