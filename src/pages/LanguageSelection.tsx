@@ -107,7 +107,10 @@ const languageCardItems: LanguageCardItem[] = [
     { name: '意大利语', stage: 'ComingSoon', icon: <div>IT</div> },
     { name: '阿拉伯语', stage: 'ComingSoon', icon: <div>AR</div> },
     { name: '俄语', stage: 'ComingSoon', icon: <div>RU</div> },
-    { name: '马来语', stage: 'ComingSoon', icon: <div>MS</div> },
+    { 
+        name: '马来语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-ms.jpeg"} /> 
+    },
     { 
         name: '拉丁语', stage: 'ComingSoon', 
         icon: <IconFromPublicRepo fileName={"studling-icon-la.svg"} /> 
@@ -126,7 +129,10 @@ const languageCardItems: LanguageCardItem[] = [
     { name: '维语', stage: 'ComingSoon', icon: <div>UG</div> },
     { name: '梵语', stage: 'ComingSoon', icon: <div>SA</div> },
     { name: '希伯来语', stage: 'ComingSoon', icon: <div>HE</div> },
-    { name: '泰米尔语', stage: 'ComingSoon', icon: <div>TA</div> },
+    { 
+        name: '泰米尔语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-ta.png"} />
+    },
 ];
 
 export default function LanguageSelection(props: { lang: keyof I18nText }) {
