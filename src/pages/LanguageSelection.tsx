@@ -134,8 +134,8 @@ const languageCardItems: LanguageCardItem[] = [
         icon: <IconFromPublicRepo fileName={"studling-icon-ta.png"} />
     },
     { 
-        name: '汉罗文', stage: 'Alpha', 
-        icon: <div>Hanrom</div>,
+        name: '汉罗文（人造语言）', stage: 'Alpha', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-hanrom.webp"} />,
         link: "#/hanrom"
     },
 ];

@@ -1,13 +1,10 @@
 import {
-    Box,
-    Button,
     Card,
     CardActionArea,
     Chip,
     Container,
     Grid,
-    Stack,
-    TextField,
+    Link as MuiLink,
     Typography
 } from "@mui/material";
 import "purecss/build/pure.css";
@@ -73,6 +70,21 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
                     lang
                 )}
             </Typography>
+            <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                <MuiLink href="https://github.com/pustot/world-building/blob/main/Hanroman-lingua-demo.md" target="_blank" rel="noopener">Demo</MuiLink>
+            </Typography>
+            <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                <MuiLink href="https://github.com/pustot/world-building/blob/main/Hanroman-leks-kolekt.csv" target="_blank" rel="noopener">lex-kolekt (詞集)</MuiLink>
+            </Typography>
+            <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                graki Simplingua divid-fru inspir et Latin lex list (謝 Simplingua 分享 靈感 與 Latin 詞 表) <MuiLink href="https://zcyzcy88.github.io/Simplingua/Simplingua%E8%AF%8D%E5%85%B8.htm" target="_blank" rel="noopener">Simplingua 词典</MuiLink>
+            </Typography>
+            <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                graki Wiktionary divid-fru ski de Latin lingu (謝 Wiktionary 分享 知 啲 Latin 語) <MuiLink href="https://en.wiktionary.org/" target="_blank" rel="noopener">Wiktionary</MuiLink>
+            </Typography>
+
+            <br />
+            <br />
 
             <Grid container spacing={2}>
                 {items.map((item, index) => (

@@ -2,12 +2,13 @@ import { Box, Button, Container, TextField } from '@mui/material';
 import axios from 'axios';
 import * as React from "react";
 import { useEffect, useState } from 'react';
+import BackButton from '../../components/BackButton';
 import { I18nText } from "../../utils/I18n";
 
 type Dictionary = Record<string, string>;
 
 export default function HanromHanVsRom(props: { lang: keyof I18nText }) {
-    const [hanInput, setHanInput] = useState('');
+  const [hanInput, setHanInput] = useState('');
   const [romInput, setRomInput] = useState('');
   const [dictionary, setDictionary] = useState<Dictionary>({});
   const [reverseDictionary, setReverseDictionary] = useState<Dictionary>({});
@@ -69,22 +70,24 @@ export default function HanromHanVsRom(props: { lang: keyof I18nText }) {
         return token;
       }
     }).join('');
-  
+
     setHanInput(result);
   };
-  
-  
 
-    return (
-        <Container maxWidth="md">
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <TextField label="Han" multiline value={hanInput} onChange={e => setHanInput(e.target.value)} variant="outlined" />
-                <Button variant="contained" onClick={handleHanToRom}>汉-罗</Button>
-                <br/>
-                <br/>
-                <TextField label="Rom" multiline value={romInput} onChange={e => setRomInput(e.target.value)} variant="outlined" />
-                <Button variant="contained" onClick={handleRomToHan}>罗-汉</Button>
-            </Box>
-        </Container>
-    );
+
+
+  return (
+    <Container maxWidth="md">
+      <BackButton />
+
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <TextField label="Han" multiline value={hanInput} onChange={e => setHanInput(e.target.value)} variant="outlined" />
+        <Button variant="contained" onClick={handleHanToRom} sx={{ width: 'auto', maxWidth: 200 }}>汉➡️罗</Button>
+        <br />
+        <br />
+        <TextField label="Rom" multiline value={romInput} onChange={e => setRomInput(e.target.value)} variant="outlined" />
+        <Button variant="contained" onClick={handleRomToHan} sx={{ width: 'auto', maxWidth: 200 }}>罗➡️汉</Button>
+      </Box>
+    </Container>
+  );
 };
