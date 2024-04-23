@@ -77,7 +77,7 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
                 <MuiLink href="https://github.com/pustot/world-building/blob/main/Hanroman-leks-kolekt.csv" target="_blank" rel="noopener">lex-kolekt (詞集)</MuiLink>
             </Typography>
             <Typography variant="body1" sx={{ marginBottom: 2 }}>
-                graki Simplingua divid-fru inspir et Latin lex list (謝 Simplingua 分享 靈感 與 Latin 詞 列) <MuiLink href="https://zcyzcy88.github.io/Simplingua/Simplingua%E8%AF%8D%E5%85%B8.htm" target="_blank" rel="noopener">Simplingua 词典</MuiLink>
+                graki Simplingua divid-fru inspir et Latin leks list (謝 Simplingua 分享 靈感 與 Latin 詞 列) <MuiLink href="https://zcyzcy88.github.io/Simplingua/Simplingua%E8%AF%8D%E5%85%B8.htm" target="_blank" rel="noopener">Simplingua 词典</MuiLink>
             </Typography>
             <Typography variant="body1" sx={{ marginBottom: 2 }}>
                 graki Wiktionary divid-fru ski de Latin lingu (謝 Wiktionary 分享 知 啲 Latin 語) <MuiLink href="https://en.wiktionary.org/" target="_blank" rel="noopener">Wiktionary</MuiLink>
