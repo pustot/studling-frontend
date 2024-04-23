@@ -21,8 +21,10 @@ import ZhYueFlashcards from './pages/zh-yue/ZhYueFlashcards';
 import ZhYueHanziBackendTraining from './pages/zh-yue/ZhYueHanziBackendTraining';
 import ZhYueHanziTraining from './pages/zh-yue/ZhYueHanziTraining';
 import ZhYueTrainings from "./pages/zh-yue/ZhYueTrainings";
+import HanromTrainings from "./pages/hanrom/HanromTrainings";
 import "./styles.scss";
 import { I18nText } from "./utils/I18n";
+import HanromHanVsRom from './pages/hanrom/HanromHanVsRom';
 
 Amplify.configure(awsconfig);
 
@@ -207,6 +209,8 @@ export default function App() {
                     <Route path="/zh-yue/hanzi-backend-training" element={<ZhYueHanziBackendTraining lang={lang} />} />
                     <Route path="/zh-yue/flashcards" element={<ZhYueFlashcards lang={lang} />} />
                     <Route path="/zh-yue/difficulties-cmn-to-yue" element={<ZhYueDifficultiesCmnToYue lang={lang} />} />
+                    <Route path="/hanrom" element={<HanromTrainings lang={lang} />} />
+                    <Route path="/hanrom/han-vs-rom" element={<HanromHanVsRom lang={lang} />} />
                 </Routes>
 
                 <br />

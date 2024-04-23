@@ -133,6 +133,11 @@ const languageCardItems: LanguageCardItem[] = [
         name: '泰米尔语', stage: 'ComingSoon', 
         icon: <IconFromPublicRepo fileName={"studling-icon-ta.png"} />
     },
+    { 
+        name: '汉罗文', stage: 'Alpha', 
+        icon: <div>Hanrom</div>,
+        link: "#/hanrom"
+    },
 ];
 
 export default function LanguageSelection(props: { lang: keyof I18nText }) {
