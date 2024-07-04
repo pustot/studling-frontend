@@ -1,4 +1,4 @@
-import { Box, Button, Container, FormControlLabel, Stack, Switch, TextareaAutosize, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Card, Container, FormControlLabel, Grid, Stack, Switch, TextareaAutosize, Tooltip, Typography } from '@mui/material';
 import axios from 'axios';
 import * as React from "react";
 import { useEffect, useState } from 'react';
@@ -237,7 +237,10 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
                                 color="primary"
                             />
                         }
-                        label="繁/簡/異 Conversion"
+                        label={getLocaleText(
+                            { "zh-Hans": "繁/简/异体字转换", "zh-Hant": "繁/簡/異體字轉換", en: "繁/簡/異 Conversion" },
+                            lang
+                        )}
                     />
 
                     <FormControlLabel
@@ -249,7 +252,10 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
                                 color="primary"
                             />
                         }
-                        label="廣韻 Guangyun Only"
+                        label={getLocaleText(
+                            { "zh-Hans": "仅《广韵》", "zh-Hant": "僅《廣韻》", en: "Guangyun Only" },
+                            lang
+                        )}
                     />
 
                     <Tooltip title="Random Hanzi from 4159 Most Common Ones (《教師語文能力評核（普通話）參照使用常用字表》)">
@@ -262,24 +268,29 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
 
                 {results.length > 0 && (
                     <Box>
-                        {results.map((result, index) => (
-                            <Box key={index} sx={{ marginBottom: 2 }}>
-                                <Typography variant="body1"><strong>汉字:</strong> {result.character}</Typography>
-                                {Object.keys(dialectConfigMap).map((dialectKey) => {
-                                    const pronunciations = result.pronunciations[dialectKey];
-                                    if (pronunciations) {
-                                        return (
-                                            <Typography key={dialectKey} variant="body1">
-                                                <strong>{dialectConfigMap[dialectKey].displayName}:</strong> {pronunciations.join(", ")}
-                                            </Typography>
-                                        );
-                                    }
-                                    return null;
-                                })}
-                            </Box>
-                        ))}
+                        <Grid container spacing={2}>
+                            {results.map((result, index) => (
+                                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                                    <Card variant="outlined" sx={{ padding: 2 }}>
+                                        <Typography variant="h5">{result.character}</Typography>
+                                        {Object.keys(dialectConfigMap).map((dialectKey) => {
+                                            const pronunciations = result.pronunciations[dialectKey];
+                                            if (pronunciations) {
+                                                return (
+                                                    <Typography key={dialectKey} variant="body1">
+                                                        <strong>{dialectConfigMap[dialectKey].displayName}:</strong> {pronunciations.join(", ")}
+                                                    </Typography>
+                                                );
+                                            }
+                                            return null;
+                                        })}
+                                    </Card>
+                                </Grid>
+                            ))}
+                        </Grid>
                     </Box>
                 )}
+
             </Box>
         </Container>
     );

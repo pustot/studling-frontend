@@ -1,4 +1,3 @@
-import * as React from "react";
 import * as OpenCC from "opencc-js";
 // import Yitizi from 'yitizi'; // 模块定义中没有默认导出，故需命名导入的方式
 import * as Yitizi from 'yitizi';
