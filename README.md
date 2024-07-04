@@ -20,3 +20,10 @@
         - 汉罗双文互转 HanVsRom
 - 即将到来：
     - 众多语言... 
+
+# 部署指南
+
+```shell
+npm install
+npm run start
+```

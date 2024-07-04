@@ -18,6 +18,7 @@ import BackButton from "../../components/BackButton";
 import "../../styles.scss";
 import API from "../../utils/API";
 import { I18nText, getLocaleText } from "../../utils/I18n";
+import LangHomeCardContainer from "../../components/LangHomeCardContainer";
 
 interface Document {
     id: string;
@@ -91,38 +92,9 @@ export default function ZhYueHomepage(props: { lang: keyof I18nText }) {
                 )}
             </Typography>
 
-            <Grid container spacing={2}>
-                {items.map((item, index) => (
-                    <Grid item p={1} xs={12} sm={6} md={4} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Card
-                            sx={{ width: 240, transition: '0.3s ease-in-out', position: 'relative' }}
-                            onClick={() => navigate(item.link)}
-                        >
-                            <CardActionArea sx={{
-                                height: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'end', // 从底部开始排列内容
-                                alignItems: 'center',
-                            }}>
-                                <Typography gutterBottom variant="h5" component="div" sx={{ m: 1, textAlign: 'center' }}>
-                                    {item.name}
-                                </Typography>
-                                <Chip
-                                    label={item.stage}
-                                    sx={{
-                                        mb: 1,
-                                        backgroundColor: item.stage === "Beta" ? '#6002EE' : '#e0e0e0',  // ？色背景显眼，其他为灰色
-                                        color: item.stage === "Beta" ? '#fff' : 'rgba(0, 0, 0, 0.87)',  // 白色字体与？色背景配合，黑色字体与灰色背景配合
-                                        fontWeight: item.stage === "Beta" ? 'bold' : 'normal'
-                                    }}
-                                />
-                            </CardActionArea>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
+            <LangHomeCardContainer items={items} />
 
+            {/* 以下为文本搜索功能，建设中 */}
             <Typography variant="body2" sx={{ color: 'text.secondary', marginBottom: 2, mt: 8 }}>
                 Below are test features:
             </Typography>

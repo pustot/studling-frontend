@@ -1,26 +1,14 @@
 import {
-    Card,
-    CardActionArea,
-    Chip,
     Container,
-    Grid,
     Link as MuiLink,
     Typography
 } from "@mui/material";
 import "purecss/build/pure.css";
 import * as React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import BackButton from "../../components/BackButton";
 import "../../styles.scss";
-import API from "../../utils/API";
 import { I18nText, getLocaleText } from "../../utils/I18n";
-
-interface Document {
-    id: string;
-    title: string;
-    content: string;
-}
+import LangHomeCardContainer from "../../components/LangHomeCardContainer";
 
 const items = [
     { name: "汉罗双文互转", link: "han-vs-rom", stage: "Beta" },
@@ -28,24 +16,6 @@ const items = [
 
 export default function HanromHomepage(props: { lang: keyof I18nText }) {
     const { lang } = props;
-
-    const navigate = useNavigate();
-
-    const [searchValue, setSearchValue] = useState<string>(''); // 添加搜索框的状态
-    const [searchResults, setSearchResults] = useState<Document[]>([]);
-
-    const handleSearch = async () => {
-        // 在这里执行搜索操作，可以将搜索框的值发送到后端
-        console.log('搜索值:', searchValue);
-        try {
-            // 发送示例消息给后端的逻辑
-            const response = await API.get('/api/search', { params: { query: searchValue } }); // 使用导入的 axios 实例发送请求
-            console.log('后端返回值:', response.data); // 打印后端返回的数据
-            setSearchResults(response.data);
-        } catch (error) {
-            console.error("发送消息失败:", error);
-        }
-    };
 
     return (
         <Container maxWidth="md">
@@ -86,37 +56,7 @@ export default function HanromHomepage(props: { lang: keyof I18nText }) {
             <br />
             <br />
 
-            <Grid container spacing={2}>
-                {items.map((item, index) => (
-                    <Grid item p={1} xs={12} sm={6} md={4} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Card
-                            sx={{ width: 240, transition: '0.3s ease-in-out', position: 'relative' }}
-                            onClick={() => navigate(item.link)}
-                        >
-                            <CardActionArea sx={{
-                                height: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'end', // 从底部开始排列内容
-                                alignItems: 'center',
-                            }}>
-                                <Typography gutterBottom variant="h5" component="div" sx={{ m: 1, textAlign: 'center' }}>
-                                    {item.name}
-                                </Typography>
-                                <Chip
-                                    label={item.stage}
-                                    sx={{
-                                        mb: 1,
-                                        backgroundColor: item.stage === "Beta" ? '#6002EE' : '#e0e0e0',  // ？色背景显眼，其他为灰色
-                                        color: item.stage === "Beta" ? '#fff' : 'rgba(0, 0, 0, 0.87)',  // 白色字体与？色背景配合，黑色字体与灰色背景配合
-                                        fontWeight: item.stage === "Beta" ? 'bold' : 'normal'
-                                    }}
-                                />
-                            </CardActionArea>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
+            <LangHomeCardContainer items={items} />
 
         </Container>
     );

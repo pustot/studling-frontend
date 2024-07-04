@@ -25,6 +25,8 @@ import HanromHomepage from "./pages/hanrom/HanromHomepage";
 import "./styles.scss";
 import { I18nText } from "./utils/I18n";
 import HanromHanVsRom from './pages/hanrom/HanromHanVsRom';
+import ZhLtcHomepage from './pages/zh-ltc/ZhLtcHomepage';
+import ZhLtcSinoDict from './pages/zh-ltc/ZhLtcSinoDict';
 
 Amplify.configure(awsconfig);
 
@@ -205,6 +207,8 @@ export default function App() {
 
                     {/* 分语言诸页面 */}
                     {/* 中古汉语及方言 ISO: zh-ltc （注：ISO 693-3 中，英文称 Late Middle Chinese，中文仍称中古汉语） */}
+                    <Route path="/zh-ltc" element={<ZhLtcHomepage lang={lang} />} />
+                    <Route path="/zh-ltc/sino-dict" element={<ZhLtcSinoDict lang={lang} />} />
                     {/* 粤语（广州话） ISO: zh-yue */}
                     <Route path="/zh-yue" element={<ZhYueHomepage lang={lang} />} />
                     <Route path="/zh-yue/hanzi-training" element={<ZhYueHanziTraining lang={lang} />} />
