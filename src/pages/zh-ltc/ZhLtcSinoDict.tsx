@@ -4,80 +4,12 @@ import * as React from "react";
 import { useEffect, useState } from 'react';
 import BackButton from '../../components/BackButton';
 import { I18nText } from "../../utils/I18n";
+import { dialectConfigMap, DialectConfig } from './dialectConfig';
 
 // 单语 dict 的类型
 type Dict = Map<string, string[]>;
-// 由 language 到 dict 的 Map
-const languageDictMap: Map<string, Dict> = new Map();
-
-// 语言配置类型
-interface LanguageConfig {
-    displayName: string;
-    link: string;
-    format: 'yaml' | 'csv';
-}
-
-// 语言配置映射
-const languageConfigMap: { [key: string]: LanguageConfig } = {
-    'zh-ltc': {
-        displayName: '切',
-        link: 'https://raw.githubusercontent.com/nk2028/rime-tupa/main/tupa.dict.yaml',
-        format: 'yaml'
-    },
-    'zh-cmn': {
-        displayName: '普',
-        link: 'https://raw.githubusercontent.com/rime/rime-terra-pinyin/master/terra_pinyin.dict.yaml',
-        format: 'yaml'
-    },
-    'zh-yue': {
-        displayName: '粤',
-        link: 'https://raw.githubusercontent.com/rime/rime-cantonese/main/jyut6ping3.chars.dict.yaml',
-        format: 'yaml'
-    },
-    'zh-hak': {
-        displayName: '客',
-        link: 'https://raw.githubusercontent.com/DaengGWokFook/Asian-Languages/master/Kak-Hak/Yat-Toi/moi-eian.dict.yaml',
-        format: 'yaml'
-    },
-    'zh-nan-tst': {
-        displayName: '厦',
-        link: 'https://raw.githubusercontent.com/LimTo/etaiBLG/master/banlam_etai.dict.yaml',
-        format: 'yaml'
-    },
-    'zh-nan-die': {
-        displayName: '潮',
-        link: 'https://raw.githubusercontent.com/kahaani/dieghv/master/dieziu.dict.yaml',
-        format: 'yaml'
-    },
-    // 现在所见上海话rime方案均不标声调，故rime来源先考虑吴语苏或杭
-    'zh-wuu-sou': {
-        displayName: '苏',
-        link: 'https://raw.githubusercontent.com/NGLI/rime-wugniu_soutseu/master/wugniu_soutseu.dict.yaml',
-        format: 'yaml'
-    },
-    // 文件第三列即谚文写法，以后可加之。或 sgalal/rime-hanja 直接谚文
-    'ko': {
-        displayName: '韩',
-        link: 'https://raw.githubusercontent.com/rime-aca/rime-hangyl/master/hangyl_hanja.dict.yaml',
-        format: 'yaml'
-    },
-    'vi': {
-        displayName: '越',
-        link: 'https://raw.githubusercontent.com/vietnameselanguage/hannom/main/hannom.dict.yaml',
-        format: 'yaml'
-    },
-    'ja': {
-        displayName: '日',
-        link: 'https://raw.githubusercontent.com/biopolyhedron/rime-jap-poly/master/jap_poly.dict.yaml',
-        format: 'yaml'
-    },
-    'ja-kun': {
-        displayName: '日训',
-        link: 'https://raw.githubusercontent.com/sgalal/rime-kunyomi/master/kunyomi.dict.yaml',
-        format: 'yaml'
-    }
-    // 可以在这里添加更多语言配置
-};
+// 由 dialect 到 dict 的 Map
+const dialectDictMap: Map<string, Dict> = new Map();
 
 // 解析 YAML 文件的函数
 const parseDialectDictionaryFromYAML = (yamlContent: string): Dict => {
@@ -131,7 +63,7 @@ const parseDialectDictionaryFromCSV = (csvContent: string): Dict => {
 };
 
 // 通用的加载字典函数
-const loadDict = async (langName: string, config: LanguageConfig) => {
+const loadDict = async (dialectName: string, config: DialectConfig) => {
     try {
         const response = await axios.get(config.link);
         let dict: Dict;
@@ -142,21 +74,21 @@ const loadDict = async (langName: string, config: LanguageConfig) => {
         } else {
             throw new Error(`Unsupported format: ${config.format}`);
         }
-        languageDictMap.set(langName, dict);
+        dialectDictMap.set(dialectName, dict);
     } catch (error) {
-        console.error(`Failed to load dictionary for ${langName}:`, error);
+        console.error(`Failed to load dictionary for ${dialectName}:`, error);
     }
 };
 
 export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
     const { lang } = props;
     const [query, setQuery] = useState('');
-    const [results, setResults] = useState<{ character: string, pronunciations: { [language: string]: string[] } }[]>([]);
+    const [results, setResults] = useState<{ character: string, pronunciations: { [dialect: string]: string[] } }[]>([]);
 
     useEffect(() => {
         const loadDictionaries = async () => {
-            const promises = Object.entries(languageConfigMap).map(([langName, config]) =>
-                loadDict(langName, config)
+            const promises = Object.entries(dialectConfigMap).map(([dialectName, config]) =>
+                loadDict(dialectName, config)
             );
 
             const results = await Promise.allSettled(promises);
@@ -172,17 +104,17 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
     }, []);
 
     const handleSearch = () => {
-        const searchResults: { character: string, pronunciations: { [language: string]: string[] } }[] = [];
+        const searchResults: { character: string, pronunciations: { [dialect: string]: string[] } }[] = [];
 
         const characters = query.split('').map(char => char.trim()).filter(char => char);
 
         characters.forEach(character => {
-            const pronunciations: { [language: string]: string[] } = {};
+            const pronunciations: { [dialect: string]: string[] } = {};
 
-            languageDictMap.forEach((dict, language) => {
-                const langsPronunciations = dict.get(character);
-                if (langsPronunciations) {
-                    pronunciations[language] = langsPronunciations;
+            dialectDictMap.forEach((dict, dialect) => {
+                const currPronunciations = dict.get(character);
+                if (currPronunciations) {
+                    pronunciations[dialect] = currPronunciations;
                 }
             });
 
@@ -219,12 +151,12 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
                         {results.map((result, index) => (
                             <Box key={index} sx={{ marginBottom: 2 }}>
                                 <Typography variant="body1"><strong>汉字:</strong> {result.character}</Typography>
-                                {Object.keys(languageConfigMap).map((languageKey) => {
-                                    const pronunciations = result.pronunciations[languageKey];
+                                {Object.keys(dialectConfigMap).map((dialectKey) => {
+                                    const pronunciations = result.pronunciations[dialectKey];
                                     if (pronunciations) {
                                         return (
-                                            <Typography key={languageKey} variant="body1">
-                                                <strong>{languageConfigMap[languageKey].displayName}:</strong> {pronunciations.join(", ")}
+                                            <Typography key={dialectKey} variant="body1">
+                                                <strong>{dialectConfigMap[dialectKey].displayName}:</strong> {pronunciations.join(", ")}
                                             </Typography>
                                         );
                                     }
