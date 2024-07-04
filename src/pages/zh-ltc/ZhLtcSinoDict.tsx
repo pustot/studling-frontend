@@ -273,6 +273,7 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
                                 <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                                     <Card variant="outlined" sx={{ padding: 2 }}>
                                         <Typography variant="h5">{result.character}</Typography>
+                                        <Typography variant="body1">{Qieyun.資料.query字頭(result.character).map((v, i) => v.音韻地位.描述).join(", ")}</Typography>
                                         {Object.keys(dialectConfigMap).map((dialectKey) => {
                                             const pronunciations = result.pronunciations[dialectKey];
                                             if (pronunciations) {
