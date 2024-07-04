@@ -1,9 +1,9 @@
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, FormControlLabel, Stack, Switch, TextareaAutosize, Typography } from '@mui/material';
 import axios from 'axios';
 import * as React from "react";
 import { useEffect, useState } from 'react';
 import BackButton from '../../components/BackButton';
-import { I18nText } from "../../utils/I18n";
+import { I18nText, getLocaleText } from "../../utils/I18n";
 import { dialectConfigMap, DialectConfig } from './dialectConfig';
 import { isChinese } from '../../utils/SinoUtils';
 
@@ -85,6 +85,8 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
     const { lang } = props;
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<{ character: string, pronunciations: { [dialect: string]: string[] } }[]>([]);
+    const [showVariants, setShowVariants] = useState(true);
+    const [showGuangyunOnly, setShowGuangyunOnly] = useState(false);
 
     useEffect(() => {
         const loadDictionaries = async () => {
@@ -106,40 +108,131 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
 
     useEffect(() => {
         const searchResults: { character: string, pronunciations: { [dialect: string]: string[] } }[] = [];
-    
+
         // 当前皆汉字查读音模式，故只保留汉字
         const characters = query.split('').map(char => char.trim()).filter(char => isChinese(char));
-    
+
         characters.forEach(character => {
-          const pronunciations: { [dialect: string]: string[] } = {};
-    
-          dialectDictMap.forEach((dict, dialect) => {
-            const currPronunciations = dict.get(character);
-            if (currPronunciations) {
-              pronunciations[dialect] = currPronunciations;
-            }
-          });
-    
-          searchResults.push({ character, pronunciations });
+            const pronunciations: { [dialect: string]: string[] } = {};
+
+            dialectDictMap.forEach((dict, dialect) => {
+                const currPronunciations = dict.get(character);
+                if (currPronunciations) {
+                    pronunciations[dialect] = currPronunciations;
+                }
+            });
+
+            searchResults.push({ character, pronunciations });
         });
-    
+
         setResults(searchResults);
-      }, [query]); // 每当 query 变化时重新执行搜索
+    }, [query, showVariants, showGuangyunOnly]); // 每当 query 或开关们变化时重新执行搜索
 
     return (
         <Container maxWidth="md">
             <BackButton />
 
+            <br />
+            <br />
+
+            <Typography variant="h3">
+                {getLocaleText(
+                    {
+                        "zh-Hans": "SinoDict 汉字古今中外读音查询",
+                        //"zh-Hant": "浦司圖的個人主頁",
+                        en: "SinoDict",
+                        // "ja": "浦司図のホームページ",
+                        // "de": "Homepage von Pusto",
+                        // "ko": "포사도 홈페이지",
+                        // "ko-Han": "浦司圖 홈페이지",
+                        // "eo": "Hejmpaĝo de Pusto",
+                        // "fr": "Page d'Accueil de Pusto",
+                        // "vi": "Trang cá nhân của Phổ Ti Đồ",
+                        // "vi-Han": "張個人𧶮浦司圖",
+                        // "es": "Página personal de Pusto",
+                        // "tto-bro": "Dnr2Zu DaA Ym3HMeH Tvo2X8aL",
+                        // "tto": "XoVhaeG D hnCLo LrnKrHL",
+                    },
+                    lang
+                )}
+            </Typography>
+
+            <br />
+            <br />
+
+            <Typography variant="h6" gutterBottom>
+                {getLocaleText(
+                    {
+                        "zh-Hans":
+                            "查询汉字在诸多方言与语言（域外方音）里的发音与罗马字。",
+                        "zh-Hant":
+                            "查詢漢字在許多方言和語言（域外方音）中的發音和羅馬字。",
+                        en:
+                            "search Chinese characters and some of their " +
+                            "romanizations for many languages (Sino-Xenic pronunciations) and dialects.",
+                        ja: "多くの言語（音読み）や方言での漢字とそのローマ字の検索。",
+                        de: "Suche nach chinesischen Schriftzeichen und einigen ihrer Romanisierungen für viele Sprachen (Sino-Xenische Aussprachen) und Dialekte.",
+                        ko: "다양한 언어 (한자음) 및 방언에 대한 중국 문자 및 로마자의 검색.",
+                        // "ko-Han": "浦司圖 홈페이지",
+                        eo: "Serĉi ĉinajn signojn kaj kelkajn romanigojn por multaj lingvoj (Ĉina-Faraj prononcoj) kaj dialektoj.",
+                        fr: "rechercher des caractères chinois et certaines de leurs romanisations pour de nombreuses langues (prononciations sino-xéniques) et dialectes.",
+                        vi: "tìm kiếm ký tự Trung Quốc và một số cách viết lại bằng chữ La Tinh cho nhiều ngôn ngữ (Hán Việt) và các tiếng địa phương.",
+                        // "vi-Han": "張個人𧶮浦司圖",
+                        es: "buscar caracteres chinos y algunas de sus romanizaciones para muchos idiomas (pronunciaciones sino-xénicas) y dialectos.",
+                        // "tto-bro": "Dnr2Zu DaA Ym3HMeH Tvo2X8aL",
+                        // "tto": "XoVhaeG D hnCLo LrnKrHL",
+                    },
+                    lang
+                )}
+            </Typography>
+            <br />
+
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <TextField
-                    label="Han"
-                    multiline
+                <TextareaAutosize
+                    id="queryTextarea"
                     value={query}
-                    onChange={e => setQuery(e.target.value)}
-                    variant="outlined"
+                    onChange={(e) => setQuery(e.target.value)}
+                    style={{ width: "70vw", background: "transparent", fontSize: "1.5rem", color: 'inherit' }}
+                    placeholder="Enter Chinese character(s) or romanization(s), or click on `RANDOM HAN`. No inspiration ? Try `文` or `myon`"
                 />
+
+                <Stack
+                    direction="row"
+                    spacing={3}
+                    flexWrap="wrap"
+                    justifyContent="flex-start"
+                >
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={showVariants}
+                                onChange={() => setShowVariants(!showVariants)}
+                                name="繁/簡/異 Conversion"
+                                color="primary"
+                            />
+                        }
+                        label="繁/簡/異 Conversion"
+                    />
+
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={showGuangyunOnly}
+                                onChange={() => setShowGuangyunOnly(!showGuangyunOnly)}
+                                name="廣韻 Guangyun Only"
+                                color="primary"
+                            />
+                        }
+                        label="廣韻 Guangyun Only"
+                    />
+
+                    {/* <Tooltip title="Get a Random Han from the 3500 Most Common Characters">
+                        <Button onClick={handleClickRandom}>Random Han</Button>
+                    </Tooltip> */}
+                </Stack>
                 <br />
                 <br />
+
                 {results.length > 0 && (
                     <Box>
                         <Typography variant="h6">查询结果：</Typography>
