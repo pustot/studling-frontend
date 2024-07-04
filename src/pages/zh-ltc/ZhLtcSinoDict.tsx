@@ -165,7 +165,7 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
                 {getLocaleText(
                     {
                         "zh-Hans": "SinoDict 汉字古今中外读音查询",
-                        //"zh-Hant": "浦司圖的個人主頁",
+                        "zh-Hant": "SinoDict 漢字古今中外讀音查詢",
                         en: "SinoDict",
                         // "ja": "浦司図のホームページ",
                         // "de": "Homepage von Pusto",

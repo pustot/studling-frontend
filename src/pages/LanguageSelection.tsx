@@ -183,7 +183,7 @@ export default function LanguageSelection(props: { lang: keyof I18nText }) {
                 {getLocaleText(
                     {
                         "en": "Welcome to 甪端 Studling",
-                        "zh-Hant": "甪端 Studling",
+                        "zh-Hant": "歡迎來到甪端 Studling，一站式多語種學習平臺。請選擇您要學習的語言。",
                         "zh-Hans": "欢迎来到甪端 Studling，一站式多语种学习平台。请选择您要学习的语言。",
                         "tto-bro": "EeRZ T8eHXQea",
                         "tto": "hFCmo mAFKRHm",
