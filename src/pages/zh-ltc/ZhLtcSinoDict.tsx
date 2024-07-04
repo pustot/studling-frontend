@@ -1,11 +1,11 @@
-import { Box, Button, Container, FormControlLabel, Stack, Switch, TextareaAutosize, Typography } from '@mui/material';
+import { Box, Button, Container, FormControlLabel, Stack, Switch, TextareaAutosize, Tooltip, Typography } from '@mui/material';
 import axios from 'axios';
 import * as React from "react";
 import { useEffect, useState } from 'react';
 import BackButton from '../../components/BackButton';
 import { I18nText, getLocaleText } from "../../utils/I18n";
 import { dialectConfigMap, DialectConfig } from './dialectConfig';
-import { getHanziVariants, isChinese } from '../../utils/SinoUtils';
+import { hanziUtils } from '../../utils/SinoUtils';
 import * as Qieyun from "qieyun";
 
 // 单语 dict 的类型
@@ -110,13 +110,13 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
     useEffect(() => {
         const searchResults: { character: string, pronunciations: { [dialect: string]: string[] } }[] = [];
 
-        const characters = query.split('').map(char => char.trim()).filter(char => isChinese(char));
+        const characters = query.split('').map(char => char.trim()).filter(char => hanziUtils.isChinese(char));
 
         let terms: string[] = [];
 
         characters.forEach(character => {
             // 繁简异体字转换逻辑
-            let variants = getHanziVariants(character);
+            let variants = hanziUtils.getHanziVariants(character);
 
             if (showGuangyunOnly) {
                 // 仅查询广韵
@@ -150,6 +150,10 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
         setResults(searchResults);
     }, [query, showGuangyunOnly, showVariants]); // 每当 query, showGuangyunOnly, showVariants 变化时重新执行搜索
 
+
+    const handleClickRandom = () => {
+        setQuery(hanziUtils.getRandomCommonHanzi());
+    }
     return (
         <Container maxWidth="md">
             <BackButton />
@@ -248,16 +252,16 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
                         label="廣韻 Guangyun Only"
                     />
 
-                    {/* <Tooltip title="Get a Random Han from the 3500 Most Common Characters">
-                        <Button onClick={handleClickRandom}>Random Han</Button>
-                    </Tooltip> */}
+                    <Tooltip title="Random Hanzi from 4159 Most Common Ones (《教師語文能力評核（普通話）參照使用常用字表》)">
+                        <Button onClick={handleClickRandom}>{getLocaleText(
+                            { "zh-Hans": "随机汉字", "zh-Hant": "隨機漢字", en: "Random" },
+                            lang
+                        )}</Button>
+                    </Tooltip>
                 </Stack>
-                <br />
-                <br />
 
                 {results.length > 0 && (
                     <Box>
-                        <Typography variant="h6">查询结果：</Typography>
                         {results.map((result, index) => (
                             <Box key={index} sx={{ marginBottom: 2 }}>
                                 <Typography variant="body1"><strong>汉字:</strong> {result.character}</Typography>
