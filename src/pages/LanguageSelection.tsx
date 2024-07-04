@@ -35,8 +35,9 @@ const IconFromPublicRepo: React.FC<{ fileName: string }> = ({ fileName }) => {
 
 const languageCardItems: LanguageCardItem[] = [
     {
-        name: '中古汉语', stage: 'ComingSoon',
-        icon: <IconFromPublicRepo fileName={"studling-icon-zh-ltc.png"} />
+        name: '中古汉语与方言', stage: 'Beta',
+        icon: <IconFromPublicRepo fileName={"studling-icon-zh-ltc.png"} />,
+        link: "#/zh-ltc"
     },
     {
         name: '普通话', stage: 'ComingSoon',

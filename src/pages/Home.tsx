@@ -1,3 +1,4 @@
+/* Home 页已取消，改为从语言选择开始。本页仅保存遗留代码。 */
 import "purecss/build/pure.css";
 import * as React from "react";
 import { useEffect, useState } from "react";

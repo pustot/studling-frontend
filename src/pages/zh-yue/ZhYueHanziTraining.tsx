@@ -32,7 +32,7 @@ const parseRimeDictionary = (content: string): JyutpingMapping => {
     return mapping;
 };
 
-export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
+export default function ZhYueHanziTraining(props: { lang: keyof I18nText }) {
     const { lang } = props;
 
     const [characters, setCharacters] = useState<string[]>([]);

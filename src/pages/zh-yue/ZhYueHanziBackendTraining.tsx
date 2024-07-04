@@ -28,7 +28,7 @@ const example_training_results = {
     ]
 };
 
-export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
+export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText }) {
     const { lang } = props;
 
     const navigate = useNavigate(); // 获取navigate函数

@@ -20,8 +20,8 @@ import ZhYueDifficultiesCmnToYue from './pages/zh-yue/ZhYueDifficultiesCmnToYue'
 import ZhYueFlashcards from './pages/zh-yue/ZhYueFlashcards';
 import ZhYueHanziBackendTraining from './pages/zh-yue/ZhYueHanziBackendTraining';
 import ZhYueHanziTraining from './pages/zh-yue/ZhYueHanziTraining';
-import ZhYueTrainings from "./pages/zh-yue/ZhYueTrainings";
-import HanromTrainings from "./pages/hanrom/HanromTrainings";
+import ZhYueHomepage from "./pages/zh-yue/ZhYueHomepage";
+import HanromHomepage from "./pages/hanrom/HanromHomepage";
 import "./styles.scss";
 import { I18nText } from "./utils/I18n";
 import HanromHanVsRom from './pages/hanrom/HanromHanVsRom';
@@ -200,16 +200,19 @@ export default function App() {
                     </Route>
                     <Route path="/login" element={<LoginPage lang={lang} />} />
                     <Route path="/language-selection" element={<LanguageSelection lang={lang} />} />
-                    {/* Home 页取消 */}
+                    {/* Home 页已取消，改为从语言选择开始 */}
                     <Route path="/home" element={<Home lang={lang} />} />
 
                     {/* 分语言诸页面 */}
-                    <Route path="/zh-yue" element={<ZhYueTrainings lang={lang} />} />
+                    {/* 中古汉语及方言 ISO: zh-ltc （注：ISO 693-3 中，英文称 Late Middle Chinese，中文仍称中古汉语） */}
+                    {/* 粤语（广州话） ISO: zh-yue */}
+                    <Route path="/zh-yue" element={<ZhYueHomepage lang={lang} />} />
                     <Route path="/zh-yue/hanzi-training" element={<ZhYueHanziTraining lang={lang} />} />
                     <Route path="/zh-yue/hanzi-backend-training" element={<ZhYueHanziBackendTraining lang={lang} />} />
                     <Route path="/zh-yue/flashcards" element={<ZhYueFlashcards lang={lang} />} />
                     <Route path="/zh-yue/difficulties-cmn-to-yue" element={<ZhYueDifficultiesCmnToYue lang={lang} />} />
-                    <Route path="/hanrom" element={<HanromTrainings lang={lang} />} />
+                    {/* 汉罗文（人造语言） */}
+                    <Route path="/hanrom" element={<HanromHomepage lang={lang} />} />
                     <Route path="/hanrom/han-vs-rom" element={<HanromHanVsRom lang={lang} />} />
                 </Routes>
 

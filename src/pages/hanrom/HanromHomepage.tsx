@@ -1,13 +1,10 @@
 import {
-    Box,
-    Button,
     Card,
     CardActionArea,
     Chip,
     Container,
     Grid,
-    Stack,
-    TextField,
+    Link as MuiLink,
     Typography
 } from "@mui/material";
 import "purecss/build/pure.css";
@@ -26,19 +23,10 @@ interface Document {
 }
 
 const items = [
-    { name: "汉字读音自测（纯前端）", link: "hanzi-training", stage: "Beta" },
-    { name: "汉字读音抽认卡", link: "flashcards", stage: "Beta" },
-    { name: "普转粤难点标注", link: "difficulties-cmn-to-yue", stage: "Beta" },
-    { name: "汉字读音自测（后端交互）", link: "hanzi-backend-training", stage: "Alpha" },
-    { name: "特有词汇自测", link: "", stage: "Alpha" },
-    { name: "普转粤1对1规则练习", link: "", stage: "Alpha" },
-    { name: "普转粤1对多规则练习", link: "", stage: "Alpha" },
-    { name: "中古汉语音韵地位练习", link: "", stage: "Alpha" },
-    { name: "歌词特训", link: "", stage: "Alpha" },
-    { name: "掌握情况分析", link: "", stage: "Alpha" },
+    { name: "汉罗双文互转", link: "han-vs-rom", stage: "Beta" },
 ];
 
-export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
+export default function HanromHomepage(props: { lang: keyof I18nText }) {
     const { lang } = props;
 
     const navigate = useNavigate();
@@ -65,13 +53,9 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
             <Typography variant="h5" sx={{ marginBottom: 2 }}>
                 {getLocaleText(
                     {
-                        "en": "甪端 Studling",
-                        "zh-Hant": "甪端 Studling",
-                        "zh-Hans": "甪端 Studling",
-                        "tto-bro": "EeRZ T8eHXQea",
-                        "tto": "hFCmo mAFKRHm",
-                        "ja": "甪端 Studling",
-                        "de": "甪端 Studling",
+                        "en": "Hanroman",
+                        "zh-Hant": "漢羅文",
+                        "zh-Hans": "汉罗文",
                     },
                     lang
                 )}
@@ -79,17 +63,28 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
             <Typography variant="body1" sx={{ marginBottom: 2 }}>
                 {getLocaleText(
                     {
-                        "en": "甪端 Studling",
-                        "zh-Hant": "甪端 Studling",
-                        "zh-Hans": "一站式多语种学习平台。",
-                        "tto-bro": "EeRZ T8eHXQea",
-                        "tto": "hFCmo mAFKRHm",
-                        "ja": "甪端 Studling",
-                        "de": "甪端 Studling",
+                        "en": "A synthetic language that integrates Chinese and Western elements, combining Latin vocabulary with Chinese grammar: The Latin vocabulary, highly recognized internationally, corresponds one-to-one with Chinese characters, accommodating reading habits of both East and West; the grammar is primarily based on Chinese, thus highly analytic and without morphological changes, yet compatible with some convenient syntactic structures of Latin or Western languages.",
+                        "zh-Hant": "貫通中西，綜合拉丁語詞彙與漢語語法的人造語言：詞彙來自國際認知度甚高的拉丁語，同時與漢字一一對應，兼顧東西閱讀習慣；語法主要參考漢語，故高度分析化且無詞形變化，但兼容拉丁語或西方語言一些較方便的語法結構。",
+                        "zh-Hans": "贯通中西，综合拉丁语词汇与汉语语法的人造语言：词汇来自国际认知度甚高的拉丁语，同时与汉字一一对应，兼顾东西阅读习惯；语法主要参考汉语，故高度分析化且无词形变化，但兼容拉丁语或西方语言一些较方便的语法结构。",
                     },
                     lang
                 )}
             </Typography>
+            <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                <MuiLink href="https://github.com/pustot/world-building/blob/main/Hanroman-lingua-demo.md" target="_blank" rel="noopener">Demo</MuiLink>
+            </Typography>
+            <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                <MuiLink href="https://github.com/pustot/world-building/blob/main/Hanroman-leks-kolekt.csv" target="_blank" rel="noopener">lex-kolekt (詞集)</MuiLink>
+            </Typography>
+            <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                graki Simplingua divid-fru inspir et Latin leks list (謝 Simplingua 分享 靈感 與 Latin 詞 列) <MuiLink href="https://zcyzcy88.github.io/Simplingua/Simplingua%E8%AF%8D%E5%85%B8.htm" target="_blank" rel="noopener">Simplingua 词典</MuiLink>
+            </Typography>
+            <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                graki Wiktionary divid-fru ski de Latin lingu (謝 Wiktionary 分享 知 啲 Latin 語) <MuiLink href="https://en.wiktionary.org/" target="_blank" rel="noopener">Wiktionary</MuiLink>
+            </Typography>
+
+            <br />
+            <br />
 
             <Grid container spacing={2}>
                 {items.map((item, index) => (
@@ -123,34 +118,6 @@ export default function ZhYueTrainings(props: { lang: keyof I18nText }) {
                 ))}
             </Grid>
 
-            <Typography variant="body2" sx={{ color: 'text.secondary', marginBottom: 2, mt: 8 }}>
-                Below are test features:
-            </Typography>
-
-            <Stack direction="row" spacing={2} alignItems="center" sx={{ marginBottom: 2 }}> {/* 使用 Stack 组件对搜索框和按钮进行布局 */}
-                <TextField
-                    label="搜索"
-                    variant="outlined"
-                    value={searchValue} // 将搜索框的值绑定到状态
-                    onChange={(e) => setSearchValue(e.target.value)} // 监听搜索框内容的变化，并更新状态
-                    autoComplete="off" />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSearch} // 将搜索按钮的点击事件绑定到 handleSearch 函数
-                >
-                    搜索
-                </Button>
-            </Stack>
-            {/* 以后添加功能以分页、隐藏全文、高亮搜索词 */}
-            <Box sx={{ marginTop: 2 }}>
-                {searchResults.map((doc, index) => (
-                    <Box key={doc.id} sx={{ marginBottom: 2, border: '1px solid #ccc', padding: 2 }}>
-                        <Typography variant="h6">{doc.title}</Typography>
-                        <Typography variant="body1">{doc.content}</Typography>
-                    </Box>
-                ))}
-            </Box>
         </Container>
     );
 }
