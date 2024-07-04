@@ -48,6 +48,33 @@ const languageConfigMap: { [key: string]: LanguageConfig } = {
         displayName: '潮',
         link: 'https://raw.githubusercontent.com/kahaani/dieghv/master/dieziu.dict.yaml',
         format: 'yaml'
+    },
+    // 现在所见上海话rime方案均不标声调，故rime来源先考虑吴语苏或杭
+    'zh-wuu-sou': {
+        displayName: '苏',
+        link: 'https://raw.githubusercontent.com/NGLI/rime-wugniu_soutseu/master/wugniu_soutseu.dict.yaml',
+        format: 'yaml'
+    },
+    // 文件第三列即谚文写法，以后可加之。或 sgalal/rime-hanja 直接谚文
+    'ko': {
+        displayName: '韩',
+        link: 'https://raw.githubusercontent.com/rime-aca/rime-hangyl/master/hangyl_hanja.dict.yaml',
+        format: 'yaml'
+    },
+    'vi': {
+        displayName: '越',
+        link: 'https://raw.githubusercontent.com/vietnameselanguage/hannom/main/hannom.dict.yaml',
+        format: 'yaml'
+    },
+    'ja': {
+        displayName: '日',
+        link: 'https://raw.githubusercontent.com/biopolyhedron/rime-jap-poly/master/jap_poly.dict.yaml',
+        format: 'yaml'
+    },
+    'ja-kun': {
+        displayName: '日训',
+        link: 'https://raw.githubusercontent.com/sgalal/rime-kunyomi/master/kunyomi.dict.yaml',
+        format: 'yaml'
     }
     // 可以在这里添加更多语言配置
 };
@@ -56,29 +83,29 @@ const languageConfigMap: { [key: string]: LanguageConfig } = {
 const parseDialectDictionaryFromYAML = (yamlContent: string): Dict => {
     const lines = yamlContent.split('\n');
     const mapping: Dict = new Map();
-  
+
     for (const line of lines) {
-      const trimmedLine = line.trim();
-      if (trimmedLine.startsWith('#') || trimmedLine === '') {
-        continue; // 忽略注释和空行
-      }
-  
-      // 使用制表符分割并只取前两个字段（第三个字段可能存在，表示百分数）
-      const [character, pronunciation] = trimmedLine.split('\t').slice(0, 2);
-      if (character && pronunciation) {
-        if (!mapping.has(character)) {
-          mapping.set(character, [pronunciation]);
-        } else {
-          const pronunciations = mapping.get(character)!;
-          if (!pronunciations.includes(pronunciation)) {
-            pronunciations.push(pronunciation);
-          }
+        const trimmedLine = line.trim();
+        if (trimmedLine.startsWith('#') || trimmedLine === '') {
+            continue; // 忽略注释和空行
         }
-      }
+
+        // 使用制表符分割并只取前两个字段（第三个字段可能存在，表示百分数）
+        const [character, pronunciation] = trimmedLine.split('\t').slice(0, 2);
+        if (character && pronunciation) {
+            if (!mapping.has(character)) {
+                mapping.set(character, [pronunciation]);
+            } else {
+                const pronunciations = mapping.get(character)!;
+                if (!pronunciations.includes(pronunciation)) {
+                    pronunciations.push(pronunciation);
+                }
+            }
+        }
     }
-  
+
     return mapping;
-  };
+};
 
 // 解析 CSV 文件的函数（预留）
 const parseDialectDictionaryFromCSV = (csvContent: string): Dict => {
