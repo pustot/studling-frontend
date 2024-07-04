@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import BackButton from '../../components/BackButton';
 import { I18nText } from "../../utils/I18n";
 import { dialectConfigMap, DialectConfig } from './dialectConfig';
+import { isChinese } from '../../utils/SinoUtils';
 
 // 单语 dict 的类型
 type Dict = Map<string, string[]>;
@@ -103,26 +104,27 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
         loadDictionaries();
     }, []);
 
-    const handleSearch = () => {
+    useEffect(() => {
         const searchResults: { character: string, pronunciations: { [dialect: string]: string[] } }[] = [];
-
-        const characters = query.split('').map(char => char.trim()).filter(char => char);
-
+    
+        // 当前皆汉字查读音模式，故只保留汉字
+        const characters = query.split('').map(char => char.trim()).filter(char => isChinese(char));
+    
         characters.forEach(character => {
-            const pronunciations: { [dialect: string]: string[] } = {};
-
-            dialectDictMap.forEach((dict, dialect) => {
-                const currPronunciations = dict.get(character);
-                if (currPronunciations) {
-                    pronunciations[dialect] = currPronunciations;
-                }
-            });
-
-            searchResults.push({ character, pronunciations });
+          const pronunciations: { [dialect: string]: string[] } = {};
+    
+          dialectDictMap.forEach((dict, dialect) => {
+            const currPronunciations = dict.get(character);
+            if (currPronunciations) {
+              pronunciations[dialect] = currPronunciations;
+            }
+          });
+    
+          searchResults.push({ character, pronunciations });
         });
-
+    
         setResults(searchResults);
-    };
+      }, [query]); // 每当 query 变化时重新执行搜索
 
     return (
         <Container maxWidth="md">
@@ -136,13 +138,6 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
                     onChange={e => setQuery(e.target.value)}
                     variant="outlined"
                 />
-                <Button
-                    variant="contained"
-                    onClick={handleSearch}
-                    sx={{ width: 'auto', maxWidth: 200 }}
-                >
-                    搜索
-                </Button>
                 <br />
                 <br />
                 {results.length > 0 && (
