@@ -26,7 +26,7 @@ const languageConfigMap: { [key: string]: LanguageConfig } = {
     },
     'zh-cmn': {
         displayName: '普',
-        link: 'https://raw.githubusercontent.com/rime/rime-luna-pinyin/master/luna_pinyin.dict.yaml',
+        link: 'https://raw.githubusercontent.com/rime/rime-terra-pinyin/master/terra_pinyin.dict.yaml',
         format: 'yaml'
     },
     'zh-yue': {
@@ -56,32 +56,29 @@ const languageConfigMap: { [key: string]: LanguageConfig } = {
 const parseDialectDictionaryFromYAML = (yamlContent: string): Dict => {
     const lines = yamlContent.split('\n');
     const mapping: Dict = new Map();
-
-    // 正则表达式匹配汉字及其发音
-    const lineRegex = /^(.+)\s+(.+)$/;
-
+  
     for (const line of lines) {
-        const trimmedLine = line.trim();
-        if (trimmedLine.startsWith('#') || trimmedLine === '') {
-            continue; // 忽略注释和空行
+      const trimmedLine = line.trim();
+      if (trimmedLine.startsWith('#') || trimmedLine === '') {
+        continue; // 忽略注释和空行
+      }
+  
+      // 使用制表符分割并只取前两个字段（第三个字段可能存在，表示百分数）
+      const [character, pronunciation] = trimmedLine.split('\t').slice(0, 2);
+      if (character && pronunciation) {
+        if (!mapping.has(character)) {
+          mapping.set(character, [pronunciation]);
+        } else {
+          const pronunciations = mapping.get(character)!;
+          if (!pronunciations.includes(pronunciation)) {
+            pronunciations.push(pronunciation);
+          }
         }
-
-        const match = trimmedLine.match(lineRegex);
-        if (match) {
-            const [, character, pronunciation] = match;
-            if (!mapping.has(character)) {
-                mapping.set(character, [pronunciation]);
-            } else {
-                const pronunciations = mapping.get(character)!;
-                if (!pronunciations.includes(pronunciation)) {
-                    pronunciations.push(pronunciation);
-                }
-            }
-        }
+      }
     }
-
+  
     return mapping;
-};
+  };
 
 // 解析 CSV 文件的函数（预留）
 const parseDialectDictionaryFromCSV = (csvContent: string): Dict => {
