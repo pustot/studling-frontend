@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import BackButton from '../../components/BackButton';
 import { I18nText, getLocaleText } from "../../utils/I18n";
 import { dialectConfigMap, DialectConfig } from './dialectConfig';
-import { isChinese } from '../../utils/SinoUtils';
+import { getHanziVariants, isChinese } from '../../utils/SinoUtils';
+import * as Qieyun from "qieyun";
 
 // 单语 dict 的类型
 type Dict = Map<string, string[]>;
@@ -109,24 +110,45 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
     useEffect(() => {
         const searchResults: { character: string, pronunciations: { [dialect: string]: string[] } }[] = [];
 
-        // 当前皆汉字查读音模式，故只保留汉字
         const characters = query.split('').map(char => char.trim()).filter(char => isChinese(char));
 
+        let terms: string[] = [];
+
         characters.forEach(character => {
+            // 繁简异体字转换逻辑
+            let variants = getHanziVariants(character);
+
+            if (showGuangyunOnly) {
+                // 仅查询广韵
+                for (let yitiCh of variants) {
+                    if (Qieyun.資料.query字頭(yitiCh).length != 0) {
+                        terms.push(yitiCh);
+                    }
+                }
+            } else if (showVariants) {
+                // 添加所有变体字
+                terms = terms.concat(variants);
+            } else {
+                terms.push(character);
+            }
+        });
+
+        terms = Array.from(new Set(terms));
+
+        terms.forEach(term => {
             const pronunciations: { [dialect: string]: string[] } = {};
 
             dialectDictMap.forEach((dict, dialect) => {
-                const currPronunciations = dict.get(character);
+                const currPronunciations = dict.get(term);
                 if (currPronunciations) {
                     pronunciations[dialect] = currPronunciations;
                 }
             });
 
-            searchResults.push({ character, pronunciations });
+            searchResults.push({ character: term, pronunciations });
         });
-
         setResults(searchResults);
-    }, [query, showVariants, showGuangyunOnly]); // 每当 query 或开关们变化时重新执行搜索
+    }, [query, showGuangyunOnly, showVariants]); // 每当 query, showGuangyunOnly, showVariants 变化时重新执行搜索
 
     return (
         <Container maxWidth="md">
