@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import BackButton from '../../components/BackButton';
 import { I18nText, getLocaleText } from "../../utils/I18n";
 import { dialectConfigMap, DialectConfig } from './dialectConfig';
-import { hanziUtils } from '../../utils/SinoUtils';
+import { hanziUtils, tupaToMarkings } from '../../utils/SinoUtils';
 import * as Qieyun from "qieyun";
 
 // 单语 dict 的类型
@@ -278,9 +278,14 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
                                             const pronunciations = result.pronunciations[dialectKey];
                                             if (pronunciations) {
                                                 return (
-                                                    <Typography key={dialectKey} variant="body1">
-                                                        <strong>{dialectConfigMap[dialectKey].displayName}:</strong> {pronunciations.join(", ")}
-                                                    </Typography>
+                                                    <div>
+                                                        {dialectKey == "zh-ltc" && <Typography key={dialectKey} variant="body1">
+                                                            <strong>{dialectConfigMap[dialectKey].displayName + "(视)"}:</strong> {pronunciations.map((tupa) => tupaToMarkings(tupa)).join(", ")}
+                                                        </Typography>}
+                                                        <Typography key={dialectKey} variant="body1">
+                                                            <strong>{dialectConfigMap[dialectKey].displayName}:</strong> {pronunciations.join(", ")}
+                                                        </Typography>
+                                                    </div>
                                                 );
                                             }
                                             return null;
