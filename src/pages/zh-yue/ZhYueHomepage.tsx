@@ -27,11 +27,11 @@ interface Document {
 }
 
 const items = [
-    { name: "汉字读音自测（纯前端）", link: "hanzi-training", stage: "Beta" },
-    { name: "汉字读音抽认卡", link: "flashcards", stage: "Beta" },
+    { name: "汉字拼读训练（保存记录，需登陆）", link: "hanzi-backend-training", stage: "Beta" },
+    { name: "汉字拼读训练（无记录，无需登陆）", link: "hanzi-training", stage: "Beta" },
     { name: "普转粤难点标注", link: "difficulties-cmn-to-yue", stage: "Beta" },
-    { name: "汉字读音自测（后端交互）", link: "hanzi-backend-training", stage: "Alpha" },
-    { name: "特有词汇自测", link: "", stage: "Alpha" },
+    { name: "汉字读音抽认卡", link: "flashcards", stage: "Beta" },
+    { name: "特有词汇训练", link: "", stage: "Alpha" },
     { name: "普转粤1对1规则练习", link: "", stage: "Alpha" },
     { name: "普转粤1对多规则练习", link: "", stage: "Alpha" },
     { name: "中古汉语音韵地位练习", link: "", stage: "Alpha" },

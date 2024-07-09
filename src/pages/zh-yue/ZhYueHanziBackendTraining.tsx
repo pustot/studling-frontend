@@ -1,39 +1,32 @@
-import { Box, Button, Container, Typography } from "@mui/material";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
+import { Box, Button, Container, LinearProgress, TextField, Typography } from "@mui/material";
 import { AuthUser, getCurrentUser } from 'aws-amplify/auth';
+import * as Qieyun from "qieyun";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import BackButton from "../../components/BackButton";
+import { Word } from '../../types/Word';
 import API from '../../utils/API';
 import { I18nText } from "../../utils/I18n";
 
-const example_training_results = {
-    "userId": 1,
-    "results": [
-        { "wordId": 1, "correct": true },
-        { "wordId": 2, "correct": true },
-        {
-            "wordId": 3,
-            "correct": true
-        },
-        {
-            "wordId": 4,
-            "correct": false
-        },
-        {
-            "wordId": 5,
-            "correct": false
-        }
-        // 更多单词训练结果...
-    ]
-};
+const BATCH_SIZE = 10;
 
 export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText }) {
     const { lang } = props;
 
     const navigate = useNavigate(); // 获取navigate函数
+    const [words, setWords] = useState<Word[]>([]);
+    const [qId, setQId] = useState(-1);
+    const [userInput, setUserInput] = useState<string>('');
+    const [feedback, setFeedback] = useState<string>('');
+    const [totalAttempts, setTotalAttempts] = useState(0);
+    const [correctAnswers, setCorrectAnswers] = useState(0);
+    const [answerChecked, setAnswerChecked] = useState(false);
+    const [isFinished, setIsFinished] = useState(false);
 
-
+    // 登陆验证相关
     const [user, setUser] = useState<AuthUser | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -41,7 +34,15 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
         getCurrentUser()
             .then(user => {
                 setUser(user);
-                setIsLoading(false);
+                API.get<Word[]>(`/api/zh-yue-can-words/random/${BATCH_SIZE}`).then(
+                    resp => {
+                        setQId(-1);
+                        setWords(resp.data);
+                        setIsLoading(false);
+                    }
+                ).catch(err => {
+                    console.log('后端错误', err);
+                });
             })
             .catch(err => {
                 console.log('用户未登录', err);
@@ -49,19 +50,38 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
             });
     }, []);
 
-    const [messageSent, setMessageSent] = useState<boolean>(false);
-
-    const sendMessage = async () => {
-        try {
-            // 发送示例消息给后端的逻辑
-            // await API.post('/api/training/results', example_training_results); // 使用导入的 axios 实例发送请求
-            let words = await API.get('/api/zh-yue-can-words/random/5'); // 使用导入的 axios 实例发送请求
-            setMessageSent(true); // 暂时设为 true，表示消息发送成功
-            console.log(words.data)
-        } catch (error) {
-            console.error("发送消息失败:", error);
+    const startExercise = () => {
+        setAnswerChecked(false);  // 重置答案检查状态
+        if (words.length > 0) {
+            if (qId + 1 < words.length) {
+                setQId(prev => prev + 1);
+                setUserInput('');
+                setFeedback('');
+            } else {
+                setIsFinished(true);
+            }
         }
     };
+
+    useEffect(() => {
+        startExercise();
+    }, [words]);
+
+    const checkAnswer = () => {
+        if (qId >= 0 && qId < words.length) {
+            setTotalAttempts(prev => prev + 1);
+            const correctAnswers = words[qId].pronunciation.split(',');
+            if (correctAnswers && correctAnswers.map(ans => ans.toLowerCase()).includes(userInput.trim().toLowerCase())) {
+                setCorrectAnswers(prev => prev + 1);
+                setFeedback(`✅️ 正确！（正确答案：${correctAnswers.join(', ')}）`);
+            } else {
+                setFeedback(`❌️ 错误！（正确答案：${correctAnswers.join(', ')}）`);
+            }
+            setAnswerChecked(true);  // 设置答案已检查
+        }
+    };
+
+    const correctRate = totalAttempts > 0 ? (correctAnswers / totalAttempts) * 100 : 0;
 
     return (
         <>
@@ -69,18 +89,79 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
                 ? <Typography>Loading...</Typography>
                 :
                 <Container maxWidth="md">
-
                     <BackButton />
-                    <Box marginBottom={4}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={sendMessage}
-                            disabled={messageSent} // 如果消息已发送，按钮将被禁用
+                    {isFinished ?
+                        <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            height="80vh"
                         >
-                            发送示例训练结果给后端
-                        </Button>
-                    </Box>
+                            <Typography variant="h5" py={2}>
+                                🎉本轮训练完成！正确率：{correctRate.toFixed(0)}%（{correctAnswers}／{totalAttempts}）
+                            </Typography>
+                        </Box>
+                        : <Box marginBottom={4}>
+                            <Typography variant="h6" py={2}>请为以下汉字输入粤拼：</Typography>
+                            <Typography variant="h4" p={4} sx={{ marginBottom: 2 }}>{words[qId]?.word}</Typography>
+                            <TextField
+                                label="输入粤拼"
+                                variant="outlined"
+                                value={userInput}
+                                onChange={(e) => setUserInput(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        if (!answerChecked) {
+                                            checkAnswer();
+                                        } else {
+                                            startExercise();
+                                        }
+                                    }
+                                }}
+                                sx={{ marginBottom: 2 }}
+                                autoComplete="off"
+                            />
+                            <Button
+                                variant="contained"
+                                color={answerChecked ? "secondary" : "primary"}
+                                onClick={answerChecked ? startExercise : checkAnswer}
+                                sx={{ margin: 2 }}
+                            >
+                                {answerChecked ? "继续" : "确定"}
+                            </Button>
+                            {totalAttempts > 0 && (
+                                <>
+                                    <Typography variant="body1" sx={{ my: 2 }}>正确率: {correctRate.toFixed(2)}%（{correctAnswers}／{totalAttempts}）</Typography>
+                                    <LinearProgress variant="determinate" value={correctRate} sx={{ width: '100%', my: 2 }} />
+                                </>
+                            )}
+                            {feedback && <><Typography
+                                my={2}
+                                sx={{
+                                    marginTop: 2,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    color: feedback.startsWith('✅️') ? 'green' : 'red',
+                                    border: `2px solid ${feedback.startsWith('✅️') ? '#2e7d32' : '#c62828'}`,  // 边框颜色使用深绿或深红
+                                    borderRadius: '4px',
+                                    padding: 2,
+                                    fontWeight: 'bold',
+                                    backgroundColor: 'transparent',  // 去掉背景色，使用透明
+                                    width: 'fit-content'  // 使得Typography仅占用所需宽度
+                                }}
+                                gutterBottom
+                            >
+                                {feedback.startsWith('✅️') ?
+                                    <CheckCircleIcon sx={{ mr: 1, color: feedback.startsWith('✅️') ? '#2e7d32' : '#c62828' }} />
+                                    :
+                                    <ErrorIcon sx={{ mr: 1, color: feedback.startsWith('✅️') ? '#2e7d32' : '#c62828' }} />}
+                                {feedback}
+                            </Typography>
+                                <Typography variant="body1" sx={{ my: 2 }}>
+                                    中古汉语: {Qieyun.資料.query字頭(words[qId]?.word).map((v, i) => v.音韻地位.描述).join(", ")}
+                                </Typography>
+                            </>}
+                        </Box>}
                 </Container>}
         </>
     )

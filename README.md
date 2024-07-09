@@ -1,18 +1,21 @@
+
 # 简介
 
-甪端Studling之前端。甪端Studling，一站式多语言学习平台，包含多种语言与方言的多种训练与查询功能。
+甪端Studling，一站式多语言学习平台，包含多种语言与方言的多种训练与查询功能。
 
 项目后端： https://github.com/pustot/studling-backend
+
+项目前端： https://github.com/pustot/studling-frontend
 
 外服网址（部署在 GitHub Pages，需在境外环境查看） https://studling.pustot.com/
 
 # 当前包含的语言/方言与模块
 
 - Beta（公开测试）阶段：
-    - 粤语（广州话）（ISO 693-3: `zh-yue`）
-        - 汉字读音自测 DifficultiesCmnToYue
+    - 粤语（广州话）（ISO 693-3: `zh-yue`，细分 `zh-yue-can`）
+        - 汉字读音自测 HanziTraining
         - 汉字读音抽认卡 Flashcards
-        - 普转粤难点标注 HanziTraining
+        - 普转粤难点标注 DifficultiesCmnToYue
     - 中古汉语与方言（ISO 693-3: `zh-ltc`，兼收多方言/域外方音比较）
         - 汉字古今中外读音查询 SinoDict
 - Alpha（内部测试）阶段：
@@ -23,6 +26,18 @@
 
 # 部署指南
 
+后端
+
+Spring Boot (Java) + MyBatis Plus + MySQL + Redis
+
+```shell
+mvn spring-boot:run
+```
+
+前端
+
+React (TypeScript) + MaterialUI
+
 ```shell
 npm install
 npm run start
@@ -32,7 +47,106 @@ npm run start
 
 ## 语言选择页面（主页）
 
+可以选择语言。后续添加收藏夹功能与训练统计功能。
+
 ## 用户账号注册与登陆
+
+用户注册与登陆功能目前用 Amazon Cognito，以减少个人项目安全系统维护难度。
+
+- [ ] 后端发现 email 为新，则将此新用户加入库
+
+## 数据存储
+
+### 用户信息表通用结构 Users
+
+```sql
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    cognito_sub VARCHAR(255) NOT NULL, -- 存储用户在Cognito中的唯一标识符
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX (email)
+);
+```
+
+### 字词信息表通用结构 XXWords
+
+```sql
+CREATE TABLE zh_yue_can_words (
+    word_id INT AUTO_INCREMENT PRIMARY KEY,
+    word VARCHAR(255) NOT NULL,
+    pronunciation VARCHAR(255),
+    meaning VARCHAR(255),
+    example_combination VARCHAR(255),
+    example_sentence TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX (word)
+);
+```
+
+对于汉字，pronunciation是在对应变体中的发音的罗马化，会用于单字读音拼写训练。
+
+### 训练信息表通用结构 XXTrainings
+
+```sql
+CREATE TABLE zh_yue_can_masteries (
+    user_id INT NOT NULL,
+    word_id INT NOT NULL,
+    recent_results VARCHAR(10) DEFAULT '0000000000', -- 最近10次训练结果，0表示错误，1表示正确
+    accuracy FLOAT DEFAULT 0, -- 正确率字段，其信息包含于recent_results但单拎以便索引
+    last_attempt_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, word_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (word_id) REFERENCES zh_yue_can_words(word_id),
+    INDEX (user_id, accuracy, last_attempt_date) -- 优先训练正确率最低、训练间隔最长者（ORDER BY accuracy ASC, last_attempt_date ASC）
+);
+```
+
+常用训练模式：每次10词，其中5个来自温习（优先训练正确率最低、训练间隔最长者），5个来自总词库随机选取。后续会引入更科学的记忆算法。
+
+### 每日训练统计
+
+```sql
+CREATE TABLE daily_training_stats (
+    user_id INT NOT NULL,
+    language_code VARCHAR(10) NOT NULL,
+    training_date DATE NOT NULL,
+    total_attempts INT DEFAULT 0,
+    correct_attempts INT DEFAULT 0,
+    incorrect_attempts INT DEFAULT 0,
+    PRIMARY KEY (user_id, language_code, training_date),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    INDEX (user_id, training_date) -- 用于跨语言总数
+);
+```
+
+## 多语言通用训练模块
+
+### （方言/古代汉语/域外方音）汉字读音训练 HanziPhonoTraining
+
+- （首先完成广州话版，跟住切韵TUPA）
+- [x] 纯前端版：每次10字，输入后按键或回车显示正误，显示进度条
+- [x] 显示切韵音韵地位作为参考
+- [x] DB 建立 users words trainings 表，并加入 words 表数据（仅word,pronunciation）
+- [x] 集成 MyBatis Plus
+- [x] 后端可以随机取词给前端
+- [x] 前端移植纯前端版界面
+- [ ] 前端训练数据保存到 trainings 表
+- [ ] 后端可以根据以往训练情况取优先训练之词（与随机取词结合）
+- [ ] 统计并显示总训练量、今日训练量（&每日、趋势）
+
+为了严格性，不使用选择题，而使用罗马字拼写的形式。适合拥有比较标准化、公认且易于输入的拼音系统者，例如普通话之汉语拼音，广州话之粤拼，中古汉语切韵音系之切韵拼音。后续考虑引入拼式自选功能，或在新引入方言中采用选择题的形式。
+
+对于多音字，单字练习允许输入任何一种发音，而后续设计的词语练习模块可以限定多音字具体发音。这一选择符合通常学习与测验形式。
+
+### （所有语言）单词释义训练 WordMeaningTraining
+
+- （首先完成英、广州话特有、日德韩法西越世）
+
+释义无法固定，故使用选择题形式。
+
+适用于所有语言。其中，对于汉语方言，主要用于方言特色词汇。
 
 ## 中古汉语与方言（ISO 693-3: `zh-ltc`，兼收多方言/域外方音比较）
 
