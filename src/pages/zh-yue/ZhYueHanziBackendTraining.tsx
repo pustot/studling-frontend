@@ -54,8 +54,10 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
     const sendMessage = async () => {
         try {
             // 发送示例消息给后端的逻辑
-            await API.post('/api/training/results', example_training_results); // 使用导入的 axios 实例发送请求
+            // await API.post('/api/training/results', example_training_results); // 使用导入的 axios 实例发送请求
+            let words = await API.get('/api/zh-yue-can-words/random/5'); // 使用导入的 axios 实例发送请求
             setMessageSent(true); // 暂时设为 true，表示消息发送成功
+            console.log(words.data)
         } catch (error) {
             console.error("发送消息失败:", error);
         }
