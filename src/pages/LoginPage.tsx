@@ -1,11 +1,13 @@
+import { AuthEventData } from "@aws-amplify/ui";
 import { Authenticator } from "@aws-amplify/ui-react";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Button, Container, Typography } from "@mui/material";
 import { fetchUserAttributes } from "aws-amplify/auth";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import { I18nText, getLocaleText } from "../utils/I18n";
+import API from '../utils/API';
 
 const UserEmail: React.FC = () => {
     const navigate = useNavigate();
@@ -18,7 +20,16 @@ const UserEmail: React.FC = () => {
             try {
                 const userAttributes = await fetchUserAttributes();
                 // 假设用户信息中包含电子邮件地址，并设置到状态中
-                setEmail(userAttributes?.email as string);
+                const userEmail = userAttributes?.email as string;
+                const cognitoSub = userAttributes?.sub as string;
+                setEmail(userEmail);
+                sessionStorage.setItem('userEmail', userEmail);
+                sessionStorage.setItem('cognitoSub', cognitoSub);
+                const userDTO = {
+                    email: userEmail,
+                    cognitoSub: cognitoSub
+                };
+                API.put(`/api/users`, userDTO); // 若后端DB无此用户email则添加
             } catch (error) {
                 console.error('Error fetching user email', error);
             }
@@ -34,6 +45,15 @@ const UserEmail: React.FC = () => {
 
 export default function LoginPage(props: { lang: keyof I18nText }) {
     const { lang } = props;
+
+    // 定义handleSignOut函数，并接收signOut作为参数
+    const handleSignOut = (signOutFunc: ((data?: AuthEventData) => void) | undefined) => {
+        // 清除SessionStorage中的用户信息
+        sessionStorage.removeItem('userEmail'); // 假设这是存储用户电子邮件的键
+
+        // 执行登出操作
+        if (signOutFunc) signOutFunc(); // 调用传入的signOut函数
+    };
 
     return (
         <>
@@ -74,7 +94,9 @@ export default function LoginPage(props: { lang: keyof I18nText }) {
 
                             <UserEmail />
 
-                            <Button variant="outlined" color="primary" onClick={signOut} style={{ fontSize: '0.75rem', margin: 4 }}>
+                            <Button variant="outlined" color="primary"
+                                onClick={() => handleSignOut(signOut)}
+                                style={{ fontSize: '0.75rem', margin: 4 }}>
                                 Sign Out
                             </Button>
 

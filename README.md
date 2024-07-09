@@ -53,7 +53,7 @@ npm run start
 
 用户注册与登陆功能目前用 Amazon Cognito，以减少个人项目安全系统维护难度。
 
-- [ ] 后端发现 email 为新，则将此新用户加入库
+- [x] 后端发现 email 为新，则将此新用户加入库（PUT /api/users {email, cognitoSub}）
 
 ## 数据存储
 
@@ -63,7 +63,7 @@ npm run start
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
-    cognito_sub VARCHAR(255) NOT NULL, -- 存储用户在Cognito中的唯一标识符
+    cognito_sub VARCHAR(255), -- 存储用户在Cognito中的唯一标识符
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX (email)
