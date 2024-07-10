@@ -15,7 +15,11 @@ jobs:
         with:
           node-version: "20"
       - run: npm install
-      - run: npm run build
+      - name: Build project
+        env:
+          REACT_APP_ENV: ${{ vars.REACT_APP_ENV }}
+          REACT_APP_HOUDUAN_DIZHI: ${{ vars.REACT_APP_HOUDUAN_DIZHI }}
+        run: npm run build
       - name: Publish to GitHub Pages
         run: |
           # Create a temporary directory
