@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 import { fetchAuthSession } from 'aws-amplify/auth';
 
-const base_url: string = process.env.REACT_APP_ENV === 'development' ? 'http://localhost:8080/' : process.env.REACT_APP_HOUDUAN_DIZHI!;
+const base_url: string = process.env.REACT_APP_ENV === 'development' ? 'http://localhost:8080/' : 'http://47.119.29.186:8080/' // process.env.REACT_APP_HOUDUAN_DIZHI!;
 console.log(process.env.REACT_APP_ENV)
 
 const axiosInstance: AxiosInstance = axios.create({
