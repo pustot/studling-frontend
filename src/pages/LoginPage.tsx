@@ -29,7 +29,7 @@ const UserEmail: React.FC = () => {
                     email: userEmail,
                     cognitoSub: cognitoSub
                 };
-                API.put(`/api/users`, userDTO); // 若后端DB无此用户email则添加
+                API.put(`/api/users/`, userDTO); // 若后端DB无此用户email则添加
             } catch (error) {
                 console.error('Error fetching user email', error);
             }

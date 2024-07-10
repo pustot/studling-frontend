@@ -36,7 +36,7 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
             .then(user => {
                 setUser(user);
                 if (sessionStorage.getItem('userEmail') != null) userEmail = sessionStorage.getItem('userEmail')!;
-                API.get<Word[]>(`/api/zh-yue-can-words/random/${BATCH_SIZE}`).then(
+                API.get<Word[]>(`/api/zh-yue-can-words/random/${BATCH_SIZE}/`).then(
                     resp => {
                         setQId(-1);
                         setWords(resp.data);
@@ -84,7 +84,7 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
 
             // 更新后端统计数据
             if (user) {
-                API.put('/api/zh-yue-can-masteries/update', [{
+                API.put('/api/zh-yue-can-masteries/update/', [{
                     userEmail: userEmail,
                     wordId: words[qId].wordId,
                     correct: isCorrect ? 1 : 0
@@ -94,7 +94,7 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
                     console.log('更新训练结果时出错', err);
                 });
 
-                API.put('/api/daily-training-stats/update', [{
+                API.put('/api/daily-training-stats/update/', [{
                     userEmail: userEmail,
                     languageCode: "zh-yue-can",
                     correct: isCorrect ? 1 : 0
