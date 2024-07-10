@@ -1,7 +1,7 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import { Box, Button, Container, LinearProgress, TextField, Typography } from "@mui/material";
-import { AuthUser, getCurrentUser } from 'aws-amplify/auth';
+import { AuthUser, fetchUserAttributes, getCurrentUser } from 'aws-amplify/auth';
 import * as Qieyun from "qieyun";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -35,7 +35,15 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
         getCurrentUser()
             .then(user => {
                 setUser(user);
-                if (sessionStorage.getItem('userEmail') != null) userEmail = sessionStorage.getItem('userEmail')!;
+                if (sessionStorage.getItem('userEmail') != null) 
+                    userEmail = sessionStorage.getItem('userEmail')!;
+                else {
+                    fetchUserAttributes().then( userAttributes => {
+                        userEmail = userAttributes?.email as string;
+                        sessionStorage.setItem('userEmail', userEmail);
+                        console.log(userEmail)
+                    })
+                }
                 API.get<Word[]>(`/api/zh-yue-can-words/random/${BATCH_SIZE}`).then(
                     resp => {
                         setQId(-1);
