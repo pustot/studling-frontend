@@ -16,9 +16,6 @@ jobs:
           node-version: "20"
       - run: npm install
       - name: Build project
-        env:
-          REACT_APP_ENV: ${{ secrets.REACT_APP_ENV }}
-          REACT_APP_HOUDUAN_DIZHI: ${{ secrets.REACT_APP_HOUDUAN_DIZHI }}
         run: npm run build
       - name: Publish to GitHub Pages
         run: |

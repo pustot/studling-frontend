@@ -26,6 +26,8 @@
 
 # 部署指南
 
+- [x] 已完成上云流程，不过，使用了境内服务器但未备案，可能后续会需要备案或转移服务器。
+
 后端
 
 Spring Boot (Java) + MyBatis Plus + MySQL + Redis
