@@ -3,16 +3,16 @@ import { Authenticator } from "@aws-amplify/ui-react";
 import { Button, Container, Typography } from "@mui/material";
 import { fetchUserAttributes } from "aws-amplify/auth";
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
-import { I18nText, getLocaleText } from "../utils/I18n";
 import API from '../utils/API';
+import { I18nText, getLocaleText } from "../utils/I18n";
 
 const UserEmail: React.FC = () => {
     const navigate = useNavigate();
-
     const [email, setEmail] = useState('loading...');
+    const fetchCalled = useRef(false); // 添加 useRef 防止多次调用
 
     useEffect(() => {
         // 定义异步函数来获取当前认证用户的信息
@@ -36,7 +36,11 @@ const UserEmail: React.FC = () => {
         };
 
         // 调用异步函数
-        fetchUserEmail();
+        // 使用 useRef 防止多次调用
+        if (!fetchCalled.current) {
+            fetchUserEmail();
+            fetchCalled.current = true; // 标记为已调用
+        }
 
     }, []); // 空依赖数组表示这个 effect 仅在组件挂载时执行一次
 

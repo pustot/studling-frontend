@@ -25,6 +25,7 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
     const [correctAnswers, setCorrectAnswers] = useState(0);
     const [answerChecked, setAnswerChecked] = useState(false);
     const [isFinished, setIsFinished] = useState(false);
+    let userEmail = sessionStorage.getItem('userEmail')!;
 
     // 登陆验证相关
     const [user, setUser] = useState<AuthUser | null>(null);
@@ -34,6 +35,7 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
         getCurrentUser()
             .then(user => {
                 setUser(user);
+                if (sessionStorage.getItem('userEmail') != null) userEmail = sessionStorage.getItem('userEmail')!;
                 API.get<Word[]>(`/api/zh-yue-can-words/random/${BATCH_SIZE}`).then(
                     resp => {
                         setQId(-1);
@@ -71,13 +73,37 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
         if (qId >= 0 && qId < words.length) {
             setTotalAttempts(prev => prev + 1);
             const correctAnswers = words[qId].pronunciation.split(',');
-            if (correctAnswers && correctAnswers.map(ans => ans.toLowerCase()).includes(userInput.trim().toLowerCase())) {
+            const isCorrect = correctAnswers.map(ans => ans.toLowerCase()).includes(userInput.trim().toLowerCase());
+            if (isCorrect) {
                 setCorrectAnswers(prev => prev + 1);
                 setFeedback(`✅️ 正确！（正确答案：${correctAnswers.join(', ')}）`);
             } else {
                 setFeedback(`❌️ 错误！（正确答案：${correctAnswers.join(', ')}）`);
             }
             setAnswerChecked(true);  // 设置答案已检查
+
+            // 更新后端统计数据
+            if (user) {
+                API.put('/api/zh-yue-can-masteries/update', [{
+                    userEmail: userEmail,
+                    wordId: words[qId].wordId,
+                    correct: isCorrect ? 1 : 0
+                }]).then(() => {
+                    //console.log('训练结果已更新');
+                }).catch(err => {
+                    console.log('更新训练结果时出错', err);
+                });
+
+                API.put('/api/daily-training-stats/update', [{
+                    userEmail: userEmail,
+                    languageCode: "zh-yue-can",
+                    correct: isCorrect ? 1 : 0
+                }]).then(() => {
+                    //console.log('每日训练统计已更新');
+                }).catch(err => {
+                    console.log('更新每日训练统计时出错', err);
+                });
+            }
         }
     };
 
