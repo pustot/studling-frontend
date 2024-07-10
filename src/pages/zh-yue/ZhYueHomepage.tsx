@@ -1,24 +1,21 @@
 import {
     Box,
     Button,
-    Card,
-    CardActionArea,
-    Chip,
     Container,
-    Grid,
     Stack,
     TextField,
     Typography
 } from "@mui/material";
+import { fetchUserAttributes, getCurrentUser } from "aws-amplify/auth";
 import "purecss/build/pure.css";
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../../components/BackButton";
+import LangHomeCardContainer from "../../components/LangHomeCardContainer";
 import "../../styles.scss";
 import API from "../../utils/API";
 import { I18nText, getLocaleText } from "../../utils/I18n";
-import LangHomeCardContainer from "../../components/LangHomeCardContainer";
 
 interface Document {
     id: string;
@@ -41,8 +38,38 @@ const items = [
 
 export default function ZhYueHomepage(props: { lang: keyof I18nText }) {
     const { lang } = props;
+    const [dailyStats, setDailyStats] = useState<DailyTrainingStats | null>(null);
 
     const navigate = useNavigate();
+    let userEmail = sessionStorage.getItem('userEmail')!;
+
+    useEffect(() => {
+        getCurrentUser()
+            .then(user => {
+                if (sessionStorage.getItem('userEmail') != null)
+                    userEmail = sessionStorage.getItem('userEmail')!;
+                else {
+                    fetchUserAttributes().then(userAttributes => {
+                        userEmail = userAttributes?.email as string;
+                        sessionStorage.setItem('userEmail', userEmail);
+                        console.log(userEmail)
+                    })
+                }
+                API.get<DailyTrainingStats>(`/api/daily-training-stats/today`, {
+                    params: {
+                        userEmail: userEmail, // 替换为实际的用户邮箱
+                        languageCode: 'zh-yue-can' // 替换为实际的语言代码
+                    }
+                }).then(response => {
+                    setDailyStats(response.data);
+                }).catch(err => {
+                    console.log('后端错误', err);
+                });
+            })
+            .catch(err => {
+                console.log('用户未登录', err);
+            });
+    }, []);
 
     const [searchValue, setSearchValue] = useState<string>(''); // 添加搜索框的状态
     const [searchResults, setSearchResults] = useState<Document[]>([]);
@@ -91,6 +118,10 @@ export default function ZhYueHomepage(props: { lang: keyof I18nText }) {
                     lang
                 )}
             </Typography>
+
+            {dailyStats && <Typography variant="h6"  align="center" p={2}>
+                🎉今日共训练 {dailyStats.totalAttempts}，正确率：{(dailyStats.correctAttempts * 100.0 / dailyStats.totalAttempts).toFixed(1)}%（{dailyStats.correctAttempts}／{dailyStats.totalAttempts}）
+            </Typography>}
 
             <LangHomeCardContainer items={items} />
 
