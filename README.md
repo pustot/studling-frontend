@@ -87,7 +87,7 @@ CREATE TABLE zh_yue_can_words (
 
 对于汉字，pronunciation是在对应变体中的发音的罗马化，会用于单字读音拼写训练。
 
-### 训练信息表通用结构 XXTrainings
+### 训练信息表通用结构 XXMasteries
 
 ```sql
 CREATE TABLE zh_yue_can_masteries (
@@ -105,7 +105,7 @@ CREATE TABLE zh_yue_can_masteries (
 
 常用训练模式：每次10词，其中5个来自温习（优先训练正确率最低、训练间隔最长者），5个来自总词库随机选取。后续会引入更科学的记忆算法。
 
-### 每日训练统计
+### 每日训练统计 `daily_training_stats`
 
 ```sql
 CREATE TABLE daily_training_stats (
@@ -132,9 +132,10 @@ CREATE TABLE daily_training_stats (
 - [x] 集成 MyBatis Plus
 - [x] 后端可以随机取词给前端
 - [x] 前端移植纯前端版界面
-- [ ] 前端训练数据保存到 trainings 表
-- [ ] 后端可以根据以往训练情况取优先训练之词（与随机取词结合）
+- [x] 训练结果保存到 masteries 表
+- [x] 训练结果保存到 `daily_training_stats` 表
 - [ ] 统计并显示总训练量、今日训练量（&每日、趋势）
+- [ ] 后端可以根据以往训练情况取优先训练之词（与随机取词结合）
 
 为了严格性，不使用选择题，而使用罗马字拼写的形式。适合拥有比较标准化、公认且易于输入的拼音系统者，例如普通话之汉语拼音，广州话之粤拼，中古汉语切韵音系之切韵拼音。后续考虑引入拼式自选功能，或在新引入方言中采用选择题的形式。
 
