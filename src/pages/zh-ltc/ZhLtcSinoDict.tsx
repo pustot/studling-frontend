@@ -1,12 +1,12 @@
 import { Box, Button, Card, Container, FormControlLabel, Grid, Stack, Switch, TextareaAutosize, Tooltip, Typography } from '@mui/material';
 import axios from 'axios';
+import * as Qieyun from "qieyun";
 import * as React from "react";
 import { useEffect, useState } from 'react';
 import BackButton from '../../components/BackButton';
 import { I18nText, getLocaleText } from "../../utils/I18n";
-import { dialectConfigMap, DialectConfig } from './dialectConfig';
 import { hanziUtils, tupaToMarkings } from '../../utils/SinoUtils';
-import * as Qieyun from "qieyun";
+import { DialectConfig, dialectConfigMap } from './dialectConfig';
 
 // 单语 dict 的类型
 type Dict = Map<string, string[]>;

@@ -13,20 +13,20 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import awsconfig from './aws-exports'; // 如果你通过 Amplify CLI 初始化，配置信息会自动生成在这个文件
 import Footer from "./components/Footer";
 import NavBarAndMenu, { NavItem } from "./components/NavBarAndMenu";
+import HanromHanVsRom from './pages/hanrom/HanromHanVsRom';
+import HanromHomepage from "./pages/hanrom/HanromHomepage";
 import Home from "./pages/Home";
 import LanguageSelection from "./pages/LanguageSelection";
 import LoginPage from './pages/LoginPage';
-import ZhYueDifficultiesCmnToYue from './pages/zh-yue/ZhYueDifficultiesCmnToYue';
-import ZhYueFlashcards from './pages/zh-yue/ZhYueFlashcards';
-import ZhYueHanziBackendTraining from './pages/zh-yue/ZhYueHanziBackendTraining';
-import ZhYueHanziTraining from './pages/zh-yue/ZhYueHanziTraining';
-import ZhYueHomepage from "./pages/zh-yue/ZhYueHomepage";
-import HanromHomepage from "./pages/hanrom/HanromHomepage";
-import "./styles.scss";
-import { I18nText } from "./utils/I18n";
-import HanromHanVsRom from './pages/hanrom/HanromHanVsRom';
 import ZhLtcHomepage from './pages/zh-ltc/ZhLtcHomepage';
 import ZhLtcSinoDict from './pages/zh-ltc/ZhLtcSinoDict';
+import CanDifficultiesCmnToYue from './pages/zh-yue-can/CanDifficultiesCmnToYue';
+import CanFlashcards from './pages/zh-yue-can/CanFlashcards';
+import CanHanziTrainingNonSynced from './pages/zh-yue-can/CanHanziTrainingNonSynced';
+import CanHanziTrainingSynced from './pages/zh-yue-can/CanHanziTrainingSynced';
+import CanHomepage from "./pages/zh-yue-can/CanHomepage";
+import "./styles.scss";
+import { I18nText } from "./utils/I18n";
 
 Amplify.configure(awsconfig);
 
@@ -209,12 +209,12 @@ export default function App() {
                     {/* 中古汉语及方言 ISO: zh-ltc （注：ISO 693-3 中，英文称 Late Middle Chinese，中文仍称中古汉语） */}
                     <Route path="/zh-ltc" element={<ZhLtcHomepage lang={lang} />} />
                     <Route path="/zh-ltc/sino-dict" element={<ZhLtcSinoDict lang={lang} />} />
-                    {/* 粤语（广州话） ISO: zh-yue */}
-                    <Route path="/zh-yue" element={<ZhYueHomepage lang={lang} />} />
-                    <Route path="/zh-yue/hanzi-training" element={<ZhYueHanziTraining lang={lang} />} />
-                    <Route path="/zh-yue/hanzi-backend-training" element={<ZhYueHanziBackendTraining lang={lang} />} />
-                    <Route path="/zh-yue/flashcards" element={<ZhYueFlashcards lang={lang} />} />
-                    <Route path="/zh-yue/difficulties-cmn-to-yue" element={<ZhYueDifficultiesCmnToYue lang={lang} />} />
+                    {/* 粤语（广州话） ISO: zh-yue，细分 `zh-yue-can` */}
+                    <Route path="/zh-yue-can" element={<CanHomepage lang={lang} />} />
+                    <Route path="/zh-yue-can/hanzi-training-synced" element={<CanHanziTrainingSynced lang={lang} />} />
+                    <Route path="/zh-yue-can/hanzi-training-non-synced" element={<CanHanziTrainingNonSynced lang={lang} />} />
+                    <Route path="/zh-yue-can/flashcards" element={<CanFlashcards lang={lang} />} />
+                    <Route path="/zh-yue-can/difficulties-cmn-to-yue" element={<CanDifficultiesCmnToYue lang={lang} />} />
                     {/* 汉罗文（人造语言） */}
                     <Route path="/hanrom" element={<HanromHomepage lang={lang} />} />
                     <Route path="/hanrom/han-vs-rom" element={<HanromHanVsRom lang={lang} />} />

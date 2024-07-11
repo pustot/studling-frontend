@@ -13,7 +13,7 @@ import { I18nText } from "../../utils/I18n";
 
 const BATCH_SIZE = 10;
 
-export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText }) {
+export default function CanHanziTrainingSynced(props: { lang: keyof I18nText }) {
     const { lang } = props;
 
     const navigate = useNavigate(); // 获取navigate函数

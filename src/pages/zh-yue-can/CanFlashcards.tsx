@@ -5,13 +5,13 @@ import {
 import "purecss/build/pure.css";
 import * as React from "react";
 import { useEffect } from "react";
-import { promiseDataLarge } from "./data";
 import BackButton from "../../components/BackButton";
 import FlashCard from "../../components/FlashCard";
 import "../../styles.scss";
 import { I18nText } from "../../utils/I18n";
+import { promiseDataLarge } from "./data";
 
-export default function ZhYueFlashcards(props: { lang: keyof I18nText }) {
+export default function CanFlashcards(props: { lang: keyof I18nText }) {
   const { lang } = props;
 
   const [pronunciationDataLarge, setPronunciationDataLarge] = React.useState([['字', 'zi6']]);

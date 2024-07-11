@@ -23,8 +23,8 @@ interface Document {
 }
 
 const items = [
-    { name: "汉字拼读训练（云端记录，需👤登陆）", link: "hanzi-backend-training", stage: "Beta" },
-    { name: "汉字拼读训练（无记录）", link: "hanzi-training", stage: "Beta" },
+    { name: "汉字拼读训练（云端记录，需👤登陆）", link: "hanzi-training-synced", stage: "Beta" },
+    { name: "汉字拼读训练（无记录）", link: "hanzi-training-non-synced", stage: "Beta" },
     { name: "普转粤难点标注", link: "difficulties-cmn-to-yue", stage: "Beta" },
     { name: "汉字读音抽认卡", link: "flashcards", stage: "Beta" },
     { name: "特有词汇训练", link: "", stage: "Alpha" },
@@ -35,7 +35,7 @@ const items = [
     { name: "掌握情况分析", link: "", stage: "Alpha" },
 ];
 
-export default function ZhYueHomepage(props: { lang: keyof I18nText }) {
+export default function CanHomepage(props: { lang: keyof I18nText }) {
     const { lang } = props;
     const [dailyStats, setDailyStats] = useState<DailyTrainingStats | null>(null);
     const [userEmail, setUserEmail] = useState(sessionStorage.getItem('userEmail'));

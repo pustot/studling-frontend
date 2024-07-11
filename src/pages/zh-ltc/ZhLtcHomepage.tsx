@@ -5,9 +5,9 @@ import {
 import "purecss/build/pure.css";
 import * as React from "react";
 import BackButton from "../../components/BackButton";
+import LangHomeCardContainer from "../../components/LangHomeCardContainer";
 import "../../styles.scss";
 import { I18nText, getLocaleText } from "../../utils/I18n";
-import LangHomeCardContainer from "../../components/LangHomeCardContainer";
 
 const items = [
     { name: "汉字古今中外读音查询", link: "sino-dict", stage: "Beta" },

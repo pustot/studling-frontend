@@ -26,7 +26,7 @@ export const getFallbackLanguage = (i18nText: I18nT<any>, pageLang: string): Lan
             if (lang in i18nText) return lang as LangCode;
         }
     }
-    
+
     return "en" as LangCode;
 };
 
@@ -265,7 +265,7 @@ export const languageCodeToLocale = (langCode: string, pageLang: string): string
     return langNames[langCode as LangCode]![pageLang as LangCode] || "";
 };
 
-const langIcons : I18nText = {
+const langIcons: I18nText = {
     "zh-Hans": "🇨🇳",
     "zh-Hant": "🇨🇳",
     "en": "🇺🇸",

@@ -189,7 +189,7 @@ CREATE TABLE daily_training_stats (
     - [ ] 提示连读音变信息。
     - [ ] 支持显示文白异读、日语吴音汉音之分（可借 MCPDict 信息）。
 
-## 粤语（广州话）（ISO 693-3: `zh-yue`）
+## 粤语（广州话）（ISO 693-3: `zh-yue`，细分 `zh-yue-can`）
 
 ### 汉字读音自测 DifficultiesCmnToYue
 
