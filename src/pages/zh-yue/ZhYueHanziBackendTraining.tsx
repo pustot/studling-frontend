@@ -25,19 +25,20 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
     const [correctAnswers, setCorrectAnswers] = useState(0);
     const [answerChecked, setAnswerChecked] = useState(false);
     const [isFinished, setIsFinished] = useState(false);
-    let userEmail = sessionStorage.getItem('userEmail')!;
+    const [userEmail, setUserEmail] = useState(sessionStorage.getItem('userEmail'));
 
     // 登陆验证相关
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         if (sessionStorage.getItem('userEmail') != null)
-            userEmail = sessionStorage.getItem('userEmail')!;
+            setUserEmail(sessionStorage.getItem('userEmail')!);
         else {
             fetchUserAttributes().then(userAttributes => {
-                userEmail = userAttributes?.email as string;
-                sessionStorage.setItem('userEmail', userEmail);
-                console.log(userEmail)
+                const fetchedEmail = userAttributes?.email as string;
+                setUserEmail(fetchedEmail);
+                sessionStorage.setItem('userEmail', fetchedEmail);
+                console.log(fetchedEmail)
             }).catch(err => {
                 console.log('用户未登录', err);
                 navigate('/login');

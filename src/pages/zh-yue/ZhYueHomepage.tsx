@@ -39,18 +39,17 @@ const items = [
 export default function ZhYueHomepage(props: { lang: keyof I18nText }) {
     const { lang } = props;
     const [dailyStats, setDailyStats] = useState<DailyTrainingStats | null>(null);
-
-    const navigate = useNavigate();
-    let userEmail = sessionStorage.getItem('userEmail')!;
+    const [userEmail, setUserEmail] = useState(sessionStorage.getItem('userEmail'));
 
     useEffect(() => {
         if (sessionStorage.getItem('userEmail') != null)
-            userEmail = sessionStorage.getItem('userEmail')!;
+            setUserEmail(sessionStorage.getItem('userEmail')!);
         else {
             fetchUserAttributes().then(userAttributes => {
-                userEmail = userAttributes?.email as string;
-                sessionStorage.setItem('userEmail', userEmail);
-                console.log(userEmail)
+                const fetchedEmail = userAttributes?.email as string;
+                setUserEmail(fetchedEmail);
+                sessionStorage.setItem('userEmail', fetchedEmail);
+                console.log(fetchedEmail)
             }).catch(err => {
                 console.log('用户未登录', err);
             });
