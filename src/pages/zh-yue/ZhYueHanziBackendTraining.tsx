@@ -1,7 +1,7 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import { Box, Button, Container, LinearProgress, TextField, Typography } from "@mui/material";
-import { AuthUser, fetchUserAttributes, getCurrentUser } from 'aws-amplify/auth';
+import { fetchUserAttributes } from 'aws-amplify/auth';
 import * as Qieyun from "qieyun";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -17,18 +17,21 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
     const { lang } = props;
 
     const navigate = useNavigate(); // 获取navigate函数
+    // 登陆验证相关
+    const [isLoading, setIsLoading] = useState(true);
+    const [userEmail, setUserEmail] = useState("");
+    // 训练词表与记录
     const [words, setWords] = useState<Word[]>([]);
     const [qId, setQId] = useState(-1);
     const [userInput, setUserInput] = useState<string>('');
     const [feedback, setFeedback] = useState<string>('');
     const [totalAttempts, setTotalAttempts] = useState(0);
     const [correctAnswers, setCorrectAnswers] = useState(0);
+    const correctRate = totalAttempts > 0 ? (correctAnswers / totalAttempts) * 100 : 0;
     const [answerChecked, setAnswerChecked] = useState(false);
     const [isFinished, setIsFinished] = useState(false);
-    const [userEmail, setUserEmail] = useState(sessionStorage.getItem('userEmail'));
-
-    // 登陆验证相关
-    const [isLoading, setIsLoading] = useState(true);
+    // 记录伦次，即原地开启新一轮新词
+    const [trainRound, setTrainRound] = useState(0);
 
     useEffect(() => {
         if (sessionStorage.getItem('userEmail') != null)
@@ -58,7 +61,7 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
                 console.log('后端错误', err);
             });
         }
-    }, [userEmail]);
+    }, [userEmail, trainRound]);
 
     const startExercise = () => {
         setAnswerChecked(false);  // 重置答案检查状态
@@ -115,10 +118,14 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
         }
     };
 
-    const correctRate = totalAttempts > 0 ? (correctAnswers / totalAttempts) * 100 : 0;
+    const startNewRoundResetPage = () => {
+        setTrainRound(prevKey => prevKey + 1);
+        setIsLoading(true);
+        setIsFinished(false);
+    };
 
     return (
-        <>
+        <div>
             {isLoading
                 ? <Typography>Loading...</Typography>
                 :
@@ -129,11 +136,20 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
                             display="flex"
                             justifyContent="center"
                             alignItems="center"
+                            flexDirection="column"
                             height="80vh"
                         >
                             <Typography variant="h5" py={2}>
                                 🎉本轮训练完成！正确率：{correctRate.toFixed(0)}%（{correctAnswers}／{totalAttempts}）
                             </Typography>
+                            <Button
+                                variant="outlined"
+                                color={"primary"}
+                                onClick={startNewRoundResetPage}
+                                sx={{ margin: 2 }}
+                            >
+                                开启新一轮
+                            </Button>
                         </Box>
                         : <Box marginBottom={4}>
                             <Typography variant="h6" py={2}>请为以下汉字输入粤拼：</Typography>
@@ -197,6 +213,6 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
                             </>}
                         </Box>}
                 </Container>}
-        </>
+        </div>
     )
 }
