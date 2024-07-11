@@ -40,7 +40,7 @@ const languageCardItems: LanguageCardItem[] = [
         link: "#/zh-ltc"
     },
     {
-        name: '普通话', stage: 'ComingSoon',
+        name: '汉语（普通话）', stage: 'ComingSoon',
         icon: <IconFromPublicRepo fileName={"studling-icon-zh-cmn.webp"} />
     },
     {
@@ -53,12 +53,12 @@ const languageCardItems: LanguageCardItem[] = [
     },
     {
         name: '粤语（广州话）', stage: 'Beta',
-        icon: <IconFromPublicRepo fileName={"studling-icon-zh-yue.webp"} />,
+        icon: <IconFromPublicRepo fileName={"studling-icon-zh-yue-can.webp"} />,
         link: "#/zh-yue"
     },
     {
         name: '吴语（上海话）', stage: 'ComingSoon',
-        icon: <IconFromPublicRepo fileName={"studling-icon-zh-wuu.webp"} />
+        icon: <IconFromPublicRepo fileName={"studling-icon-zh-wuu-sha.webp"} />
     },
     {
         name: '英语', stage: 'Alpha',
@@ -92,13 +92,13 @@ const languageCardItems: LanguageCardItem[] = [
         name: '西班牙语', stage: 'ComingSoon',
         icon: <IconFromPublicRepo fileName={"studling-icon-es.webp"} />
     },
-    { name: '闽南语泉漳片（第一优势腔）', stage: 'ComingSoon', icon: <div>ZH-NAN</div> },
+    { name: '闽南语泉漳片（厦门话）', stage: 'ComingSoon', icon: <div>ZH-NAN-XMN</div> },
     { 
         name: '西南官话（昆明话）', stage: 'ComingSoon', 
         icon: <IconFromPublicRepo fileName={"studling-icon-zh-cmn-kmg.svg"} />
     },
-    { name: '闽南语潮汕片', stage: 'ComingSoon', icon: <div>ZH-NAN</div> },
-    { name: '客家话', stage: 'ComingSoon', icon: <div>ZH-HAK</div> },
+    { name: '闽南语潮汕片（潮州话）', stage: 'ComingSoon', icon: <div>ZH-NAN-SWA</div> },
+    { name: '客家话（梅县话）', stage: 'ComingSoon', icon: <div>ZH-HAK-MXZ</div> },
     { name: '荷兰语', stage: 'ComingSoon', icon: <div>NL</div> },
     { name: '瑞典语', stage: 'ComingSoon', icon: <div>SV</div> },
     { 
@@ -182,7 +182,7 @@ export default function LanguageSelection(props: { lang: keyof I18nText }) {
             <Typography variant="body1" sx={{ marginBottom: 2 }}>
                 {getLocaleText(
                     {
-                        "en": "Welcome to 甪端 Studling",
+                        "en": "Welcome to 甪端 Studling, your one-stop multilingual learning platform. Please choose the language you want to learn.",
                         "zh-Hant": "歡迎來到甪端 Studling，一站式多語種學習平臺。請選擇您要學習的語言。",
                         "zh-Hans": "欢迎来到甪端 Studling，一站式多语种学习平台。请选择您要学习的语言。",
                         "tto-bro": "EeRZ T8eHXQea",

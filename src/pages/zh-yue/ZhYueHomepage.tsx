@@ -90,37 +90,33 @@ export default function ZhYueHomepage(props: { lang: keyof I18nText }) {
     return (
         <Container maxWidth="md">
             <BackButton />
-            <Typography variant="h5" sx={{ marginBottom: 2 }}>
+            <Typography variant="h5" p={2}>
                 {getLocaleText(
                     {
-                        "en": "甪端 Studling",
-                        "zh-Hant": "甪端 Studling",
-                        "zh-Hans": "甪端 Studling",
-                        "tto-bro": "EeRZ T8eHXQea",
-                        "tto": "hFCmo mAFKRHm",
-                        "ja": "甪端 Studling",
-                        "de": "甪端 Studling",
+                        "en": "Cantonese",
+                        "zh-Hant": "粵語（廣州話）",
+                        "zh-Hans": "粤语（广州话）",
+                        "tto-bro": "YnrZ2 Tn X8FrtE3",
+                        "tto": "YnmZ9tnFr",
+                        "ja": "粤語（広東語）",
+                        "de": "Kantonesisch",
                     },
                     lang
                 )}
             </Typography>
-            <Typography variant="body1" sx={{ marginBottom: 2 }}>
+            <Typography variant="body1" p={2}>
                 {getLocaleText(
                     {
-                        "en": "甪端 Studling",
-                        "zh-Hant": "甪端 Studling",
-                        "zh-Hans": "一站式多语种学习平台。",
-                        "tto-bro": "EeRZ T8eHXQea",
-                        "tto": "hFCmo mAFKRHm",
-                        "ja": "甪端 Studling",
-                        "de": "甪端 Studling",
+                        "en": "Welcome to 甪端 Studling, your one-stop multilingual learning platform.",
+                        "zh-Hant": "歡迎來到甪端 Studling，一站式多語種學習平臺。",
+                        "zh-Hans": "欢迎来到甪端 Studling，一站式多语种学习平台。",
                     },
                     lang
                 )}
             </Typography>
 
             {dailyStats && <Typography variant="h6" align="center" p={2}>
-                🏆今日共训练 {dailyStats.totalAttempts}，正确率：{(dailyStats.correctAttempts * 100.0 / dailyStats.totalAttempts).toFixed(1)}%
+                🏆 今日共训练 {dailyStats.totalAttempts}，正确率：{(dailyStats.correctAttempts * 100.0 / dailyStats.totalAttempts).toFixed(1)}%
             </Typography>}
 
             <LangHomeCardContainer items={items} />
