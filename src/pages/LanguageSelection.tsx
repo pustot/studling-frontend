@@ -108,15 +108,30 @@ const languageCardItems: LanguageCardItem[] = [
         name: '客家话（梅县话）', stage: 'ComingSoon', 
         icon: <IconFromPublicRepo fileName={"studling-icon-zh-hak-mxz.jpeg"} /> 
     },
-    { name: '荷兰语', stage: 'ComingSoon', icon: <div>NL</div> },
-    { name: '瑞典语', stage: 'ComingSoon', icon: <div>SV</div> },
+    { 
+        name: '荷兰语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-nl.jpeg"} /> 
+    },
+    { 
+        name: '瑞典语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-sv.png"} /> 
+    },
     { 
         name: '葡萄牙语', stage: 'ComingSoon', 
         icon: <IconFromPublicRepo fileName={"studling-icon-pt.jpg"} /> 
     },
-    { name: '意大利语', stage: 'ComingSoon', icon: <div>IT</div> },
-    { name: '阿拉伯语', stage: 'ComingSoon', icon: <div>AR</div> },
-    { name: '俄语', stage: 'ComingSoon', icon: <div>RU</div> },
+    { 
+        name: '意大利语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-it.webp"} /> 
+    },
+    { 
+        name: '阿拉伯语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-ar.webp"} /> 
+    },
+    { 
+        name: '俄语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-ru.webp"} /> 
+    },
     { 
         name: '马来语', stage: 'ComingSoon', 
         icon: <IconFromPublicRepo fileName={"studling-icon-ms.jpeg"} /> 
@@ -125,20 +140,38 @@ const languageCardItems: LanguageCardItem[] = [
         name: '拉丁语', stage: 'ComingSoon', 
         icon: <IconFromPublicRepo fileName={"studling-icon-la.svg"} /> 
     },
-    { name: '藏语', stage: 'ComingSoon', icon: <div>BO</div> },
-    { name: '壮语', stage: 'ComingSoon', icon: <div>ZA</div> },
+    { 
+        name: '藏语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-bo.jpeg"} /> 
+    },
+    { 
+        name: '壮语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-za.png"} /> 
+    },
     { 
         name: '高棉语', stage: 'ComingSoon', 
         icon: <IconFromPublicRepo fileName={"studling-icon-km.webp"} />
     },
-    { name: '蒙语', stage: 'ComingSoon', icon: <div>MN</div> },
+    { 
+        name: '蒙语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-mn.webp"} /> 
+    },
     { 
         name: '满语', stage: 'ComingSoon', 
         icon: <IconFromPublicRepo fileName={"studling-icon-mnc.png"} />
     },
-    { name: '维语', stage: 'ComingSoon', icon: <div>UG</div> },
-    { name: '梵语', stage: 'ComingSoon', icon: <div>SA</div> },
-    { name: '希伯来语', stage: 'ComingSoon', icon: <div>HE</div> },
+    { 
+        name: '维语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-ug.jpeg"} /> 
+    },
+    { 
+        name: '梵语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-sa.png"} />
+    },
+    { 
+        name: '希伯来语', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-he.jpeg"} /> 
+    },
     { 
         name: '泰米尔语', stage: 'ComingSoon', 
         icon: <IconFromPublicRepo fileName={"studling-icon-ta.png"} />
@@ -147,6 +180,10 @@ const languageCardItems: LanguageCardItem[] = [
         name: '汉罗文（人造语言）', stage: 'Alpha', 
         icon: <IconFromPublicRepo fileName={"studling-icon-hanrom.webp"} />,
         link: "#/hanrom"
+    },
+    { 
+        name: '泰语', stage: 'ComingSoon', 
+        icon:  <IconFromPublicRepo fileName={"studling-icon-th.webp"} /> 
     },
 ];
 
