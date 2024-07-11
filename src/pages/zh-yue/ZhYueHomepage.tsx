@@ -116,7 +116,7 @@ export default function ZhYueHomepage(props: { lang: keyof I18nText }) {
             </Typography>
 
             {dailyStats && <Typography variant="h6" align="center" p={2}>
-                🏆 今日共训练 {dailyStats.totalAttempts}，正确率：{(dailyStats.correctAttempts * 100.0 / dailyStats.totalAttempts).toFixed(1)}%
+                🏆 今日共训练 {dailyStats.totalAttempts} 个条目，正确率：{(dailyStats.correctAttempts * 100.0 / dailyStats.totalAttempts).toFixed(1)}%
             </Typography>}
 
             <LangHomeCardContainer items={items} />
