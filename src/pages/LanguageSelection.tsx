@@ -92,13 +92,22 @@ const languageCardItems: LanguageCardItem[] = [
         name: '西班牙语', stage: 'ComingSoon',
         icon: <IconFromPublicRepo fileName={"studling-icon-es.webp"} />
     },
-    { name: '闽南语泉漳片（厦门话）', stage: 'ComingSoon', icon: <div>ZH-NAN-XMN</div> },
+    { 
+        name: '闽南语泉漳片（厦门话）', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-zh-nan-xmn.jpeg"} /> 
+    },
     { 
         name: '西南官话（昆明话）', stage: 'ComingSoon', 
         icon: <IconFromPublicRepo fileName={"studling-icon-zh-cmn-kmg.svg"} />
     },
-    { name: '闽南语潮汕片（潮州话）', stage: 'ComingSoon', icon: <div>ZH-NAN-SWA</div> },
-    { name: '客家话（梅县话）', stage: 'ComingSoon', icon: <div>ZH-HAK-MXZ</div> },
+    { 
+        name: '闽南语潮汕片（潮州话）', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-zh-nan-swa.webp"} />
+    },
+    { 
+        name: '客家话（梅县话）', stage: 'ComingSoon', 
+        icon: <IconFromPublicRepo fileName={"studling-icon-zh-hak-mxz.jpeg"} /> 
+    },
     { name: '荷兰语', stage: 'ComingSoon', icon: <div>NL</div> },
     { name: '瑞典语', stage: 'ComingSoon', icon: <div>SV</div> },
     { 

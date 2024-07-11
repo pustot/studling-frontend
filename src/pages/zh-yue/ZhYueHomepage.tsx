@@ -10,7 +10,6 @@ import { fetchUserAttributes } from "aws-amplify/auth";
 import "purecss/build/pure.css";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import BackButton from "../../components/BackButton";
 import LangHomeCardContainer from "../../components/LangHomeCardContainer";
 import "../../styles.scss";
@@ -116,7 +115,7 @@ export default function ZhYueHomepage(props: { lang: keyof I18nText }) {
             </Typography>
 
             {dailyStats && <Typography variant="h6" align="center" p={2}>
-                🏆 今日共训练 {dailyStats.totalAttempts} 个条目，正确率：{(dailyStats.correctAttempts * 100.0 / dailyStats.totalAttempts).toFixed(1)}%
+                🏆 今日已训练 {dailyStats.totalAttempts} 个条目，正确率 {(dailyStats.correctAttempts * 100.0 / dailyStats.totalAttempts).toFixed(1)}%
             </Typography>}
 
             <LangHomeCardContainer items={items} />
