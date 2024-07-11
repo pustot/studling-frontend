@@ -28,37 +28,36 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
     let userEmail = sessionStorage.getItem('userEmail')!;
 
     // 登陆验证相关
-    const [user, setUser] = useState<AuthUser | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        getCurrentUser()
-            .then(user => {
-                setUser(user);
-                if (sessionStorage.getItem('userEmail') != null) 
-                    userEmail = sessionStorage.getItem('userEmail')!;
-                else {
-                    fetchUserAttributes().then( userAttributes => {
-                        userEmail = userAttributes?.email as string;
-                        sessionStorage.setItem('userEmail', userEmail);
-                        console.log(userEmail)
-                    })
-                }
-                API.get<Word[]>(`/api/zh-yue-can-words/random/${BATCH_SIZE}`).then(
-                    resp => {
-                        setQId(-1);
-                        setWords(resp.data);
-                        setIsLoading(false);
-                    }
-                ).catch(err => {
-                    console.log('后端错误', err);
-                });
-            })
-            .catch(err => {
+        if (sessionStorage.getItem('userEmail') != null)
+            userEmail = sessionStorage.getItem('userEmail')!;
+        else {
+            fetchUserAttributes().then(userAttributes => {
+                userEmail = userAttributes?.email as string;
+                sessionStorage.setItem('userEmail', userEmail);
+                console.log(userEmail)
+            }).catch(err => {
                 console.log('用户未登录', err);
                 navigate('/login');
             });
+        }
     }, []);
+
+    useEffect(() => {
+        if (userEmail) {
+            API.get<Word[]>(`/api/zh-yue-can-words/random/${BATCH_SIZE}`).then(
+                resp => {
+                    setQId(-1);
+                    setWords(resp.data);
+                    setIsLoading(false);
+                }
+            ).catch(err => {
+                console.log('后端错误', err);
+            });
+        }
+    }, [userEmail]);
 
     const startExercise = () => {
         setAnswerChecked(false);  // 重置答案检查状态
@@ -91,7 +90,7 @@ export default function ZhYueHanziBackendTraining(props: { lang: keyof I18nText 
             setAnswerChecked(true);  // 设置答案已检查
 
             // 更新后端统计数据
-            if (user) {
+            if (userEmail) {
                 API.put('/api/zh-yue-can-masteries/update', [{
                     userEmail: userEmail,
                     wordId: words[qId].wordId,

@@ -138,9 +138,9 @@ export default function App() {
         },
         {
             name: {
-                "zh-Hant": "關於",
-                "zh-Hans": "关于",
-                "en": "About",
+                "zh-Hant": "關於作者",
+                "zh-Hans": "关于作者",
+                "en": "About the Author",
                 "ja": "私について",
                 "de": "Über Mich",
                 "ko": "나에 대해서",
