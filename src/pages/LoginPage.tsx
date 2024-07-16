@@ -27,6 +27,7 @@ const UserEmail: React.FC = () => {
                     email: email,
                     cognitoSub: cognitoSub
                 };
+                // TODO: 创建与更新分离
                 API.put(`/api/users`, userDTO); // 若后端DB无此用户email则添加
                 console.log(email);
             }).catch((err) => {
