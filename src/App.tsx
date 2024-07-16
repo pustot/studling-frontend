@@ -2,13 +2,11 @@ import '@aws-amplify/ui-react/styles.css';
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
-import { CssBaseline, PaletteMode, Typography } from "@mui/material";
+import { CssBaseline, PaletteMode } from "@mui/material";
 import { Theme, ThemeProvider, createTheme } from "@mui/material/styles";
 import { Amplify } from 'aws-amplify';
-import { fetchUserAttributes } from 'aws-amplify/auth';
 import "purecss/build/pure.css";
 import * as React from "react";
-import { useEffect, useState } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import awsconfig from './aws-exports'; // 如果你通过 Amplify CLI 初始化，配置信息会自动生成在这个文件
 import Footer from "./components/Footer";
@@ -29,29 +27,6 @@ import "./styles.scss";
 import { I18nText } from "./utils/I18n";
 
 Amplify.configure(awsconfig);
-
-const UserEmail: React.FC = () => {
-    const [email, setEmail] = useState('loading...');
-
-    useEffect(() => {
-        // 定义异步函数来获取当前认证用户的信息
-        const fetchUserEmail = async () => {
-            try {
-                const userAttributes = await fetchUserAttributes();
-                // 假设用户信息中包含电子邮件地址，并设置到状态中
-                setEmail(userAttributes?.email as string);
-            } catch (error) {
-                console.error('Error fetching user email', error);
-            }
-        };
-
-        // 调用异步函数
-        fetchUserEmail();
-
-    }, []); // 空依赖数组表示这个 effect 仅在组件挂载时执行一次
-
-    return <Typography variant="body2" sx={{ color: 'text.secondary' }}>Hello, {email}</Typography>;
-}
 
 export default function App() {
     // Prepare global states: 

@@ -95,7 +95,9 @@ export default function LoginPage(props: { lang: keyof I18nText }) {
 
     const handleSignOut = (signOutFunc: ((data?: AuthEventData) => void) | undefined) => {
         // 清除SessionStorage中的用户信息
-        sessionStorage.removeItem('userEmail'); // 假设这是存储用户电子邮件的键
+        sessionStorage.removeItem('userEmail');
+        sessionStorage.removeItem('username');
+        sessionStorage.removeItem('cognitoSub');
 
         if (signOutFunc) signOutFunc(); // 调用传入的signOut函数
     };
@@ -172,8 +174,8 @@ export default function LoginPage(props: { lang: keyof I18nText }) {
                             )}
                         </Typography>
 
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }} pt={1}>
-                            Hello, {username}
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }} px={1}>
+                            欢迎您，{username} 同志
                         </Typography>
 
                         <UserEmail />
@@ -181,13 +183,19 @@ export default function LoginPage(props: { lang: keyof I18nText }) {
                         <Button variant="outlined" color="primary"
                             onClick={() => setDialogOpen(true)}
                             style={{ fontSize: '0.75rem', margin: 4 }}>
-                            Update Username
+                            {getLocaleText(
+                                { "zh-Hans": "修改用户名", "zh-Hant": "修改用戶名", "en": "Edit Username", },
+                                lang
+                            )}
                         </Button>
 
                         <Button variant="outlined" color="error"
                             onClick={() => handleSignOut(signOut)}
                             style={{ fontSize: '0.75rem', margin: 4 }}>
-                            Sign Out
+                            {getLocaleText(
+                                { "zh-Hans": "登出", "zh-Hant": "登出", "en": "Sign Out", },
+                                lang
+                            )}
                         </Button>
 
                         <UpdateUsernameDialog

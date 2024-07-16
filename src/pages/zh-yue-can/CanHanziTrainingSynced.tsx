@@ -1,7 +1,6 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import { Box, Button, Container, LinearProgress, TextField, Typography } from "@mui/material";
-import { fetchUserAttributes } from 'aws-amplify/auth';
 import * as Qieyun from "qieyun";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import BackButton from "../../components/BackButton";
 import { Word } from '../../types/Word';
 import API from '../../utils/API';
 import { I18nText } from "../../utils/I18n";
+import { getUserEmailPromise } from '../LoginPage';
 
 const BATCH_SIZE = 10;
 
@@ -34,19 +34,13 @@ export default function CanHanziTrainingSynced(props: { lang: keyof I18nText }) 
     const [trainRound, setTrainRound] = useState(0);
 
     useEffect(() => {
-        if (sessionStorage.getItem('userEmail') != null)
-            setUserEmail(sessionStorage.getItem('userEmail')!);
-        else {
-            fetchUserAttributes().then(userAttributes => {
-                const fetchedEmail = userAttributes?.email as string;
-                setUserEmail(fetchedEmail);
-                sessionStorage.setItem('userEmail', fetchedEmail);
-                console.log(fetchedEmail)
-            }).catch(err => {
-                console.log('用户未登录', err);
-                navigate('/login');
-            });
-        }
+        getUserEmailPromise().then(emailAndCognitoSub => {
+            if (emailAndCognitoSub) {
+                const [email, cognitoSub] = emailAndCognitoSub;
+                setUserEmail(email);
+                console.log(email);
+            }
+        });
     }, []);
 
     useEffect(() => {
@@ -127,7 +121,7 @@ export default function CanHanziTrainingSynced(props: { lang: keyof I18nText }) 
     return (
         <div>
             {isLoading
-                ? <Typography>Loading...</Typography>
+                ? <Typography p={8}>Loading...</Typography>
                 :
                 <Container maxWidth="md">
                     <BackButton />

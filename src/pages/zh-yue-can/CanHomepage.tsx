@@ -6,7 +6,6 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import { fetchUserAttributes } from "aws-amplify/auth";
 import "purecss/build/pure.css";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -15,6 +14,7 @@ import LangHomeCardContainer from "../../components/LangHomeCardContainer";
 import "../../styles.scss";
 import API from "../../utils/API";
 import { I18nText, getLocaleText } from "../../utils/I18n";
+import { getUserEmailPromise } from "../LoginPage";
 
 interface Document {
     id: string;
@@ -41,18 +41,13 @@ export default function CanHomepage(props: { lang: keyof I18nText }) {
     const [userEmail, setUserEmail] = useState(sessionStorage.getItem('userEmail'));
 
     useEffect(() => {
-        if (sessionStorage.getItem('userEmail') != null)
-            setUserEmail(sessionStorage.getItem('userEmail')!);
-        else {
-            fetchUserAttributes().then(userAttributes => {
-                const fetchedEmail = userAttributes?.email as string;
-                setUserEmail(fetchedEmail);
-                sessionStorage.setItem('userEmail', fetchedEmail);
-                console.log(fetchedEmail)
-            }).catch(err => {
-                console.log('用户未登录', err);
-            });
-        }
+        getUserEmailPromise().then(emailAndCognitoSub => {
+            if (emailAndCognitoSub) {
+                const [email, cognitoSub] = emailAndCognitoSub;
+                setUserEmail(email);
+                console.log(email);
+            }
+        });
     }, []);
 
     useEffect(() => {
