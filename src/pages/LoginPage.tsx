@@ -1,6 +1,6 @@
 import { AuthEventData } from "@aws-amplify/ui";
 import { Authenticator } from "@aws-amplify/ui-react";
-import { Button, Container, Typography } from "@mui/material";
+import { Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@mui/material";
 import { fetchUserAttributes } from "aws-amplify/auth";
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
@@ -47,14 +47,52 @@ const UserEmail: React.FC = () => {
 
 }
 
+const UpdateUsernameDialog: React.FC<{ open: boolean, handleClose: () => void, handleSave: (newUsername: string) => void }> = ({ open, handleClose, handleSave }) => {
+    const [newUsername, setNewUsername] = useState("");
+
+    return (
+        <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Update Username</DialogTitle>
+            <DialogContent>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    label="New Username"
+                    fullWidth
+                    value={newUsername}
+                    onChange={(e) => setNewUsername(e.target.value)}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={() => handleSave(newUsername)}>Save</Button>
+            </DialogActions>
+        </Dialog>
+    );
+}
+
 export default function LoginPage(props: { lang: keyof I18nText }) {
     const { lang } = props;
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     const handleSignOut = (signOutFunc: ((data?: AuthEventData) => void) | undefined) => {
         // 清除SessionStorage中的用户信息
         sessionStorage.removeItem('userEmail'); // 假设这是存储用户电子邮件的键
 
         if (signOutFunc) signOutFunc(); // 调用传入的signOut函数
+    };
+
+    const handleUpdateUsername = (newUsername: string) => {
+        // 假设我们有一个更新用户名的API
+        API.put(`/api/users/update-info`, {
+            username: newUsername
+        }).then(() => {
+            // 更新成功后的逻辑，可以是刷新用户信息，或者是通知用户
+            setDialogOpen(false);
+            console.log('Username update sent successfully');
+        }).catch((err) => {
+            console.log('Failed to update username', err);
+        });
     };
 
     return (
@@ -88,10 +126,22 @@ export default function LoginPage(props: { lang: keyof I18nText }) {
                         <UserEmail />
 
                         <Button variant="outlined" color="primary"
+                            onClick={() => setDialogOpen(true)}
+                            style={{ fontSize: '0.75rem', margin: 4 }}>
+                            Update Username
+                        </Button>
+
+                        <Button variant="outlined" color="primary"
                             onClick={() => handleSignOut(signOut)}
                             style={{ fontSize: '0.75rem', margin: 4 }}>
                             Sign Out
                         </Button>
+
+                        <UpdateUsernameDialog
+                            open={dialogOpen}
+                            handleClose={() => setDialogOpen(false)}
+                            handleSave={handleUpdateUsername}
+                        />
                     </div>
                 )}
             </Authenticator>
