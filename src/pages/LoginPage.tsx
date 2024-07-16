@@ -69,20 +69,20 @@ const UpdateUsernameDialog: React.FC<{ open: boolean, handleClose: () => void, h
 
     return (
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Update Username</DialogTitle>
+            <DialogTitle>修改用户名</DialogTitle>
             <DialogContent>
                 <TextField
                     autoFocus
                     margin="dense"
-                    label="New Username"
+                    label="新名"
                     fullWidth
                     value={newUsername}
                     onChange={(e) => setNewUsername(e.target.value)}
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={() => handleSave(newUsername)}>Save</Button>
+                <Button onClick={handleClose}>取消</Button>
+                <Button onClick={() => handleSave(newUsername)}>确定</Button>
             </DialogActions>
         </Dialog>
     );
