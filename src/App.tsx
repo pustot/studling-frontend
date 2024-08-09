@@ -153,7 +153,7 @@ export default function App() {
         },
     ];
 
-    const repoLink = "https://github.com/pustot/studling-frontend";
+    const repoLink = "https://github.com/pustot/studling-backend";
 
     return (
         <ThemeProvider theme={theme}>
