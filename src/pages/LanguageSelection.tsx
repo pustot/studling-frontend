@@ -62,7 +62,7 @@ const languageCardItems: LanguageCardItem[] = [
     },
     {
         name: '多语言核心', stage: 'Alpha',
-        icon: <IconFromPublicRepo fileName={"studling-icon-eo.svg"} />,
+        icon: <IconFromPublicRepo fileName={"studling-icon-multi.jpg"} />,
         link: "#/multi"
     },
     {
