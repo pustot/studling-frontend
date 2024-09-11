@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkpustot=self.webpackChunkpustot||[]).push([[847],{2847:(s,t,p)=>{p.r(t),p.d(t,{default:()=>a.A,getTypographyUtilityClass:()=>e.y,typographyClasses:()=>e.A});var a=p(2946),e=p(4304)}}]);

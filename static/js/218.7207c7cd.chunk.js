@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkpustot=self.webpackChunkpustot||[]).push([[218],{7218:(s,t,e)=>{e.r(t),e.d(t,{default:()=>l.A,getTableUtilityClass:()=>a.l,tableClasses:()=>a.A});var l=e(4182),a=e(6732)}}]);
