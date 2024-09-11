@@ -61,6 +61,11 @@ const languageCardItems: LanguageCardItem[] = [
         icon: <IconFromPublicRepo fileName={"studling-icon-zh-wuu-sha.webp"} />
     },
     {
+        name: '多语言核心', stage: 'Alpha',
+        icon: <IconFromPublicRepo fileName={"studling-icon-eo.svg"} />,
+        link: "#/multi"
+    },
+    {
         name: '英语', stage: 'Alpha',
         icon: <IconFromPublicRepo fileName={"studling-icon-en.webp"} />
     },

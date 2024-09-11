@@ -9,6 +9,15 @@ export default function MyMuiMarkdown(props: { markdown: string }) {
                 // cancel default slugify which removed all non-alphanumerical char
                 slugify: str => str,
                 overrides: {
+                    table: {
+                        props: {
+                            style: {
+                                marginTop: '50px',  // 设置表格上方间距
+                                marginBottom: '50px',  // 设置表格下方间距
+                                borderCollapse: 'collapse',  // 可选：设置表格边框样式
+                            },
+                        },
+                    },
                     h6: { props: { style: { scrollMarginTop: "50px" } } },
                     h5: { props: { style: { scrollMarginTop: "50px" } } },
                     h4: { props: { style: { scrollMarginTop: "50px" } } },

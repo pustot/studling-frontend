@@ -16,6 +16,8 @@ import HanromHomepage from "./pages/hanrom/HanromHomepage";
 import Home from "./pages/Home";
 import LanguageSelection from "./pages/LanguageSelection";
 import LoginPage from './pages/LoginPage';
+import MultiHomepage from './pages/multi/MultiHomepage';
+import MultiTekstaro from './pages/multi/MultiTekstaro';
 import ZhLtcHomepage from './pages/zh-ltc/ZhLtcHomepage';
 import ZhLtcSinoDict from './pages/zh-ltc/ZhLtcSinoDict';
 import CanDifficultiesCmnToYue from './pages/zh-yue-can/CanDifficultiesCmnToYue';
@@ -181,6 +183,9 @@ export default function App() {
                     <Route path="/home" element={<Home lang={lang} />} />
 
                     {/* 分语言诸页面 */}
+                    {/* 多语言核心 */}
+                    <Route path="/multi/tekstaro" element={<MultiTekstaro lang={lang} />} />
+                    <Route path="/multi" element={<MultiHomepage lang={lang} />} />
                     {/* 中古汉语及方言 ISO: zh-ltc （注：ISO 693-3 中，英文称 Late Middle Chinese，中文仍称中古汉语） */}
                     <Route path="/zh-ltc" element={<ZhLtcHomepage lang={lang} />} />
                     <Route path="/zh-ltc/sino-dict" element={<ZhLtcSinoDict lang={lang} />} />
