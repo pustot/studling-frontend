@@ -17,8 +17,8 @@ export default function MultiTekstaro(props: { lang: keyof I18nText }) {
 
     const [markdownContent, setMarkdownContent] = useState('');
     const [rawContent, setRawContent] = useState('');
-    const [uniqueLanguages, setUniqueLanguages] = useState(new Set(['ja', 'eo']));
-    const [validFirstColumns, setValidFirstColumns] = useState(['ja', 'eo']);
+    const [uniqueLanguages, setUniqueLanguages] = useState(new Set(['ja', 'eo', 'ko', 'vi', 'ru', 'ar']));
+    const [validFirstColumns, setValidFirstColumns] = useState(['ja', 'eo', 'ko', 'vi', 'ru', 'ar']);
 
     useEffect(() => {
         // 发送 GET 请求获取 Markdown 内容
