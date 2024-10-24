@@ -58,7 +58,7 @@ export function tupaToMarkings(tupa: string): string {
     .replace(/ng/g, 'ŋ')
     .replace(/ou/g, 'ᵒu')
     // Consonant: h -> ʰ for aspiration (thus not include h or gh)
-    .replace(/(?<=[ptkrsj])h/g, 'ʰ')
+    .replace(/(?<=p|t|k|tr|ts|tsr|tj)h/g, 'ʰ')
     // Consonant: sr, zr -> circumflex like Esperanto
     ////    Note: currently not doing r -> dor-below like tr->ṭ in Sanskrit IAST
     ////          mainly because tr is already equally long as ts, tj and tŝ
