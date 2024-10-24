@@ -50,16 +50,33 @@ export const hanziUtils = new HanziUtils();
 
 export function tupaToMarkings(tupa: string): string {
   // Step 1: Replace specific substrings
-  tupa = tupa.replace(/ae/g, 'aˤ')
+  tupa = tupa
+    // basic
+    .replace(/ae/g, 'aˤ')
     .replace(/ee/g, 'eˤ')
     .replace(/oeu/g, 'oˤ')
     .replace(/ng/g, 'ŋ')
-    .replace(/ou/g, 'ᵒu');
+    .replace(/ou/g, 'ᵒu')
+    // Consonant: h -> ʰ for aspiration (thus not include h or gh)
+    .replace(/(?<=[ptkrsj])h/g, 'ʰ')
+    // Consonant: sr, zr -> circumflex like Esperanto
+    ////    Note: currently not doing r -> dor-below like tr->ṭ in Sanskrit IAST
+    ////          mainly because tr is already equally long as ts, tj and tŝ
+    .replace(/sr/g, 'ŝ')
+    .replace(/zr/g, 'ẑ')
+    // Consonant: gh -> ğ (or ɣ or ʁ or?)
+    .replace(/gh/g, 'ğ')
+    // Medial: wi -> ü
+    ////    Note: currently not doing y -> ï ḯ ï̀ because y is not otherwise used
+    .replace(/wi/g, 'ü')
+    // Vowel: eo -> ə
+    .replace(/eo/g, 'ə')
+    ;
 
   // Step 2: Handle tone marks
   const toneMarks = {
-    q: { 'a': 'á', 'e': 'é', 'o': 'ó', 'u': 'ú', 'i': 'í', 'y': 'ý' },
-    h: { 'a': 'à', 'e': 'è', 'o': 'ò', 'u': 'ù', 'i': 'ì', 'y': 'ỳ' }
+    q: { 'a': 'á', 'e': 'é', 'o': 'ó', 'ə': 'ǝ́', 'u': 'ú', 'i': 'í', 'y': 'ý', 'ü': 'ǘ' },
+    h: { 'a': 'à', 'e': 'è', 'o': 'ò', 'ə': 'ǝ̀', 'u': 'ù', 'i': 'ì', 'y': 'ỳ', 'ü': 'ǜ' }
   };
 
   // Unicode combining diacritical marks
@@ -70,7 +87,7 @@ export function tupaToMarkings(tupa: string): string {
 
   // Helper function to add tone mark
   function addToneMark(str: string, toneMap: { [key: string]: string }, combiningMark: string): string {
-    const priority = ['a', 'e', 'o', 'u', 'i', 'y'];
+    const priority = ['a', 'e', 'o', 'ə', 'u', 'i', 'y', 'ü'];
     for (let char of priority) {
       const index = str.lastIndexOf(char);
       if (index !== -1) {
