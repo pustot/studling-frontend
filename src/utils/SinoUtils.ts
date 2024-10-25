@@ -59,6 +59,8 @@ export function tupaToMarkings(tupa: string): string {
     .replace(/oeu/g, 'oˤ')
     .replace(/ng/g, 'ŋ')
     .replace(/ou/g, 'ᵒu')
+    // Consonant: q -> ʔ (when q is at the beginning)
+    .replace(/^q/, 'ʔ')
     // Consonant: h -> ʰ for aspiration (thus not include h or gh)
     .replace(/(?<=p|t|k|tr|ts|tsr|tj)h/g, 'ʰ')
     // Consonant: sr, zr -> circumflex like Esperanto (or use ʂ ʐ ?)
