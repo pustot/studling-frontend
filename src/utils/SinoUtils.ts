@@ -64,6 +64,8 @@ export function tupaToMarkings(tupa: string): string {
     ////          mainly because tr is already equally long as ts, tj and tŝ
     .replace(/sr/g, 'ŝ')
     .replace(/zr/g, 'ẑ')
+    // Consonant: r -> ɻ (currently only on tr dr nr)
+    .replace(/r/g, 'ɻ')
     // Consonant: gh -> ğ (or ɣ or ʁ or?)
     .replace(/gh/g, 'ğ')
     // Medial: wi -> ü
