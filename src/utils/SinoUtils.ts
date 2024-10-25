@@ -86,10 +86,10 @@ export function tupaToMarkings(tupa: string): string {
     // Medial: wi -> ü
     ////    Note: maybe not doing y -> ï ḯ ï̀ because y is not otherwise used
     .replace(/wi/g, 'ü')
-    // Medial: y -> ɨ (not sure, whether ɨ or keep using y ?)
+    // Medial: y -> ɨ (not sure, whether ɨ or ɿ or keep using y ?)
     //      In fact ɨ with acute/grave is in some text envs not clear at all...
     //      But ɨ is the most IPA-ish one, and ï ɯ̈ etc. also have problems with accents
-    .replace(/y/g, 'ɨ')
+    .replace(/y/g, 'ɿ')
     // Medial: w -> ʷ (when is not followed by h, q or ending)
     .replace(/w(?![hq]|\b)/g, 'ʷ')
     // Vowel: eo -> ə
@@ -98,8 +98,8 @@ export function tupaToMarkings(tupa: string): string {
 
   // Step 2: Handle tone marks
   const toneMarks = {
-    q: { 'a': 'á', 'e': 'é', 'o': 'ó', 'ə': 'ǝ́', 'u': 'ú', 'i': 'í', 'y': 'ý', 'ɨ': 'ɨ́', 'ü': 'ǘ' },
-    h: { 'a': 'à', 'e': 'è', 'o': 'ò', 'ə': 'ǝ̀', 'u': 'ù', 'i': 'ì', 'y': 'ỳ', 'ɨ': 'ɨ̀', 'ü': 'ǜ' }
+    q: { 'a': 'á', 'e': 'é', 'o': 'ó', 'ə': 'ǝ́', 'u': 'ú', 'i': 'í', 'y': 'ý', 'ɨ': 'ɨ́', 'ɿ': 'ɿ́', 'ü': 'ǘ' },
+    h: { 'a': 'à', 'e': 'è', 'o': 'ò', 'ə': 'ǝ̀', 'u': 'ù', 'i': 'ì', 'y': 'ỳ', 'ɨ': 'ɨ̀', 'ɿ': 'ɿ̀', 'ü': 'ǜ' }
   };
 
   // Unicode combining diacritical marks
@@ -110,7 +110,7 @@ export function tupaToMarkings(tupa: string): string {
 
   // Helper function to add tone mark
   function addToneMark(str: string, toneMap: { [key: string]: string }, combiningMark: string): string {
-    const priority = ['a', 'e', 'o', 'ə', 'u', 'i', 'y', 'ɨ', 'ü'];
+    const priority = ['a', 'e', 'o', 'ə', 'u', 'i', 'y', 'ɨ', 'ɿ', 'ü'];
     for (let char of priority) {
       const index = str.lastIndexOf(char);
       if (index !== -1) {
