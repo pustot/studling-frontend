@@ -48,6 +48,8 @@ class HanziUtils {
 
 export const hanziUtils = new HanziUtils();
 
+// Convert tupa, which uses only 26 ASCII letters, to broader range of letters
+// 原则：既然不再限于26字母，就多用些字母，尽量短、尽量靠拢IPA，但避免与tupa冲突者（如 y、j）
 export function tupaToMarkings(tupa: string): string {
   // Step 1: Replace specific substrings
   tupa = tupa
@@ -59,26 +61,43 @@ export function tupaToMarkings(tupa: string): string {
     .replace(/ou/g, 'ᵒu')
     // Consonant: h -> ʰ for aspiration (thus not include h or gh)
     .replace(/(?<=p|t|k|tr|ts|tsr|tj)h/g, 'ʰ')
-    // Consonant: sr, zr -> circumflex like Esperanto
+    // Consonant: sr, zr -> circumflex like Esperanto (or use ʂ ʐ ?)
     ////    Note: currently not doing r -> dor-below like tr->ṭ in Sanskrit IAST
     ////          mainly because tr is already equally long as ts, tj and tŝ
-    .replace(/sr/g, 'ŝ')
-    .replace(/zr/g, 'ẑ')
-    // Consonant: r -> ɻ (currently only on tr dr nr)
-    .replace(/r/g, 'ɻ')
-    // Consonant: gh -> ğ (or ɣ or ʁ or?)
-    .replace(/gh/g, 'ğ')
+    // .replace(/sr/g, 'ŝ')
+    // .replace(/zr/g, 'ẑ')
+    // Consonant: 知澈澄娘 r -> (whether use ʵ , ɻ , or ʈ ɖ ɳ ?)
+    // .replace(/r/g, 'ʵ')
+    .replace(/tr/g, 'ʈ')
+    .replace(/dr/g, 'ɖ')
+    .replace(/nr/g, 'ɳ')
+    .replace(/sr/g, 'ʂ')
+    .replace(/zr/g, 'ʐ')
+    // Consonant: 章昌常书船 j -> (whether use j , ʲ , or ɕ ʑ ȵ ?)
+    .replace(/sj/g, 'ɕ')
+    .replace(/zj/g, 'ʑ')
+    .replace(/nj/g, 'ȵ')
+    .replace(/tj/g, 'tɕ')
+    .replace(/dj/g, 'dʑ')
+    // Consonant: gh -> (ğ or ɣ or ʁ or?)
+    .replace(/gh/g, 'ʁ')
     // Medial: wi -> ü
-    ////    Note: currently not doing y -> ï ḯ ï̀ because y is not otherwise used
+    ////    Note: maybe not doing y -> ï ḯ ï̀ because y is not otherwise used
     .replace(/wi/g, 'ü')
+    // Medial: y -> ɨ (not sure, whether ɨ or keep using y ?)
+    //      In fact ɨ with acute/grave is in some text envs not clear at all...
+    //      But ɨ is the most IPA-ish one, and ï ɯ̈ etc. also have problems with accents
+    .replace(/y/g, 'ɨ')
+    // Medial: w -> ʷ (when is not followed by h, q or ending)
+    .replace(/w(?![hq]|\b)/g, 'ʷ')
     // Vowel: eo -> ə
     .replace(/eo/g, 'ə')
     ;
 
   // Step 2: Handle tone marks
   const toneMarks = {
-    q: { 'a': 'á', 'e': 'é', 'o': 'ó', 'ə': 'ǝ́', 'u': 'ú', 'i': 'í', 'y': 'ý', 'ü': 'ǘ' },
-    h: { 'a': 'à', 'e': 'è', 'o': 'ò', 'ə': 'ǝ̀', 'u': 'ù', 'i': 'ì', 'y': 'ỳ', 'ü': 'ǜ' }
+    q: { 'a': 'á', 'e': 'é', 'o': 'ó', 'ə': 'ǝ́', 'u': 'ú', 'i': 'í', 'y': 'ý', 'ɨ': 'ɨ́', 'ü': 'ǘ' },
+    h: { 'a': 'à', 'e': 'è', 'o': 'ò', 'ə': 'ǝ̀', 'u': 'ù', 'i': 'ì', 'y': 'ỳ', 'ɨ': 'ɨ̀', 'ü': 'ǜ' }
   };
 
   // Unicode combining diacritical marks
@@ -89,7 +108,7 @@ export function tupaToMarkings(tupa: string): string {
 
   // Helper function to add tone mark
   function addToneMark(str: string, toneMap: { [key: string]: string }, combiningMark: string): string {
-    const priority = ['a', 'e', 'o', 'ə', 'u', 'i', 'y', 'ü'];
+    const priority = ['a', 'e', 'o', 'ə', 'u', 'i', 'y', 'ɨ', 'ü'];
     for (let char of priority) {
       const index = str.lastIndexOf(char);
       if (index !== -1) {
