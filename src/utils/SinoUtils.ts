@@ -84,12 +84,13 @@ export function tupaToMarkings(tupa: string): string {
     // Consonant: gh -> (ğ or ɣ or ʁ or?)
     .replace(/gh/g, 'ʁ')
     // Medial: wi -> ü
-    ////    Note: maybe not doing y -> ï ḯ ï̀ because y is not otherwise used
+    ////    Note: maybe not doing wi -> y because y is not otherwise used
     .replace(/wi/g, 'ü')
-    // Medial: y -> ɨ (not sure, whether ɨ or ɿ or keep using y ?)
+    // Medial: y -> ɨ (not sure, whether ɨ or ɿ or ʅ or ɨ̧ or keep using y ?)
     //      In fact ɨ with acute/grave is in some text envs not clear at all...
     //      But ɨ is the most IPA-ish one, and ï ɯ̈ etc. also have problems with accents
-    .replace(/y/g, 'ɿ')
+    //      But in some cases it can also mean ɻ, not only a vowel, thus hesitating
+    .replace(/y/g, 'ɨ')
     // Medial: w -> ʷ (when is not followed by h, q or ending)
     .replace(/w(?![hq]|\b)/g, 'ʷ')
     // Vowel: eo -> ə
