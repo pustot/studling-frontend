@@ -4,9 +4,9 @@ import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
-export default function FlashCard({char, roma}) {
+export default function FlashCard({char, roma, onClick}) {
     return (
-        <Card onClick={()=>window.open(toLink)}> 
+        <Card onClick={onClick}>
             <CardActionArea>
               <CardContent>
                 <Typography variant="h3" color="text.secondary"  align="center">

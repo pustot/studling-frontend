@@ -148,6 +148,7 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
             searchResults.push({ character: term, pronunciations });
         });
         setResults(searchResults);
+        console.log(Qieyun.音韻地位.from編碼("hVD"))
     }, [query, showGuangyunOnly, showVariants]); // 每当 query, showGuangyunOnly, showVariants 变化时重新执行搜索
 
 
