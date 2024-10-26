@@ -1,6 +1,7 @@
 import {
     Container,
-    Stack, Typography
+    FormControlLabel,
+    Stack, Switch, Typography
 } from '@mui/material';
 import "purecss/build/pure.css";
 import * as React from "react";
@@ -8,8 +9,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import BackButton from "../../components/BackButton";
 import FlashCard from "../../components/FlashCard";
 import "../../styles.scss";
-import { I18nText } from "../../utils/I18n";
-import { hanziUtils } from '../../utils/SinoUtils';
+import { getLocaleText, I18nText } from "../../utils/I18n";
+import { hanziUtils, tupaToMarkings } from '../../utils/SinoUtils';
 import { Dict, loadDict } from './ZhLtcSinoDict';
 import { dialectConfigMap } from './dialectConfig';
 
@@ -23,9 +24,10 @@ export default function ZhLtcFlashcards(props: { lang: keyof I18nText }) {
     const { lang } = props;
 
     const [char, setChar] = useState('字');
-    const [roma, setRoma] = useState<string | undefined>('dzyh');
+    const [roma, setRoma] = useState<string | undefined>('dzɨ̀');
     const [isInitialized, setIsInitialized] = useState(false);
     const [isRomaVisible, setIsRomaVisible] = useState(true);
+    const [isTupaVisual, setIsTupaVisual] = useState(true);
     const boardEventRef = useRef<number | undefined>(undefined); // 使用 useRef 存储定时器 ID
 
     useEffect(() => {
@@ -42,11 +44,20 @@ export default function ZhLtcFlashcards(props: { lang: keyof I18nText }) {
 
         const nextchar = hanziUtils.getRandomCommonWord();
         // 若词典无此词读音，则按每字之音，多音字分以斜杠
-        let nextroma = dialectDictMap.get('zh-ltc')?.get(nextchar)
-            ? dialectDictMap.get('zh-ltc')!.get(nextchar)!.join('/')
-            : nextchar.split('').map((char, index) => {
-                return dialectDictMap.get('zh-ltc')?.get(char)?.join('/')
-            }).join(' ');
+        let nextroma;
+        if (isTupaVisual) {
+            nextroma = dialectDictMap.get('zh-ltc')?.get(nextchar)
+                ? dialectDictMap.get('zh-ltc')!.get(nextchar)!.map((pron) => pron.split(' ').map(x => tupaToMarkings(x)).join(' ')).join('/')
+                : nextchar.split('').map((char, index) => {
+                    return dialectDictMap.get('zh-ltc')?.get(char)?.map(x => tupaToMarkings(x)).join('/')
+                }).join(' ');
+        } else {
+            nextroma = dialectDictMap.get('zh-ltc')?.get(nextchar)
+                ? dialectDictMap.get('zh-ltc')!.get(nextchar)!.join('/')
+                : nextchar.split('').map((char, index) => {
+                    return dialectDictMap.get('zh-ltc')?.get(char)?.join('/')
+                }).join(' ');
+        }
         setIsRomaVisible(false); // 重置 roma 可见状态
         setChar(nextchar);
         setRoma(nextroma);
@@ -58,7 +69,7 @@ export default function ZhLtcFlashcards(props: { lang: keyof I18nText }) {
 
         // 重新设置定时器
         boardEventRef.current = window.setInterval(refreshBoard, 4000);
-    }, [isInitialized]);
+    }, [isInitialized, isTupaVisual]);
 
     useEffect(() => {
         if (isInitialized) {
@@ -69,7 +80,7 @@ export default function ZhLtcFlashcards(props: { lang: keyof I18nText }) {
                 window.clearInterval(boardEventRef.current); // 清除定时器
             }
         };
-    }, [refreshBoard, isInitialized]);
+    }, [refreshBoard, isInitialized, isTupaVisual]);
 
     const handleCardClick = () => {
         if (boardEventRef.current) {
@@ -91,6 +102,29 @@ export default function ZhLtcFlashcards(props: { lang: keyof I18nText }) {
                     <Typography>
                         Display flashcards with Chinese characters and Jyutping with your comfortable speed.
                     </Typography>
+
+                    <Stack
+                        direction="row"
+                        spacing={3}
+                        flexWrap="wrap"
+                        justifyContent="flex-start"
+                    >
+
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={isTupaVisual}
+                                    onChange={() => setIsTupaVisual(!isTupaVisual)}
+                                    name="TUPA 視覺優化"
+                                    color="primary"
+                                />
+                            }
+                            label={getLocaleText(
+                                { "zh-Hans": "TUPA 视觉优化", "zh-Hant": "TUPA 視覺優化", en: "TUPA Visual" },
+                                lang
+                            )}
+                        />
+                    </Stack>
 
                     <FlashCard char={char} roma={isRomaVisible ? roma : '...'} onClick={handleCardClick}></FlashCard>
 
