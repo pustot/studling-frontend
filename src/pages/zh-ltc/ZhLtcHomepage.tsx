@@ -11,6 +11,7 @@ import { I18nText, getLocaleText } from "../../utils/I18n";
 
 const items = [
     { name: "汉字古今中外读音查询", link: "sino-dict", stage: "Beta" },
+    { name: "中古汉语抽认卡", link: "flashcards", stage: "Beta" },
 ];
 
 export default function ZhLtcHomepage(props: { lang: keyof I18nText }) {

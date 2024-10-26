@@ -25,6 +25,7 @@
         "react-scripts": "^5.0.1",
         "sass": "1.58.3",
         "to-jyutping": "^1.0.0",
+        "tshet-uinh": "^0.15.1",
         "typescript": "^4.9.5",
         "yitizi": "^0.1.1"
     },

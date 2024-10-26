@@ -27,6 +27,7 @@ import CanHanziTrainingSynced from './pages/zh-yue-can/CanHanziTrainingSynced';
 import CanHomepage from "./pages/zh-yue-can/CanHomepage";
 import "./styles.scss";
 import { I18nText } from "./utils/I18n";
+import ZhLtcFlashcards from './pages/zh-ltc/ZhLtcFlashcards';
 
 Amplify.configure(awsconfig);
 
@@ -189,6 +190,7 @@ export default function App() {
                     {/* 中古汉语及方言 ISO: zh-ltc （注：ISO 693-3 中，英文称 Late Middle Chinese，中文仍称中古汉语） */}
                     <Route path="/zh-ltc" element={<ZhLtcHomepage lang={lang} />} />
                     <Route path="/zh-ltc/sino-dict" element={<ZhLtcSinoDict lang={lang} />} />
+                    <Route path="/zh-ltc/flashcards" element={<ZhLtcFlashcards lang={lang} />} />
                     {/* 粤语（广州话） ISO: zh-yue，细分 `zh-yue-can` */}
                     <Route path="/zh-yue-can" element={<CanHomepage lang={lang} />} />
                     <Route path="/zh-yue-can/hanzi-training-synced" element={<CanHanziTrainingSynced lang={lang} />} />

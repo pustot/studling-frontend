@@ -4,7 +4,9 @@ import * as Yitizi from 'yitizi';
 
 class HanziUtils {
   private commonHanzi: string[] = [];
-  private isDataFetched = false;
+  private commonWords: string[] = [];
+  private isHanziFetched = false;
+  private isWordsFetched = false;
   private converterCH = OpenCC.Converter({ from: "cn", to: "hk" });
   private converterHC = OpenCC.Converter({ from: "hk", to: "cn" });
   private converterHT = OpenCC.Converter({ from: "hk", to: "tw" });
@@ -12,6 +14,7 @@ class HanziUtils {
 
   constructor() {
     this.fetchCommonHanzi();
+    this.fetchCommonWords();
   }
 
   private async fetchCommonHanzi() {
@@ -19,18 +22,37 @@ class HanziUtils {
       const response = await fetch('https://raw.githubusercontent.com/nk2028/commonly-used-chinese-characters-and-words/main/char.txt');
       const text = await response.text();
       this.commonHanzi = text.split('\n').filter(char => char.trim() !== '');
-      this.isDataFetched = true;
+      this.isHanziFetched = true;
     } catch (error) {
       console.error('Failed to fetch common hanzi:', error);
     }
   }
 
+  private async fetchCommonWords() {
+    try {
+      const response = await fetch('https://raw.githubusercontent.com/nk2028/commonly-used-chinese-characters-and-words/refs/heads/main/words.txt');
+      const text = await response.text();
+      this.commonWords = text.split('\n').filter(char => char.trim() !== '');
+      this.isWordsFetched = true;
+    } catch (error) {
+      console.error('Failed to fetch common Chinese words:', error);
+    }
+  }
+
   public getRandomCommonHanzi(): string {
-    if (!this.isDataFetched || this.commonHanzi.length === 0) {
+    if (!this.isHanziFetched || this.commonHanzi.length === 0) {
       return '字';
     }
     const randomIndex = Math.floor(Math.random() * this.commonHanzi.length);
     return this.commonHanzi[randomIndex];
+  }
+
+  public getRandomCommonWord(): string {
+    if (!this.isWordsFetched || this.commonWords.length === 0) {
+      return '詞語';
+    }
+    const randomIndex = Math.floor(Math.random() * this.commonWords.length);
+    return this.commonWords[randomIndex];
   }
 
   public isChinese = (s: string): boolean => {

@@ -1,15 +1,15 @@
 import { Box, Button, Card, Container, FormControlLabel, Grid, Stack, Switch, TextareaAutosize, Tooltip, Typography } from '@mui/material';
 import axios from 'axios';
-import * as Qieyun from "qieyun";
 import * as React from "react";
 import { useEffect, useState } from 'react';
+import TshetUinh from 'tshet-uinh';
 import BackButton from '../../components/BackButton';
 import { I18nText, getLocaleText } from "../../utils/I18n";
 import { hanziUtils, tupaToMarkings } from '../../utils/SinoUtils';
 import { DialectConfig, dialectConfigMap } from './dialectConfig';
 
 // 单语 dict 的类型
-type Dict = Map<string, string[]>;
+export type Dict = Map<string, string[]>;
 // 由 dialect 到 dict 的 Map
 const dialectDictMap: Map<string, Dict> = new Map();
 
@@ -65,7 +65,7 @@ const parseDialectDictionaryFromCSV = (csvContent: string): Dict => {
 };
 
 // 通用的加载字典函数
-const loadDict = async (dialectName: string, config: DialectConfig) => {
+export const loadDict = async (dialectName: string, config: DialectConfig, dialectDictMap: Map<string, Dict>) => {
     try {
         const response = await axios.get(config.link);
         let dict: Dict;
@@ -92,7 +92,7 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
     useEffect(() => {
         const loadDictionaries = async () => {
             const promises = Object.entries(dialectConfigMap).map(([dialectName, config]) =>
-                loadDict(dialectName, config)
+                loadDict(dialectName, config, dialectDictMap)
             );
 
             const results = await Promise.allSettled(promises);
@@ -121,7 +121,7 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
             if (showGuangyunOnly) {
                 // 仅查询广韵
                 for (let yitiCh of variants) {
-                    if (Qieyun.資料.query字頭(yitiCh).length != 0) {
+                    if (TshetUinh.資料.query字頭(yitiCh).length != 0) {
                         terms.push(yitiCh);
                     }
                 }
@@ -148,7 +148,6 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
             searchResults.push({ character: term, pronunciations });
         });
         setResults(searchResults);
-        console.log(Qieyun.音韻地位.from編碼("hVD"))
     }, [query, showGuangyunOnly, showVariants]); // 每当 query, showGuangyunOnly, showVariants 变化时重新执行搜索
 
 
@@ -274,19 +273,19 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
                                 <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                                     <Card variant="outlined" sx={{ padding: 2 }}>
                                         <Typography variant="h5">{result.character}</Typography>
-                                        <Typography variant="body1">{Qieyun.資料.query字頭(result.character).map((v, i) => v.音韻地位.描述).join(", ")}</Typography>
+                                        <Typography variant="body1">{TshetUinh.資料.query字頭(result.character).map((v, i) => v.音韻地位.描述).join(", ")}</Typography>
                                         {Object.keys(dialectConfigMap).map((dialectKey) => {
                                             const pronunciations = result.pronunciations[dialectKey];
                                             if (pronunciations) {
                                                 return (
-                                                    <div>
-                                                        {dialectKey == "zh-ltc" && <Typography key={dialectKey} variant="body1">
+                                                    <>
+                                                        {dialectKey == "zh-ltc" && <Typography key={dialectKey + "-visual"} variant="body1">
                                                             <strong>{dialectConfigMap[dialectKey].displayName + "(视)"}:</strong> {pronunciations.map((tupa) => tupaToMarkings(tupa)).join(", ")}
                                                         </Typography>}
                                                         <Typography key={dialectKey} variant="body1">
                                                             <strong>{dialectConfigMap[dialectKey].displayName}:</strong> {pronunciations.join(", ")}
                                                         </Typography>
-                                                    </div>
+                                                    </>
                                                 );
                                             }
                                             return null;

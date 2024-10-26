@@ -11,6 +11,7 @@ import "../../styles.scss";
 import { I18nText } from "../../utils/I18n";
 import { promiseDataLarge } from "./data";
 
+// 暂来自单独粤语字表，4755字。考虑换为通用的常用字表。
 export default function CanFlashcards(props: { lang: keyof I18nText }) {
   const { lang } = props;
 
@@ -67,7 +68,6 @@ export default function CanFlashcards(props: { lang: keyof I18nText }) {
     if (isRomaVisible) {
       refreshBoard(); // 如果 roma 已显示，则直接刷新
     } else {
-      setRoma(prevRoma => (prevRoma === '...' ? pronunciationDataLarge[Math.floor(Math.random() * pronunciationDataLarge.length)][1] : prevRoma));
       setIsRomaVisible(true); // 如果 roma 未显示，立即显示
       boardEventRef.current = window.setInterval(refreshBoard, 2000);
     }
