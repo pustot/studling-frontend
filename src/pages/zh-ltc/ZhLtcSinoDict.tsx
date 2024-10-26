@@ -150,10 +150,6 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
         setResults(searchResults);
     }, [query, showGuangyunOnly, showVariants]); // 每当 query, showGuangyunOnly, showVariants 变化时重新执行搜索
 
-
-    const handleClickRandom = () => {
-        setQuery(hanziUtils.getRandomCommonHanzi());
-    }
     return (
         <Container maxWidth="md">
             <BackButton />
@@ -259,8 +255,15 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
                     />
 
                     <Tooltip title="Random Hanzi from 4159 Most Common Ones (《教師語文能力評核（普通話）參照使用常用字表》)">
-                        <Button onClick={handleClickRandom}>{getLocaleText(
-                            { "zh-Hans": "随机汉字", "zh-Hant": "隨機漢字", en: "Random" },
+                        <Button onClick={() => setQuery(hanziUtils.getRandomCommonHanzi())}>{getLocaleText(
+                            { "zh-Hans": "随机汉字", "zh-Hant": "隨機漢字", en: "Random Hanzi" },
+                            lang
+                        )}</Button>
+                    </Tooltip>
+
+                    <Tooltip title="Random Chinese Words from 16339 Most Common Ones (《教師語文能力評核（普通話）參照使用普通話詞語表》)">
+                        <Button onClick={() => setQuery(hanziUtils.getRandomCommonWord())}>{getLocaleText(
+                            { "zh-Hans": "随机词语", "zh-Hant": "隨機詞語", en: "Random Word" },
                             lang
                         )}</Button>
                     </Tooltip>
