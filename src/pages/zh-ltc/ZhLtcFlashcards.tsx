@@ -1,7 +1,8 @@
 import {
     Container,
     FormControlLabel,
-    Stack, Switch, Typography
+    Stack, Switch, Typography,
+    useTheme
 } from '@mui/material';
 import "purecss/build/pure.css";
 import * as React from "react";
@@ -14,21 +15,20 @@ import { hanziUtils, tupaToMarkings } from '../../utils/SinoUtils';
 import { Dict, loadDict } from './ZhLtcSinoDict';
 import { dialectConfigMap } from './dialectConfig';
 
-// 资料来源：tupa-rime 之字表、词表，以及常用词语表。
-// 逻辑：随机展示常用词语表之词，每个词先在 tupa-rime 查询是否有读音，无则罗列单字读音，其中多音字用斜杠分割
-// - 《教師語文能力評核（普通話）參照使用普通話詞語表》 https://raw.githubusercontent.com/nk2028/commonly-used-chinese-characters-and-words/refs/heads/main/words.txt
-
 const dialectDictMap: Map<string, Dict> = new Map();
 
 export default function ZhLtcFlashcards(props: { lang: keyof I18nText }) {
     const { lang } = props;
 
+    const theme = useTheme();
+
     const [char, setChar] = useState('字');
     const [roma, setRoma] = useState<string | undefined>('dzɨ̀');
     const [isInitialized, setIsInitialized] = useState(false);
-    const [isRomaVisible, setIsRomaVisible] = useState(true);
+    const [isHiddenVisible, setIsHiddenVisible] = useState(false); // 控制隐藏内容的可见性
     const [isTupaVisual, setIsTupaVisual] = useState(true);
-    const boardEventRef = useRef<number | undefined>(undefined); // 使用 useRef 存储定时器 ID
+    const [charFirst, setCharFirst] = useState(false); // 控制显示顺序亦即是隐藏汉字还是隐藏读音
+    const boardEventRef = useRef<number | undefined>(undefined);
 
     useEffect(() => {
         (async () => {
@@ -39,11 +39,10 @@ export default function ZhLtcFlashcards(props: { lang: keyof I18nText }) {
 
     const refreshBoard = useCallback(() => {
         if (boardEventRef.current) {
-            window.clearInterval(boardEventRef.current); // 确保只有一个定时器在运行
+            window.clearInterval(boardEventRef.current);
         }
 
         const nextchar = hanziUtils.getRandomCommonWord();
-        // 若词典无此词读音，则按每字之音，多音字分以斜杠
         let nextroma;
         if (isTupaVisual) {
             nextroma = dialectDictMap.get('zh-ltc')?.get(nextchar)
@@ -58,18 +57,18 @@ export default function ZhLtcFlashcards(props: { lang: keyof I18nText }) {
                     return dialectDictMap.get('zh-ltc')?.get(char)?.join('/')
                 }).join(' ');
         }
-        setIsRomaVisible(false); // 重置 roma 可见状态
+
+        setIsHiddenVisible(false); // 重置隐藏内容的可见性
         setChar(nextchar);
         setRoma(nextroma);
 
-        // 2 秒后显示 roma
+        // 2 秒后根据显示顺序显示隐藏内容
         window.setTimeout(() => {
-            setIsRomaVisible(true); // 标记 roma 可见
+            setIsHiddenVisible(true);
         }, 2000);
 
-        // 重新设置定时器
         boardEventRef.current = window.setInterval(refreshBoard, 4000);
-    }, [isInitialized, isTupaVisual]);
+    }, [isInitialized, isTupaVisual, charFirst]);
 
     useEffect(() => {
         if (isInitialized) {
@@ -77,19 +76,19 @@ export default function ZhLtcFlashcards(props: { lang: keyof I18nText }) {
         }
         return () => {
             if (boardEventRef.current) {
-                window.clearInterval(boardEventRef.current); // 清除定时器
+                window.clearInterval(boardEventRef.current);
             }
         };
     }, [refreshBoard, isInitialized, isTupaVisual]);
 
     const handleCardClick = () => {
         if (boardEventRef.current) {
-            window.clearInterval(boardEventRef.current); // 清除当前定时器
+            window.clearInterval(boardEventRef.current);
         }
-        if (isRomaVisible) {
-            refreshBoard(); // 如果 roma 已显示，则直接刷新
+        if (isHiddenVisible) {
+            refreshBoard(); // 如果隐藏内容已显示，则直接刷新
         } else {
-            setIsRomaVisible(true); // 如果 roma 未显示，立即显示
+            setIsHiddenVisible(true); // 如果隐藏内容未显示，立即显示
             boardEventRef.current = window.setInterval(refreshBoard, 2000);
         }
     };
@@ -100,7 +99,7 @@ export default function ZhLtcFlashcards(props: { lang: keyof I18nText }) {
                 <BackButton />
                 <Stack spacing={4} px={2} pb={4}>
                     <Typography>
-                        Display flashcards with Chinese characters and Jyutping with your comfortable speed.
+                        Display flashcards with Chinese characters and Middle Chinese Pronunciation/Pinyin with your comfortable order.
                     </Typography>
 
                     <Stack
@@ -124,11 +123,55 @@ export default function ZhLtcFlashcards(props: { lang: keyof I18nText }) {
                                 lang
                             )}
                         />
+
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={charFirst}
+                                    onChange={() => setCharFirst(!charFirst)}
+                                    name="显示顺序"
+                                    color="primary"
+                                />
+                            }
+                            label={
+                                <span>
+                                    <Typography
+                                        variant="body1"
+                                        style={{
+                                            color: charFirst ? theme.palette.text.disabled : theme.palette.text.primary,
+                                            display: 'inline',
+                                        }}
+                                    >
+                                        {getLocaleText(
+                                            { "zh-Hans": "先看音", "zh-Hant": "先看音", en: "Tupa First" },
+                                            lang
+                                        )}
+                                    </Typography>
+                                    <span> / </span>
+                                    <Typography
+                                        variant="body1"
+                                        style={{
+                                            color: charFirst ? theme.palette.text.primary : theme.palette.text.disabled,
+                                            display: 'inline',
+                                        }}
+                                    >
+                                        {getLocaleText(
+                                            { "zh-Hans": "先看字", "zh-Hant": "先看字", en: "Hanzi First" },
+                                            lang
+                                        )}
+                                    </Typography>
+                                </span>
+                            }
+                        />
                     </Stack>
 
-                    <FlashCard char={char} roma={isRomaVisible ? roma : '...'} onClick={handleCardClick}></FlashCard>
+                    {/* 根据 charFirst 和 isHiddenVisible 显示内容 */}
+                    <FlashCard
+                        char={!charFirst ? (isHiddenVisible ? char : '...') : char}
+                        roma={charFirst ? (isHiddenVisible ? roma : '...') : roma}
+                        onClick={handleCardClick}
+                    />
 
-                    {/* Speed Changing Module */}
                 </Stack>
             </Container>
         </div>
