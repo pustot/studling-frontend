@@ -12,12 +12,15 @@
 # 当前包含的语言/方言与模块
 
 - Beta（公开测试）阶段：
+    - 中古汉语与方言（ISO 693-3: `zh-ltc`，兼收多方言/域外方音比较）
+        - 汉字古今中外读音查询 SinoDict
+        - 中古汉语读音抽认卡 Flashcards
     - 粤语（广州话）（ISO 693-3: `zh-yue`，细分 `zh-yue-can`）
         - 汉字读音自测 HanziTraining
         - 汉字读音抽认卡 Flashcards
         - 普转粤难点标注 DifficultiesCmnToYue
-    - 中古汉语与方言（ISO 693-3: `zh-ltc`，兼收多方言/域外方音比较）
-        - 汉字古今中外读音查询 SinoDict
+    - 多语言核心
+        - 多语言核心课本 Tekstaro
 - Alpha（内部测试）阶段：
     - 汉罗文（人造语言）（自拟代码 `hanrom`）
         - 汉罗双文互转 HanVsRom
@@ -188,6 +191,11 @@ CREATE TABLE daily_training_stats (
     - [ ] 支持显示 IPA。
     - [ ] 提示连读音变信息。
     - [ ] 支持显示文白异读、日语吴音汉音之分（可借 MCPDict 信息）。
+
+### 中古汉语读音抽认卡 Flashcards
+
+- TODO
+    - [ ] 福州话多音字须用逗号拆开
 
 ## 粤语（广州话）（ISO 693-3: `zh-yue`，细分 `zh-yue-can`）
 
