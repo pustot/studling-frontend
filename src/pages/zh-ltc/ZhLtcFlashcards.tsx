@@ -95,7 +95,7 @@ export default function ZhLtcFlashcards(props: { lang: keyof I18nText }) {
 
     return (
         <div>
-            <Container maxWidth="sm">
+            <Container maxWidth="md">
                 <BackButton />
                 <Stack spacing={4} px={2} pb={4}>
                     <Typography>
@@ -163,6 +163,9 @@ export default function ZhLtcFlashcards(props: { lang: keyof I18nText }) {
                                 </span>
                             }
                         />
+                        {!isInitialized && <Typography variant="body2" color="grey" p={1} gutterBottom>
+                            词典加载中...
+                        </Typography>}
                     </Stack>
 
                     {/* 根据 charFirst 和 isHiddenVisible 显示内容 */}

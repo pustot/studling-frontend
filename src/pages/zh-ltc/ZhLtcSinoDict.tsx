@@ -109,6 +109,7 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
     const [results, setResults] = useState<{ character: string, pronunciations: { [dialect: string]: string[] } }[]>([]);
     const [showVariants, setShowVariants] = useState(true);
     const [showGuangyunOnly, setShowGuangyunOnly] = useState(false);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
         const loadDictionaries = async () => {
@@ -123,6 +124,7 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
                     console.error(`Failed to load dictionary ${index + 1}:`, result.reason);
                 }
             });
+            setIsInitialized(true);
         };
 
         loadDictionaries();
@@ -308,6 +310,9 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
                             lang
                         )}</Button>
                     </Tooltip>
+                    {!isInitialized && <Typography variant="body2" color="grey" p={1} gutterBottom>
+                        词典加载中...
+                    </Typography>}
                 </Stack>
 
                 {results.length > 0 && (
@@ -324,7 +329,7 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
                                                 return (
                                                     <>
                                                         {dialectKey == "zh-ltc" && <Typography key={dialectKey + "-visual"} variant="body1">
-                                                            <strong>{dialectConfigMap[dialectKey].displayName + "(视)"}:</strong> {pronunciations.map((tupa) => tupaToMarkings(tupa)).join(", ")}
+                                                            <strong>{dialectConfigMap[dialectKey].displayName + "(视)"}:</strong> {pronunciations.map((phraseTupa) => phraseTupa.split(' ').map((charTupa) => tupaToMarkings(charTupa)).join(' ')).join(", ")}
                                                         </Typography>}
                                                         <Typography key={dialectKey} variant="body1">
                                                             <strong>{dialectConfigMap[dialectKey].displayName}:</strong> {pronunciations.join(", ")}
