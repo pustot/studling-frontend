@@ -64,22 +64,43 @@ const parseDialectDictionaryFromCSV = (csvContent: string): Dict => {
     return mapping;
 };
 
-// 通用的加载字典函数
 export const loadDict = async (dialectName: string, config: DialectConfig, dialectDictMap: Map<string, Dict>) => {
-    try {
-        const response = await axios.get(config.link);
-        let dict: Dict;
-        if (config.format === 'yaml') {
-            dict = parseDialectDictionaryFromYAML(response.data);
-        } else if (config.format === 'csv') {
-            dict = parseDialectDictionaryFromCSV(response.data);
-        } else {
-            throw new Error(`Unsupported format: ${config.format}`);
+    // 获取或创建一个新的字典
+    const existingDict = dialectDictMap.get(dialectName) || new Map();
+
+    for (const link of config.links) {
+        try {
+            const response = await axios.get(link);
+            let dict: Dict;
+
+            if (config.format === 'yaml') {
+                dict = parseDialectDictionaryFromYAML(response.data);
+            } else if (config.format === 'csv') {
+                dict = parseDialectDictionaryFromCSV(response.data);
+            } else {
+                throw new Error(`Unsupported format: ${config.format}`);
+            }
+
+            // 合并内容，以便来源于多个连接
+            dict.forEach((pronunciations, character) => {
+                if (!existingDict.has(character)) {
+                    existingDict.set(character, pronunciations);
+                } else {
+                    const existingPronunciations = existingDict.get(character)!;
+                    pronunciations.forEach(pronunciation => {
+                        if (!existingPronunciations.includes(pronunciation)) {
+                            existingPronunciations.push(pronunciation);
+                        }
+                    });
+                }
+            });
+        } catch (error) {
+            console.warn(`Failed to load dictionary from ${link} for ${dialectName}:`, error);
         }
-        dialectDictMap.set(dialectName, dict);
-    } catch (error) {
-        console.error(`Failed to load dictionary for ${dialectName}:`, error);
     }
+
+    // 更新/设置合并后的字典
+    dialectDictMap.set(dialectName, existingDict);
 };
 
 export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
