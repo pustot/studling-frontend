@@ -135,6 +135,20 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
 
         let terms: string[] = [];
 
+        // 新增：尝试直接查询整个词语
+        const wholeWordPronunciations: { [dialect: string]: string[] } = {};
+        dialectDictMap.forEach((dict, dialect) => {
+            const pronunciation = dict.get(query);
+            if (pronunciation) {
+                wholeWordPronunciations[dialect] = pronunciation;
+            }
+        });
+
+        if (Object.keys(wholeWordPronunciations).length > 0) {
+            searchResults.push({ character: query, pronunciations: wholeWordPronunciations });
+        }
+
+        // 获取单字的繁简或异体字
         characters.forEach(character => {
             // 繁简异体字转换逻辑
             let variants = hanziUtils.getHanziVariants(character);

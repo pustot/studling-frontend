@@ -10,7 +10,8 @@ export const dialectConfigMap: { [key: string]: DialectConfig } = {
     'zh-ltc': {
         displayName: '切',
         links: [
-            'https://raw.githubusercontent.com/nk2028/rime-tupa/main/tupa.dict.yaml',
+            'https://raw.githubusercontent.com/nk2028/rime-tupa/refs/heads/main/tupa.dict.yaml',
+            'https://raw.githubusercontent.com/nk2028/rime-tupa/refs/heads/main/tupa.words.dict.yaml',
             'https://raw.githubusercontent.com/pustot/middle-chinese-polyphones/refs/heads/main/words.yaml'
         ],
         format: 'yaml'
