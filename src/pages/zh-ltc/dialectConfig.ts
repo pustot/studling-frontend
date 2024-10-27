@@ -23,7 +23,10 @@ export const dialectConfigMap: { [key: string]: DialectConfig } = {
     },
     'zh-yue': {
         displayName: '粤',
-        links: ['https://raw.githubusercontent.com/rime/rime-cantonese/main/jyut6ping3.chars.dict.yaml'],
+        links: [
+            'https://raw.githubusercontent.com/rime/rime-cantonese/refs/heads/main/jyut6ping3.chars.dict.yaml',
+            'https://raw.githubusercontent.com/rime/rime-cantonese/refs/heads/main/jyut6ping3.words.dict.yaml'
+        ],
         format: 'yaml'
     },
     'zh-hak': {
