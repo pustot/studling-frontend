@@ -92,7 +92,7 @@ export function tupaToMarkings(tupa: string): string {
     ////          mainly because tr is already equally long as ts, tj and tŝ
     // .replace(/sr/g, 'ŝ')
     // .replace(/zr/g, 'ẑ')
-    // Consonant: 知澈澄娘 r -> (whether use ʵ , ɻ , or ʈ ɖ ɳ ?)
+    // Consonant: 知澈澄娘 r -> (whether use ʵ , ɻ , ʴ, or ʈ ɖ ɳ ?)
     // .replace(/r/g, 'ʵ')
     .replace(/tr/g, 'ʈ')
     .replace(/dr/g, 'ɖ')
@@ -110,7 +110,7 @@ export function tupaToMarkings(tupa: string): string {
     // Medial: wi -> ü
     ////    Note: maybe not doing wi -> y because y is not otherwise used
     .replace(/wi/g, 'ü')
-    // Medial: y -> ɨ (not sure, whether ɨ or ɿ or ʅ or ɨ̧ or keep using y ?)
+    // Medial: y -> ɨ (not sure, whether ɨ or ɿ or ʅ or ɨ̧  or ɨʴ or ɨʵ or keep using y ?)
     //      In fact ɨ with acute/grave is in some text envs not clear at all...
     //      But ɨ is the most IPA-ish one, and ï ɯ̈ etc. also have problems with accents
     //      But in some cases it can also mean ɻ, not only a vowel, thus hesitating
