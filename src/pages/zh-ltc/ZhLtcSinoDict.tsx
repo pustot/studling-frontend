@@ -137,23 +137,25 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
 
         let terms: string[] = [];
 
-        // 新增：尝试直接查询整个词语
-        const wholeWordPronunciations: { [dialect: string]: string[] } = {};
-        dialectDictMap.forEach((dict, dialect) => {
-            const pronunciation = dict.get(query);
-            if (pronunciation) {
-                wholeWordPronunciations[dialect] = pronunciation;
-            } else {
-                // 如果未找到整个词的发音，但每个字都是单音节，则可通过每个字符推断
-                const charPronunciations = query.split('').map(char => dict.get(char));
-                if (charPronunciations.every(p => p && p.length === 1)) { // 每个字只有一个发音
-                    wholeWordPronunciations[dialect] = [`(以单音字推断): ${charPronunciations.map(p => p![0]).join(' ')}`];
+        // 若大于一字，尝试直接查询整个词语
+        if (query.length > 1) {
+            const wholeWordPronunciations: { [dialect: string]: string[] } = {};
+            dialectDictMap.forEach((dict, dialect) => {
+                const pronunciation = dict.get(query);
+                if (pronunciation) {
+                    wholeWordPronunciations[dialect] = pronunciation;
+                } else {
+                    // 如果未找到整个词的发音，但每个字都是单音节，则可通过每个字符推断
+                    const charPronunciations = query.split('').map(char => dict.get(char));
+                    if (charPronunciations.every(p => p && p.length === 1)) { // 每个字只有一个发音
+                        wholeWordPronunciations[dialect] = [`(以单音字推断): ${charPronunciations.map(p => p![0]).join(' ')}`];
+                    }
                 }
+            });
+    
+            if (Object.keys(wholeWordPronunciations).length > 0) {
+                searchResults.push({ character: query, pronunciations: wholeWordPronunciations });
             }
-        });
-
-        if (Object.keys(wholeWordPronunciations).length > 0) {
-            searchResults.push({ character: query, pronunciations: wholeWordPronunciations });
         }
 
         // 获取单字的繁简或异体字
