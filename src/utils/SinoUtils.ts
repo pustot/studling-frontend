@@ -7,8 +7,8 @@ class HanziUtils {
   private commonWords: string[] = [];
   private isHanziFetched = false;
   private isWordsFetched = false;
-  private converterCH = OpenCC.Converter({ from: "cn", to: "hk" });
-  private converterHC = OpenCC.Converter({ from: "hk", to: "cn" });
+  public converterCH = OpenCC.Converter({ from: "cn", to: "hk" });
+  public converterHC = OpenCC.Converter({ from: "hk", to: "cn" });
   private converterHT = OpenCC.Converter({ from: "hk", to: "tw" });
   private converterHJ = OpenCC.Converter({ from: "hk", to: "jp" });
 
