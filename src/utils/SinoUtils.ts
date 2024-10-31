@@ -135,7 +135,7 @@ export function tupaToMarkings(tupa: string): string {
 
   // Helper function to add tone mark
   function addToneMark(str: string, toneMap: { [key: string]: string }, combiningMark: string): string {
-    const priority = ['a', 'e', 'o', 'ə', 'u', 'i', 'y', 'ɨ', 'ɿ', 'ü'];
+    const priority = ['a', 'e', 'o', 'ə', 'i', 'u', 'y', 'ɨ', 'ɿ', 'ü'];
     for (let char of priority) {
       const index = str.lastIndexOf(char);
       if (index !== -1) {
