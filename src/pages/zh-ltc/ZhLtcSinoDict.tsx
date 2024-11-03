@@ -266,7 +266,7 @@ export default function ZhLtcSinoDict(props: { lang: keyof I18nText }) {
                     id="queryTextarea"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    style={{ width: "70vw", background: "transparent", fontSize: "1.5rem", color: 'inherit' }}
+                    style={{ width: "clamp(300px, 70vw, 600px)", background: "transparent", fontSize: "1.5rem", color: 'inherit' }}
                     placeholder="Enter Chinese character(s) or romanization(s), or click on `RANDOM HAN`. No inspiration ? Try `文` or `myon`"
                 />
 
